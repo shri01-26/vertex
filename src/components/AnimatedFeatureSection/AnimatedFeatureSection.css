@@ -1,0 +1,224 @@
+/* ==========================================================================
+   AnimatedFeatureSection
+   Central image (1 (1).png) with 6 feature cards floating around it and
+   faint green SVG connector lines. Card positions map to the connector
+   endpoints defined on the 1280 x 860 SVG canvas.
+   ========================================================================== */
+
+.feature-section {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-container {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  aspect-ratio: 1280 / 860;
+  margin: 0 auto;
+}
+
+/* ---- Connector lines (dashed green — no traveling circle) ---- */
+.connector-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.connector-path {
+  fill: none;
+  stroke: rgba(34, 197, 94, 0.85);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---- Main image ---- */
+.main-image-box {
+  position: absolute;
+  top: -14%;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 80%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 22px;
+  filter: drop-shadow(0 24px 50px rgba(15, 23, 42, 0.18));
+}
+
+/* ---- Feature cards ---- */
+.feature-card {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: auto;
+  min-width: 240px;
+  max-width: 360px;
+  padding: 17px 22px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 16px;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.12);
+}
+
+.card-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #16c76f 0%, #059669 100%);
+}
+
+.feature-text {
+  min-width: 0;
+}
+
+.feature-text .feature-title {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.feature-text .feature-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.66rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.skeleton-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 7px;
+  min-width: 96px;
+}
+
+.skeleton-lines span {
+  display: block;
+  height: 5px;
+  width: 100%;
+  border-radius: 999px;
+  background: #e5e7eb;
+}
+
+.skeleton-lines span.short {
+  width: 60%;
+}
+
+/* ---- Card placement (mapped to SVG connector endpoints) ---- */
+.card-agent {
+  top: 16%;
+  left: 0%;
+}
+
+.card-template {
+  top: 49%;
+  left: 0%;
+}
+
+.card-lead {
+  top: 82%;
+  left: 0%;
+}
+
+.card-verified {
+  top: -24%;
+  left: 76%;
+}
+
+.card-broadcast {
+  top: 43%;
+  right: -18%;
+}
+
+.card-replies {
+  top: 99%;
+  left: 72%;
+}
+
+/* ==========================================================================
+   Responsive: below 992px the floating layout can't breathe, so stack the
+   image on top and lay the cards out in a simple grid; hide connectors.
+   ========================================================================== */
+@media (max-width: 991px) {
+  .feature-container {
+    aspect-ratio: auto;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .connector-layer {
+    display: none;
+  }
+
+  .main-image-box {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  .feature-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+  }
+
+  .feature-card + .feature-card {
+    margin-top: 0;
+  }
+
+  .feature-container > .feature-card:nth-of-type(n) {
+    display: flex;
+  }
+}
+
+/* Two-column card grid on tablet width */
+@media (max-width: 991px) and (min-width: 560px) {
+  .feature-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .main-image-box {
+    grid-column: 1 / -1;
+  }
+}

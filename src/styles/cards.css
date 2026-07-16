@@ -1,0 +1,823 @@
+/* ================= CARD LAYOUT SYSTEMS & STYLES ================= */
+
+.glass-card,
+.cta-banner,
+.picture-box,
+.dev-feature-list div {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(25, 174, 252, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: 0.35s ease;
+}
+
+.suite-icon {
+  width: 64px;
+  height: 64px;
+  background: #ffffff;
+  border: 1px solid rgba(25, 174, 252, 0.1);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  font-size: 28px;
+  color: var(--blue);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.suite-card:hover .suite-icon {
+  background: var(--blue);
+  color: #ffffff;
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 30px rgba(13, 165, 233, 0.4);
+}
+
+.trust-card h5,
+.suite-card h5 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.trust-card small,
+.suite-card p {
+  font-size: 16.5px;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ================= FLOW CARDS ================= */
+
+.flow-card {
+  isolation: isolate;
+  width: 150px;
+  padding: 12px 16px;
+  border-radius: 50px;
+  /* Pill shape */
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(25, 174, 252, 0.16);
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 16px 42px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  position: relative;
+}
+
+.flow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(25, 174, 252, 0.14), transparent 40%);
+  transition: 0.35s ease;
+}
+
+.flow-card::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -40%;
+  width: 40%;
+  height: 220%;
+  z-index: -1;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.85), transparent);
+  transform: rotate(18deg) translateX(-140%);
+  transition: transform 0.75s ease;
+}
+
+.flow-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(56, 189, 248, 0.52);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 0 0 5px rgba(56, 189, 248, 0.08),
+    0 0 40px rgba(56, 189, 248, 0.14),
+    0 24px 60px rgba(25, 174, 252, 0.16);
+}
+
+.flow-card:hover::before {
+  opacity: 1;
+}
+
+.flow-card:hover::after {
+  transform: rotate(18deg) translateX(420%);
+}
+
+.flow-card strong {
+  position: relative;
+  z-index: 2;
+  display: block;
+  color: #071637;
+  font-size: 17px;
+  font-weight: 650;
+  transition: 0.3s ease;
+}
+
+.flow-card:hover strong {
+  color: #009cff;
+}
+
+.flow-card small {
+  display: none !important;
+}
+
+/* ================= FLIP CARD GLOBAL ================= */
+.fc-scene {
+  perspective: 1100px;
+}
+
+.fc-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.fc-scene:hover .fc-card {
+  transform: rotateY(180deg);
+}
+
+.fc-front,
+.fc-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px;
+  text-align: center;
+}
+
+.fc-front {
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.fc-back {
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  transform: rotateY(180deg);
+  overflow: hidden;
+}
+
+.fc-back .fc-desc {
+  color: #cbd5e1;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.65;
+  margin: 10px 0 0;
+}
+
+.fc-back .fc-label {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 6px;
+}
+
+.fc-hint {
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+
+/* ================= HOVER REVEAL CARD (Slide-up overlay) ================= */
+.hc-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.hc-card:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+.hc-card .hc-body {
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.4s ease;
+}
+
+.hc-card:hover .hc-body {
+  transform: translateY(-8px);
+}
+
+.hc-card .hc-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  color: #cbd5e1;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.4, 0.2, 0.2, 1);
+  border-radius: 18px;
+  overflow-y: auto;
+}
+
+.hc-card:hover .hc-reveal {
+  transform: translateY(0);
+}
+
+.hc-card .hc-reveal strong {
+  display: block;
+  color: #19aefc;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+/* ================= WHATSAPP MARKETING IMAGE CARD (wm-card) ================= */
+.wm-card {
+  position: relative;
+  height: 340px;
+  cursor: pointer;
+  background: transparent;
+  perspective: 1500px;
+  transition: transform 0.35s ease;
+  height: clamp(320px, 30vw, 370px) !important;
+  border-radius: 22px !important;
+}
+
+.wm-card:hover {
+  transform: translateY(-5px);
+}
+
+.wm-card-front,
+.wm-card-hover {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  overflow: hidden;
+}
+
+.wm-card:hover .wm-card-front,
+.wm-card:hover .wm-card-hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.wm-card-front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px;
+  z-index: 2;
+  transform: rotateY(0deg);
+  padding: clamp(24px, 3vw, 32px) !important;
+}
+
+.wm-card:hover .wm-card-front {
+  transform: rotateY(180deg);
+}
+
+.wm-card-front h3,
+.wm-card-front h4 {
+  color: #0f172a;
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.3px;
+  font-size: clamp(17px, 1.5vw, 21px) !important;
+  line-height: 1.28 !important;
+  max-width: 92%;
+}
+
+.wm-card-front .wm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(25, 174, 252, 0.12), rgba(25, 174, 252, 0.06));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #19aefc;
+  font-size: 24px;
+}
+
+.wm-card-front .wm-hint {
+  color: #94a3b8;
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.wm-card-hover {
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  transform: rotateY(-180deg);
+  background: #0f172a;
+}
+
+.wm-card:hover .wm-card-hover {
+  transform: rotateY(0deg);
+}
+
+.wm-card-hover img {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  overflow: hidden;
+}
+
+.wm-card-see-more-bar {
+  background: #0f172a;
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: clamp(14px, 2vw, 18px) clamp(16px, 2.3vw, 22px) !important;
+}
+
+.wm-card-see-more-bar div,
+.wm-card-see-more-bar span,
+.wm-card-see-more-bar li {
+  font-size: clamp(11px, 0.95vw, 13px) !important;
+  line-height: 1.5 !important;
+}
+
+.wm-card-see-more-bar div:first-child {
+  max-width: 100%;
+}
+
+.wm-card-see-more-bar span {
+  color: #cbd5e1;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.wm-see-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #19aefc, #0ea5e9);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wm-see-more:hover {
+  opacity: 0.9;
+  transform: translateX(3px);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ================= TILT GLOW CARD ================= */
+.tg-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.35s ease, transform 0.3s ease;
+  padding: 28px 22px 24px;
+  text-align: center;
+}
+
+.tg-card::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: radial-gradient(circle at center, rgba(25, 174, 252, 0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.tg-card:hover {
+  box-shadow: 0 18px 48px rgba(25, 174, 252, 0.15);
+  transform: translateY(-5px);
+}
+
+.tg-card:hover::before {
+  opacity: 1;
+}
+
+.tg-card .tg-desc {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.45s ease, opacity 0.35s ease 0.08s;
+  font-size: 18px;
+  font-weight: 600;
+  color: #64748b;
+  line-height: 1.65;
+  margin-top: 0;
+}
+
+.tg-card:hover .tg-desc {
+  max-height: 160px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+/* ================= DETAIL SHOWCASE LAYOUT CARDS ================= */
+.detail-showcase-card,
+.detail-tree-card,
+.detail-callout-panel {
+  position: relative;
+  overflow: hidden;
+  animation: detailCardIn 0.55s ease both;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.detail-showcase-card {
+  min-height: 285px;
+  padding: clamp(24px, 2.6vw, 30px) !important;
+  border-radius: 22px !important;
+  justify-content: flex-start;
+}
+
+.detail-showcase-card h4 {
+  font-size: clamp(16px, 1.25vw, 18px) !important;
+  line-height: 1.32;
+  margin-bottom: 10px !important;
+}
+
+.detail-showcase-card p {
+  font-size: clamp(13px, 1vw, 14px) !important;
+  line-height: 1.62 !important;
+}
+
+.detail-showcase-card::before {
+  content: "";
+  position: absolute;
+  inset: auto -22px -44px auto;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(25, 174, 252, 0.16), transparent 68%);
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.detail-showcase-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--sky), #0ea5e9);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.detail-showcase-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(25, 174, 252, 0.32) !important;
+  box-shadow: 0 24px 58px rgba(25, 174, 252, 0.16) !important;
+}
+
+.detail-showcase-card:hover::before {
+  transform: translate(-14px, -14px) scale(1.08);
+}
+
+.detail-showcase-card:hover::after {
+  opacity: 1;
+}
+
+.detail-tree-card {
+  width: 100%;
+  max-width: 500px;
+  min-height: 225px;
+  padding: clamp(24px, 2.6vw, 30px) !important;
+  gap: 18px !important;
+  border-radius: 22px !important;
+  isolation: isolate;
+}
+
+.detail-tree-card h4 {
+  font-size: clamp(17px, 1.4vw, 20px) !important;
+  line-height: 1.32;
+}
+
+.detail-tree-card p {
+  font-size: clamp(13px, 1vw, 15px) !important;
+  line-height: 1.62 !important;
+}
+
+.detail-tree-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, rgba(25, 174, 252, 0.08), transparent 42%),
+    radial-gradient(circle at 100% 0, rgba(14, 165, 233, 0.12), transparent 36%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.detail-tree-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(25, 174, 252, 0.34) !important;
+  box-shadow: 0 24px 58px rgba(25, 174, 252, 0.16) !important;
+}
+
+.detail-tree-card:hover::before {
+  opacity: 1;
+}
+
+/* ================= PREMIUM EXPANDABLE CARD HOVER ANIMATION ================= */
+.expandable-card {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.expandable-card .card-desc {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0 !important;
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    margin-top 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.expandable-card:hover .card-desc {
+  max-height: 200px;
+  /* Safe upper bound for all description lengths */
+  opacity: 1;
+  margin-top: 12px !important;
+}
+
+.expandable-card .card-impact {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-width: 0 !important;
+  transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.3s ease,
+    padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    margin-top 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.expandable-card:hover .card-impact {
+  max-height: 100px;
+  opacity: 1;
+  margin-top: 14px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  border-width: 1px !important;
+}
+
+/* ================= RUNNING DOT BORDER CARD ================= */
+.glass-card,
+.unified-card,
+.hc-card,
+.fc-card,
+.suite-card {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background: #fff;
+}
+
+.glass-card::before,
+.unified-card::before,
+.hc-card::before,
+.fc-card::before,
+.suite-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  height: 250%;
+  background: conic-gradient(from 0deg, transparent 60%, rgba(25, 174, 252, 0.8) 100%);
+  transform-origin: center center;
+  z-index: -2;
+  margin-left: -125%;
+  margin-top: -125%;
+}
+
+.glass-card::after,
+.unified-card::after,
+.hc-card::after,
+.fc-card::after,
+.suite-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: #fff;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* ================= MAKE BORDER DOT HOVER ONLY ================= */
+.glass-card::before,
+.unified-card::before,
+.hc-card::before,
+.fc-card::before,
+.suite-card::before {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: none !important;
+}
+
+.glass-card:hover::before,
+.unified-card:hover::before,
+.hc-card:hover::before,
+.fc-card:hover::before,
+.suite-card:hover::before {
+  opacity: 1;
+  animation: spinDotBorder 3s linear infinite !important;
+}
+
+/* ================= LIGHTBOX MODALS ================= */
+.lightbox-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.9);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  animation: fadeIn 0.3s ease;
+}
+
+.lightbox-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  transform: scale(0.95);
+  animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  z-index: 1000000;
+  transition: 0.3s ease;
+}
+
+.lightbox-close:hover {
+  color: #19aefc;
+  transform: scale(1.1);
+}
+
+.card-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(128, 118, 118, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightboxFadeIn 0.25s ease forwards;
+  cursor: pointer;
+}
+
+.card-lightbox-box {
+  position: relative;
+  max-width: 88vw;
+  max-height: 88vh;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation: lightboxSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  cursor: default;
+}
+
+.card-lightbox-img {
+  display: block;
+  width: 100%;
+  max-height: 85vh;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.card-lightbox-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.12) rotate(5deg);
+}
+
+.clickable-card {
+  cursor: pointer !important;
+}
+
+.clickable-card:hover {
+  outline: 2px solid rgba(25, 174, 252, 0.35);
+}
+
+/* Centering overrides & color protections */
+.detail-showcase-card>div:first-child,
+.glass-card>div:first-child,
+.hc-card .icon-wrap,
+.unified-card .icon-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.detail-showcase-card svg,
+.glass-card svg,
+.clickable-card svg,
+.hc-card svg,
+.unified-card svg {
+  color: inherit !important;
+  fill: currentColor;
+  flex-shrink: 0;
+}

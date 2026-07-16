@@ -1,0 +1,26 @@
+/* ================= CTA.css ================= */
+.cta-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(25, 174, 252, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: 0.35s ease;
+  padding: 40px;
+}
+
+.cta-banner:hover {
+  transform: translateY(-10px);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: var(--shadow-hover);
+}
+
+@media (max-width: 991px) {
+  .cta-banner {
+    padding: 26px;
+  }
+}

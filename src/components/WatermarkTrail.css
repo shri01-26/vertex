@@ -1,0 +1,66 @@
+.watermark-trail {
+  position: relative;
+  width: 100%;
+  height: clamp(140px, 22vw, 260px);
+  overflow: hidden;
+  border-top: 1px solid rgba(11, 95, 198, 0.12);
+  pointer-events: none;
+  user-select: none;
+  
+  
+}
+
+.watermark-trail__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.18em;
+  margin: 0;
+  width: 100%;
+  padding: 0 180px;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgba(130, 205, 255, 0.5);
+  -webkit-text-stroke: 2px rgba(100, 185, 250, 0.45);
+  paint-order: stroke fill;
+  text-shadow: 0 0 1px rgba(160, 220, 255, 0.35);
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 32%,
+    rgba(0, 0, 0, 0.85) 68%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 32%,
+    rgba(0, 0, 0, 0.85) 68%,
+    #000 100%
+  );
+}
+
+@media (max-width: 991px) {
+  .watermark-trail {
+    height: clamp(110px, 20vw, 200px);
+  }
+
+  .watermark-trail__text {
+    -webkit-text-stroke: 1.5px rgba(100, 185, 250, 0.4);
+  }
+}
+
+@media (max-width: 575px) {
+  .watermark-trail {
+    height: clamp(90px, 20vw, 150px);
+  }
+
+  .watermark-trail__text {
+    bottom: -0.1em;
+    -webkit-text-stroke: 1px rgba(100, 185, 250, 0.38);
+  }
+}

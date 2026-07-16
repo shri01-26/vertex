@@ -1,0 +1,20 @@
+:root {
+  --blue: #0ea5e9;
+  --sky: #19aefc;
+  --brand: #0ea5e9;
+  --brand-soft: rgba(14, 165, 233, 0.12);
+  --heading-underline-start: #19aefc;
+  --heading-underline-end: #0ea5e9;
+  --mint: #e0f2ff;
+  --mint-dark: #19aefc;
+  --dark: #060b1a;
+  --muted: #64748b;
+  --border: rgba(25, 174, 252, 0.15);
+  --white: #ffffff;
+  --light-sky: #f0f9ff;
+  --text-main: #475569;
+  --text-heading: #0f172a;
+  --text-muted: #64748b;
+  --shadow-soft: 0 10px 30px rgba(25, 174, 252, 0.08);
+  --shadow-hover: 0 20px 50px rgba(25, 174, 252, 0.2);
+}

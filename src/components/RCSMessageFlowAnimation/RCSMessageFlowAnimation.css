@@ -1,0 +1,43 @@
+@property --rcs-neon-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.rcs-neon-border {
+  position: relative;
+  box-shadow:
+    0 0 10px rgb(68 187 255 / 28%),
+    0 0 22px rgb(34 211 238 / 18%);
+  animation: rcs-neon-border-spin 3.2s linear infinite;
+}
+
+.rcs-arrow-glow {
+  animation: rcs-arrow-glow-pulse 1.2s ease-in-out infinite alternate;
+}
+
+.rcs-sent-pill {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 14px 35px rgba(3, 143, 223, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+@keyframes rcs-neon-border-spin {
+  to {
+    --rcs-neon-angle: 360deg;
+  }
+}
+
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  .rcs-neon-border,
+  .rcs-arrow-glow {
+    animation: none;
+  }
+}

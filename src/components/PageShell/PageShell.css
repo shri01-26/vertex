@@ -1,0 +1,194 @@
+.vs-page-shell {
+  min-height: 100vh;
+  background: #f8fbff;
+  overflow-x: hidden;
+}
+
+.vs-page-hero {
+  position: relative;
+  padding: 92px 0 76px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 12%, rgba(11, 95, 198, 0.16), transparent 28%),
+    radial-gradient(circle at 8% 82%, rgba(34, 211, 238, 0.18), transparent 34%),
+    linear-gradient(135deg, #ffffff 0%, #f6fbff 48%, #eef7ff 100%);
+}
+
+.vs-page-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(11, 95, 198, 0.08);
+  color: #0b5fc6;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.vs-page-title {
+  margin: 18px 0 14px;
+  color: #0f172a;
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-weight: 900;
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+}
+
+.vs-page-desc {
+  max-width: 780px;
+  margin: 0;
+  color: #5b667a;
+  font-size: clamp(1rem, 1.5vw, 1.22rem);
+  line-height: 1.68;
+}
+
+.vs-page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.vs-page-btn {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 14px;
+  padding: 11px 22px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.vs-page-btn-primary {
+  background: #0b5fc6;
+  color: #ffffff !important;
+  border: 2px solid #0b5fc6;
+}
+
+.vs-page-btn-outline {
+  background: #ffffff;
+  color: #0b5fc6 !important;
+  border: 2px solid #0b5fc6;
+}
+
+.vs-page-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(11, 95, 198, 0.18);
+}
+
+.vs-page-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.vs-page-card {
+  min-height: 145px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #0b5fc6;
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.06);
+}
+
+.vs-page-card span {
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.vs-page-content-section {
+  padding: 64px 0 84px;
+}
+
+.vs-page-content-card {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 26px;
+  background: #ffffff;
+  padding: 34px;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.06);
+}
+
+.vs-page-content-card h2 {
+  margin-bottom: 22px;
+  color: #0f172a;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 900;
+}
+
+.vs-page-points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.vs-page-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f8fbff;
+  color: #334155;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.vs-page-point svg {
+  color: #0b5fc6;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+@media (max-width: 991px) {
+  .vs-page-hero {
+    padding: 70px 0 58px;
+  }
+
+  .vs-page-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .vs-page-actions {
+    justify-content: center;
+  }
+
+  .vs-page-card-grid {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 575px) {
+  .vs-page-hero {
+    padding: 54px 0 46px;
+  }
+
+  .vs-page-card-grid,
+  .vs-page-points {
+    grid-template-columns: 1fr;
+  }
+
+  .vs-page-card {
+    min-height: 115px;
+  }
+
+  .vs-page-btn {
+    width: 100%;
+  }
+
+  .vs-page-content-card {
+    padding: 24px 18px;
+  }
+}

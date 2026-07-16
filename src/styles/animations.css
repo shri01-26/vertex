@@ -1,0 +1,558 @@
+@import "tailwindcss";
+/* ================= KEYFRAMES & TRANSITION UTILITIES ================= */
+
+@keyframes rcsFloatAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-rcs-float {
+  animation: rcsFloatAnimation 6s ease-in-out infinite;
+}
+
+@keyframes rcsArrowPulse {
+  0% {
+    stroke-dashoffset: 20;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
+}
+
+.animate-rcs-arrow-pulse {
+  animation: rcsArrowPulse 1s linear infinite;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(38px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-up {
+  animation: fadeUp 0.9s ease both;
+}
+
+@keyframes floatY {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+.animate-float {
+  animation: floatY 6s ease-in-out infinite;
+}
+
+@keyframes sectionFade {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatingBlob {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(30px) translateX(20px);
+  }
+}
+
+@keyframes blinkCursor {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes connectorPulse {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateY(-50%) translateX(5px);
+    opacity: 1;
+  }
+}
+
+@keyframes flowArrowMove {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+}
+
+@keyframes megaOpen {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes megaSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typingRevealCrisp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typingRevealCrispGlobal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spinClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinCounterClockwise {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.spin-dashed-cw {
+  transform-origin: 300px 300px;
+  animation: spinClockwise 120s linear infinite;
+}
+
+.spin-dashed-ccw {
+  transform-origin: 300px 300px;
+  animation: spinCounterClockwise 90s linear infinite;
+}
+
+@keyframes dashFlow {
+  from {
+    stroke-dashoffset: 40;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.data-flow-slow {
+  stroke-dasharray: 6 6;
+  animation: dashFlow 12s linear infinite;
+}
+
+.data-flow-active {
+  stroke-dasharray: 4 4;
+  animation: dashFlow 3s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(20, 150, 232, 0.6));
+}
+
+@keyframes spinDotBorder {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes lightboxFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxSlideUp {
+  from {
+    transform: scale(0.88) translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+/* ================= SMOOTH MOTION PERFORMANCE ================= */
+
+.smooth-card {
+  will-change: transform;
+}
+
+.smooth-scroll-section {
+  will-change: transform;
+}
+
+.wa-hourglass-spin {
+  transform-origin: center;
+  animation: waHourglassSpin 5s linear 0.6s infinite;
+}
+
+.wa-neon-glow {
+  animation: waNeonGlowPulse 3s ease-in-out 0.6s infinite both;
+}
+
+@keyframes waNeonGlowPulse {
+  0%,
+  70%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(34, 197, 94, 0));
+  }
+  78% {
+    filter:
+      drop-shadow(0 0 10px rgba(74, 222, 128, 0.9))
+      drop-shadow(0 0 24px rgba(34, 197, 94, 0.55));
+  }
+  90% {
+    filter:
+      drop-shadow(0 0 7px rgba(74, 222, 128, 0.6))
+      drop-shadow(0 0 16px rgba(34, 197, 94, 0.35));
+  }
+}
+
+.wa-message-path {
+  animation: waMessagePathGlow 3s ease-in-out 0.6s infinite;
+}
+
+.wa-message-pulse {
+  left: 0;
+  top: -7px;
+  box-shadow:
+    0 0 6px rgba(74, 222, 128, 1),
+    0 0 14px rgba(34, 197, 94, 0.9),
+    0 0 24px rgba(16, 185, 129, 0.65);
+  animation: waMessagePulseTravel 3s ease-in-out 0.6s infinite;
+}
+
+.wa-connector-motion-svg {
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.wa-card-glow-dot-yellow {
+  fill: rgb(148, 163, 184);
+  filter:
+    drop-shadow(0 0 2px rgba(148, 163, 184, 0.95))
+    drop-shadow(0 0 5px rgba(100, 116, 139, 0.75));
+}
+
+.wa-card-glow-dot-blue {
+  fill: rgb(148, 163, 184);
+  filter:
+    drop-shadow(0 0 2px rgba(148, 163, 184, 0.95))
+    drop-shadow(0 0 5px rgba(100, 116, 139, 0.75));
+}
+
+.wa-connector-dot {
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  border-radius: 9999px;
+  background: rgb(148, 163, 184);
+  box-shadow:
+    0 0 5px rgba(148, 163, 184, 0.95),
+    0 0 12px rgba(100, 116, 139, 0.75);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation-delay: 0.8s;
+  animation-duration: 4.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.wa-connector-dot-top {
+  animation-name: waConnectorDotTop;
+  transform: translate(-50%, calc(-50% - 3px));
+}
+
+.wa-connector-dot-bottom {
+  animation-name: waConnectorDotBottom;
+}
+
+/*
+ * Positions trace the connector box's own border path exactly: straight
+ * edges use 0/100%, and the rounded corner (border-radius: 34px) is sampled
+ * at 15deg steps via calc(100% - Npx) offsets, so the dot rides the true
+ * arc instead of cutting a straight line across it, at any viewport size.
+ *
+ * Keyframe TIMES are shared between the top and bottom dot (0, 6, 46,
+ * 48.67, 51.33, 54, 56.67, 59.33, 62, 92, 100) so the Email and SMS dots
+ * always reach the corresponding point of their path at the same instant
+ * and move together instead of drifting ahead of/behind each other.
+ */
+@keyframes waConnectorDotTop {
+  0% {
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  6% {
+    left: 0;
+    top: 0;
+    opacity: 1;
+  }
+  46% {
+    left: calc(100% - 34px);
+    top: 0;
+    opacity: 1;
+  }
+  48.67% {
+    left: calc(100% - 25.2px);
+    top: 1.16px;
+    opacity: 1;
+  }
+  51.33% {
+    left: calc(100% - 17px);
+    top: 4.56px;
+    opacity: 1;
+  }
+  54% {
+    left: calc(100% - 9.96px);
+    top: 9.96px;
+    opacity: 1;
+  }
+  56.67% {
+    left: calc(100% - 4.56px);
+    top: 17px;
+    opacity: 1;
+  }
+  59.33% {
+    left: calc(100% - 1.16px);
+    top: 25.2px;
+    opacity: 1;
+  }
+  62% {
+    left: 100%;
+    top: 34px;
+    opacity: 1;
+  }
+  92% {
+    left: 100%;
+    top: 100%;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes waConnectorDotBottom {
+  0% {
+    left: 0;
+    top: 100%;
+    opacity: 0;
+  }
+  6% {
+    left: 0;
+    top: 100%;
+    opacity: 1;
+  }
+  46% {
+    left: calc(100% - 34px);
+    top: 100%;
+    opacity: 1;
+  }
+  48.67% {
+    left: calc(100% - 25.2px);
+    top: calc(100% - 1.16px);
+    opacity: 1;
+  }
+  51.33% {
+    left: calc(100% - 17px);
+    top: calc(100% - 4.56px);
+    opacity: 1;
+  }
+  54% {
+    left: calc(100% - 9.96px);
+    top: calc(100% - 9.96px);
+    opacity: 1;
+  }
+  56.67% {
+    left: calc(100% - 4.56px);
+    top: calc(100% - 17px);
+    opacity: 1;
+  }
+  59.33% {
+    left: calc(100% - 1.16px);
+    top: calc(100% - 25.2px);
+    opacity: 1;
+  }
+  62% {
+    left: 100%;
+    top: calc(100% - 34px);
+    opacity: 1;
+  }
+  92% {
+    left: 100%;
+    top: 0;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    top: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes waMessagePulseTravel {
+  0% {
+    left: 0;
+    opacity: 0;
+    transform: scale(0.65);
+  }
+  16% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  86% {
+    left: calc(100% - 12px);
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    left: calc(100% - 12px);
+    opacity: 0;
+    transform: scale(0.65);
+  }
+}
+
+@keyframes waMessagePathGlow {
+  0%,
+  12%,
+  94%,
+  100% {
+    border-color: rgba(100, 116, 139, 0.6);
+    filter: none;
+  }
+  16%,
+  86% {
+    border-color: rgba(74, 222, 128, 1);
+    filter:
+      drop-shadow(0 0 3px rgba(74, 222, 128, 0.95))
+      drop-shadow(0 0 8px rgba(34, 197, 94, 0.65));
+  }
+}
+
+.wa-moving-green-dot {
+  animation: waMovingGreenDot 1.6s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes waMovingGreenDot {
+  0% {
+    left: 12%;
+    opacity: 0.45;
+  }
+  50% {
+    left: 50%;
+    opacity: 1;
+  }
+  100% {
+    left: 88%;
+    opacity: 0.45;
+  }
+}
+
+@keyframes waHourglassSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-hourglass-spin,
+  .wa-neon-glow,
+  .wa-message-path,
+  .wa-message-pulse {
+    animation: none;
+  }
+}

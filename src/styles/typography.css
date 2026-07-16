@@ -1,0 +1,231 @@
+/* ================= TYPOGRAPHY SYSTEM ================= */
+
+:root {
+  /* Official balanced type scale */
+  --fs-h1: 2.986rem;
+  --fs-h2: 2.488rem;
+  --fs-h3: 2.074rem;
+  --fs-h4: 1.728rem;
+  --fs-h5: 1.44rem;
+  --fs-h6: 1.2rem;
+  --fs-body: 1rem;
+  --fs-small: 0.833rem;
+  --fs-xs: 0.694rem;
+
+  --lh-heading: 1.12;
+  --lh-body: 1.65;
+  --lh-small: 1.5;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+a,
+button,
+li,
+small,
+sh {
+  font-family: "Inter", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  width: 100%;
+  max-width: 100%;
+  color: var(--text-heading);
+  margin-top: 0;
+}
+
+h1,
+.h1,
+.h1-text {
+  font-size: clamp(2.25rem, 4vw, var(--fs-h1)) !important;
+  font-weight: 800 !important;
+  line-height: var(--lh-heading) !important;
+  letter-spacing: -0.035em !important;
+  margin-bottom: 1rem;
+  color: var(--text-heading) !important;
+}
+
+h2,
+.h2,
+.h2-text {
+  font-size: clamp(2rem, 3.4vw, var(--fs-h2)) !important;
+  font-weight: 750 !important;
+  line-height: 1.16 !important;
+  letter-spacing: -0.03em !important;
+  margin-bottom: 0.9rem;
+  color: var(--text-heading) !important;
+}
+
+h3,
+.h3,
+.h3-text {
+  font-size: clamp(1.65rem, 2.8vw, var(--fs-h3)) !important;
+  font-weight: 700 !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 0.8rem;
+  color: var(--text-heading) !important;
+}
+
+h4,
+.h4,
+.h4-text {
+  font-size: clamp(1.35rem, 2.2vw, var(--fs-h4)) !important;
+  font-weight: 700 !important;
+  line-height: 1.28 !important;
+  margin-bottom: 0.7rem;
+  color: var(--text-heading) !important;
+}
+
+h5,
+.h5,
+.h5-text {
+  font-size: var(--fs-h5) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  margin-bottom: 0.6rem;
+  color: var(--text-heading) !important;
+}
+
+h6,
+.h6,
+.h6-text {
+  font-size: var(--fs-h6) !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  margin-bottom: 0.5rem;
+  color: var(--text-heading) !important;
+}
+
+p,
+li {
+  font-size: var(--fs-body) !important;
+  font-weight: 400 !important;
+  line-height: var(--lh-body) !important;
+  color: var(--text-main) !important;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+small,
+.small-text {
+  font-size: var(--fs-small) !important;
+  line-height: var(--lh-small) !important;
+  color: var(--text-muted) !important;
+}
+
+.xs-text {
+  font-size: var(--fs-xs) !important;
+  line-height: 1.45 !important;
+  color: var(--text-muted) !important;
+}
+
+.lead {
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem) !important;
+  line-height: 1.65 !important;
+  font-weight: 400 !important;
+  color: var(--text-muted) !important;
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  margin-bottom: 18px;
+  border-radius: 40px;
+  background: rgba(13, 93, 229, 0.08);
+  color: var(--sky);
+  font-size: var(--fs-small) !important;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.Sh,
+.sh,
+sh,
+.subheading-text {
+  display: block;
+  font-size: clamp(1rem, 1.25vw, var(--fs-h6)) !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--text-main) !important;
+  max-width: 690px;
+}
+
+button,
+a,
+.btn-text,
+.roll-content {
+  font-size: var(--fs-body);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.green-text {
+  color: #0d5de5;
+}
+
+.blue-text {
+  color: var(--blue);
+}
+
+/* ================= HERO KEYWORD ANIMATED HIGHLIGHT ================= */
+.hero-kw-highlight {
+  background: linear-gradient(135deg, #19aefc, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: inherit;
+  animation: heroKwPulse 3s ease-in-out infinite;
+  display: inline;
+}
+
+@keyframes heroKwPulse {
+
+  0%,
+  100% {
+    background: linear-gradient(135deg, #19aefc, #0ea5e9);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: brightness(1);
+  }
+
+  50% {
+    background: linear-gradient(135deg, #38bdf8, #0284c7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: brightness(1.2);
+  }
+}
+
+/* anime */
+@keyframes rcsFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+.animate-rcs-float {
+  animation: rcsFloat 4s ease-in-out infinite;
+}

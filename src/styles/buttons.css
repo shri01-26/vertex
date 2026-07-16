@@ -1,0 +1,194 @@
+/* ================= COMMON BUTTONS & HOVERS ================= */
+
+.vs-btn-primary,
+.vs-btn-outline,
+.btn-primary,
+.btn-outline-primary,
+.btn-light,
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 12px;
+  padding: 10px 24px;
+  font-size: var(--fs-body, 1rem);
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none !important;
+}
+
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) !important;
+}
+
+.vs-btn-primary,
+.btn-primary {
+  color: #ffffff !important;
+  background: var(--sky) !important;
+  border: 1px solid var(--sky) !important;
+}
+
+.vs-btn-primary:hover,
+.btn-primary:hover {
+  background: transparent !important;
+  /* Managed by ::after */
+  border-color: transparent !important;
+  transform: translateY(-4px) !important;
+}
+
+.vs-btn-outline,
+.btn-outline-primary,
+.btn-light {
+  color: var(--sky) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(25, 174, 252, 0.3) !important;
+}
+
+.vs-btn-outline:hover,
+.btn-outline-primary:hover,
+.btn-light:hover {
+  background: transparent !important;
+  /* Managed by ::after */
+  color: #ffffff !important;
+  transform: translateY(-4px) !important;
+}
+
+/* ================= GLOWING BORDER ANIMATIONS ================= */
+.vs-btn-primary::before,
+.btn-primary::before,
+.vs-btn-outline::before,
+.btn-outline-primary::before,
+.btn-light::before,
+.btn-get-started::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%;
+  height: 250%;
+  background: conic-gradient(from 0deg, transparent 75%, #19aefc 100%);
+  transform: translate(-50%, -50%) rotate(0deg);
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Solid Blue Buttons get a white glowing dot for contrast */
+.vs-btn-primary::before,
+.btn-primary::before,
+.btn-get-started::before {
+  background: conic-gradient(from 0deg, transparent 75%, #ffffff 100%);
+}
+
+.vs-btn-primary:hover::before,
+.btn-primary:hover::before,
+.vs-btn-outline:hover::before,
+.btn-outline-primary:hover::before,
+.btn-light:hover::before,
+.btn-get-started:hover::before {
+  opacity: 1;
+  animation: runningBorder 1.5s linear infinite;
+}
+
+/* Inner Background Mask (::after) */
+.vs-btn-primary::after,
+.btn-primary::after,
+.btn-get-started::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  background: #0ea5e9;
+  /* matches solid hover color */
+  border-radius: 10.5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vs-btn-outline::after,
+.btn-outline-primary::after,
+.btn-light::after {
+  content: "";
+  position: absolute;
+  inset: 1.5px;
+  background: var(--sky);
+  /* matches outline hover color */
+  border-radius: 10.5px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.vs-btn-primary:hover::after,
+.btn-primary:hover::after,
+.vs-btn-outline:hover::after,
+.btn-outline-primary:hover::after,
+.btn-light:hover::after,
+.btn-get-started:hover::after {
+  opacity: 1;
+}
+
+/* Ensure all generic buttons have a basic scale animation instead of being static */
+.btn,
+.btn-primary,
+a.btn {
+  transition: all 0.3s ease !important;
+}
+
+.btn:hover,
+.btn-primary:hover,
+a.btn:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+.btn:active,
+.btn-primary:active,
+a.btn:active {
+  transform: scale(0.95);
+}
+
+/* ================= ROLL BUTTON (hover pe label upar roll hota hai) ================= */
+
+.roll-content {
+  position: relative;
+  display: inline-block;
+  height: 1.6em;
+  line-height: 1.6em;
+  overflow: hidden;
+}
+
+.roll-content-main,
+.roll-content-hover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  white-space: nowrap;
+  transition: transform 0.22s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.roll-content-hover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  transform: translateY(-125%);
+}
+
+.roll-btn:hover .roll-content-main {
+  transform: translateY(125%);
+}
+
+.roll-btn:hover .roll-content-hover {
+  transform: translateY(0);
+}
