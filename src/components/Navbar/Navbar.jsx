@@ -223,6 +223,14 @@ export default function Navbar() {
             </Link>
 
             <nav className="synthesia-nav hidden xl:flex">
+              <Link
+                to="/"
+                className="synthesia-nav-link synthesia-home-link"
+                onClick={() => setActiveDropdown(null)}
+              >
+                Home
+              </Link>
+
               {navItems.map((item) => {
                 const hasDropdown = dropdownData[item];
                 const categories = hasDropdown ? Object.keys(hasDropdown) : [];
@@ -364,6 +372,15 @@ export default function Navbar() {
       <div className={`mobile-menu-overlay ${mobileMenuOpen ? "open" : ""}`}>
         <div className="mobile-menu-content">
           <div className="mobile-nav-links">
+            <Link
+              to="/"
+              className="mobile-nav-link"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span>Home</span>
+              <ChevronRight size={20} />
+            </Link>
+
             {navItems.map((item) => {
               const hasDropdown = dropdownData[item];
               const isExpanded = expandedMobileItem === item;
