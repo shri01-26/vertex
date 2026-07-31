@@ -1,282 +1,208 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import Link from "../AppLink";
+import {
+  FaCalendarAlt,
+  FaEnvelope,
+  FaGlobe,
+  FaHeadset,
+  FaMapMarkerAlt,
+  FaPaperPlane,
+  FaPhoneAlt,
+  FaRocket,
+  FaShieldAlt,
+  FaUsers,
+  FaWhatsapp,
+} from "react-icons/fa";
 import { FaMeta, FaSalesforce } from "react-icons/fa6";
 import { SiNvidia } from "react-icons/si";
 import "./Footer.css";
-import { ArrowRight, Code2, CalendarDays } from "lucide-react";
-import WatermarkTrail from "../WatermarkTrail";
-
 
 const footerColumns = [
   {
     title: "Products",
     links: [
-      "WhatsApp Suites",
-      "WhatsApp Pay",
-      "WhatsApp Chatbot",
-      "WhatsApp Forms",
-      "WhatsApp Business API",
-      "Click-to-WhatsApp Ads",
-      "Messaging APIs",
+      ["WhatsApp Suites", "/products/whatsapp-suites"],
+      ["WhatsApp Pay", "/products/whatsapp-payment"],
+      ["WhatsApp Chatbot", "/products/whatsapp-chatbot"],
+      ["WhatsApp Forms", "/products/whatsapp-forms"],
+      ["WhatsApp Business API", "/products/whatsapp-business-api"],
+      ["Click-to-WhatsApp Ads", "/products/click-to-whatsapp-ads"],
+      ["Messaging APIs", "/products/messaging-apis"],
     ],
   },
   {
     title: "Solutions",
     links: [
-      "Social Commerce Suite",
-      "Marketing Suite",
-      "Order & Shipment Suite",
-      "Inventory Suite",
-      "Warehouse Suite",
-      "Billing & Payment Suite",
-      "Analytics Suite",
-      "Comm Channel Suite",
-      "Office Suite",
-      "Customer Rating Suite",
+      ["Social Commerce Suite", "/solutions/social-commerce-suite"],
+      ["Marketing Suite", "/solutions/marketing-suite"],
+      ["Order & Shipment Suite", "/solutions/order-shipment-suite"],
+      ["Inventory Suite", "/solutions/inventory-suite"],
+      ["Warehouse Suite", "/solutions/warehouse-suite"],
+      ["Billing & Payment Suite", "/solutions/billing-suite"],
+      ["Analytics Suite", "/solutions/analytics-suite"],
+      ["Comm Channel Suite", "/solutions/communication-channel-suite"],
+      ["Office Suite", "/solutions/office-suite"],
+      ["Customer Rating Suite", "/solutions/customer-rating-suite"],
+    ],
+  },
+  {
+    title: "Legal Support",
+    links: [
+      ["Help Center", "/help-center"],
+      ["Privacy Policy", "/privacy-policy"],
+      ["Terms & Conditions", "/terms-and-conditions"],
+      ["Security", "/security"],
+      ["GDPR Compliance", "/gdpr-compliance"],
+      ["Sitemap", "/sitemap"],
     ],
   },
   {
     title: "Company",
     links: [
-      "About Us",
-      "Careers",
-      "Partners",
-      "Contact Us",
-      "Pricing",
-      "Blog",
-    ],
-  },
-  {
-    title: "Legal & Support",
-    links: [
-      "Help Center",
-      "Privacy Policy",
-      "Terms & Conditions",
-      "Security",
-      "GDPR Compliance",
-      "Sitemap",
+      ["About Us", "/company/about-us"],
+      ["Careers", "/company/careers"],
+      ["Partners", "/partners"],
+      ["Contact Us", "/contact-sales"],
+      ["Pricing", "/pricing"],
+      ["Blog", "/resources/blog"],
     ],
   },
 ];
 
-const partnerDetails = [
-  {
-    label: "Meta",
-    icon: <FaMeta />,
-    className: "partner-meta",
-  },
-  {
-    label: "Salesforce",
-    icon: <FaSalesforce />,
-    className: "partner-salesforce",
-  },
-  {
-    label: "NVIDIA",
-    icon: <SiNvidia />,
-    className: "partner-nvidia",
-  },
+const stats = [
+  { icon: FaPaperPlane, value: "100M+", label: "Messages Delivered" },
+  { icon: FaShieldAlt, value: "99.9%", label: "Platform Uptime" },
+  { icon: FaUsers, value: "500+", label: "Businesses Trust Us" },
+  { icon: FaHeadset, value: "24×7", label: "Priority Support" },
 ];
 
-const footerLinkMap = {
-  "WhatsApp Suites": "/products/whatsapp-suites",
-  "WhatsApp Pay": "/products/whatsapp-payment",
-  "WhatsApp Chatbot": "/products/whatsapp-chatbot",
-  "WhatsApp Forms": "/products/whatsapp-forms",
-  "Click-to-WhatsApp Ads": "/products/click-to-whatsapp-ads",
-  "WhatsApp Business API": "/products/whatsapp-business-api",
-  "Messaging APIs": "/products/messaging-apis",
-
-  "Social Commerce Suite": "/solutions/social-commerce-suite",
-  "Marketing Suite": "/solutions/marketing-suite",
-  "Order & Shipment Suite": "/solutions/order-shipment-suite",
-  "Inventory Suite": "/solutions/inventory-suite",
-  "Warehouse Suite": "/solutions/warehouse-suite",
-  "Billing & Payment Suite": "/solutions/billing-suite",
-  "Analytics Suite": "/solutions/analytics-suite",
-  "Comm Channel Suite": "/solutions/communication-channel-suite",
-  "Office Suite": "/solutions/office-suite",
-  "Customer Rating Suite": "/solutions/customer-rating-suite",
-
-  "About Us": "/company/about-us",
-  "Careers": "/company/careers",
-  "Partners": "/partners",
-  "Contact Us": "/contact-sales",
-  "Pricing": "/pricing",
-  "Blog": "/resources/blog",
-
-  "Help Center": "/help-center",
-  "Privacy Policy": "/privacy-policy",
-  "Terms & Conditions": "/terms-and-conditions",
-  "Security": "/security",
-  "GDPR Compliance": "/gdpr-compliance",
-  "Sitemap": "/sitemap",
-};
-
+const socials = [
+  { img: "/assets/images/linkdn.webp", label: "LinkedIn", href: "https://www.linkedin.com/company/vertex-suite/" },
+  { img: "/assets/images/ing.webp", label: "Instagram", href: "https://www.instagram.com/vertexsuite/" },
+  { img: "/assets/images/fcb.webp", label: "Facebook", href: "https://www.facebook.com/people/Vertex-Suite/100095637273745/" },
+  { img: "/assets/images/you.webp", label: "YouTube", href: "https://www.youtube.com/@VertexSuite" },
+  { img: "/assets/images/twitter.webp", label: "Twitter", href: "https://twitter.com/VertexSuite" },
+];
 
 function Footer() {
-  const pathname = usePathname();
-  const isWhatsAppApi = pathname === "/products/whatsapp-business-api";
-
-  const ctaHeading = isWhatsAppApi
-    ? "Launch Scalable Conversations with WhatsApp Business API"
-    : "Launch Rich Messaging Experiences with RCS";
-
-  const ctaSubtitle = isWhatsAppApi
-    ? "Go beyond basic messaging with automation, payments, forms and interactive workflows powered by the Vertex Suite WhatsApp Business API."
-    : "Upgrade your customer engagement beyond SMS with interactive messaging powered by the Vertex Suite RCS Platform.";
-
   return (
     <>
-      <div className="footer-container footer-cta-wrapper">
-        <section className="footer-cta-section">
-          <div className="relative overflow-hidden rounded-[24px] bg-[#eaf4ff] px-8 py-9 text-center shadow-[0_0_34px_rgba(14,165,233,0.12),0_0_60px_rgba(59,130,246,0.07)] max-md:px-5 border border-[#cfe6ff]">
-            {/* Glow Border */}
-            <div className="pointer-events-none absolute inset-[-2px] -z-10 rounded-[30px] bg-[linear-gradient(90deg,rgba(14,165,233,0.45),rgba(59,130,246,0.3),rgba(11,95,198,0.25))] blur-[20px] opacity-40" />
-
-            <h2 className="mx-auto mb-2 max-w-[980px] text-[clamp(1.85rem,3vw,2.35rem)] font-extrabold leading-tight tracking-[-0.03em] text-[#0b2a4a]">
-              {ctaHeading}
+      <div className="vs-footer-hero-section">
+      <div className="vs-footer-hero-shell">
+        <section className="vs-footer-hero">
+          <div className="vs-footer-hero-copy">
+            <h2>
+              Ready to Transform <span>Conversations into Conversions?</span>
             </h2>
-
-            <p className="mx-auto mt-0 max-w-[1180px] text-[1rem] xl:text-[1.05rem] leading-[1.55] !text-[#3a5a78] whitespace-nowrap max-lg:whitespace-normal mb-4">
-              {ctaSubtitle}
+            <p>
+              Launch powerful WhatsApp campaigns, automate engagement,<br className="footer-desktop-break" />
+              and grow your business with Vertex Suite.
             </p>
-
-            <div className="flex items-center justify-center gap-5 max-md:flex-col max-md:gap-4">
-              {/* Start Building */}
-              <Link
-                to="/signup"
-                className="group relative inline-flex h-[50px] min-w-[210px] items-center overflow-hidden rounded-[10px] border border-[#0B5FC6] bg-[#0B5FC6] transition-all duration-300 hover:shadow-[0_12px_26px_rgba(11,95,198,0.28)]"
-              >
-                {/* White fill moves left to right on hover */}
-                <span className="absolute left-0 top-0 z-0 h-full w-[52px] rounded-[7px] bg-white transition-all duration-500 ease-out group-hover:w-full" />
-
-                {/* Icon */}
-                <span className="relative z-20 flex h-full w-[52px] shrink-0 items-center justify-start pl-4 text-[#0B5FC6]">
-                  <Code2
-                    size={20}
-                    strokeWidth={2.4}
-                    className="transition-transform duration-300 ease-out group-hover:translate-x-5"
-                  />
-                </span>
-
-                {/* Text */}
-                <span
-                  className="relative z-30 flex h-full flex-1 items-center justify-center whitespace-nowrap px-6 text-[1rem] text-white transition-colors duration-300 group-hover:!text-[#0B5FC6]"
-                >
-                  Start Building
-                </span>
+            <div className="vs-footer-actions">
+              <Link to="/signup" className="vs-footer-btn vs-footer-btn-primary">
+                <FaRocket /> Start Free Demo
               </Link>
-
-              {/* Request a Demo */}
-              <Link
-                to="/book-demo"
-                className="group relative inline-flex h-[50px] min-w-[210px] items-center overflow-hidden rounded-[10px] border border-[#0B5FC6] bg-[#0B5FC6] transition-all duration-300 hover:shadow-[0_12px_26px_rgba(11,95,198,0.28)]"
-              >
-                {/* White fill moves left to right on hover */}
-                <span className="absolute left-0 top-0 z-0 h-full w-[52px] rounded-[7px] bg-white transition-all duration-500 ease-out group-hover:w-full" />
-
-                {/* Icon */}
-                <span className="relative z-20 flex h-full w-[52px] shrink-0 items-center justify-start pl-4 text-[#0B5FC6]">
-                  <CalendarDays
-                    size={20}
-                    strokeWidth={2.4}
-                    className="transition-transform duration-300 ease-out group-hover:translate-x-5"
-                  />
-                </span>
-
-                {/* Text */}
-                <span
-                  className="relative z-30 flex h-full flex-1 items-center justify-center whitespace-nowrap px-6 text-[1rem] text-white transition-colors duration-300 group-hover:!text-[#0B5FC6]"
-                >
-                  Request a Demo
-                </span>
+              <Link to="/book-demo" className="vs-footer-btn vs-footer-btn-secondary">
+                <FaCalendarAlt /> Book Live Demo
               </Link>
+            </div>
+            <section className="vs-footer-stats" aria-label="Vertex Suite platform statistics">
+              {stats.map(({ icon: Icon, value, label }) => (
+                <div className="vs-stat" key={label}>
+                  <span className="vs-stat-icon"><Icon /></span>
+                  <span><strong>{value}</strong><small>{label}</small></span>
+                </div>
+              ))}
+            </section>
+          </div>
 
-              {/* Talk to Our Team */}
-              <Link
-                to="/contact"
-                className="group relative inline-flex h-[50px] min-w-[210px] items-center overflow-hidden rounded-[10px] border border-[#0B5FC6] bg-[#0B5FC6] transition-all duration-300 hover:shadow-[0_12px_26px_rgba(11,95,198,0.28)]"
-              >
-                {/* White fill moves left to right on hover */}
-                <span className="absolute left-0 top-0 z-0 h-full w-[52px] rounded-[7px] bg-white transition-all duration-500 ease-out group-hover:w-full" />
-
-                {/* Icon */}
-                <span className="relative z-20 flex h-full w-[52px] shrink-0 items-center justify-start pl-4 text-[#0B5FC6]">
-                  <ArrowRight
-                    size={20}
-                    strokeWidth={2.4}
-                    className="transition-transform duration-300 ease-out group-hover:translate-x-5"
-                  />
-                </span>
-
-                {/* Text */}
-                <span
-                  className="relative z-30 flex h-full flex-1 items-center justify-center whitespace-nowrap px-6 text-[1rem] text-white transition-colors duration-300 group-hover:!text-[#0B5FC6]"
-                >
-                  Talk to Our Team
-                </span>
-              </Link>
+          <div className="vs-footer-visual" aria-hidden="true">
+            <div className="vs-visual-glow" />
+            <div className="vs-metric vs-metric-campaign">
+              <small>New Campaign</small><strong>15,000</strong><span>Messages Sent</span>
+            </div>
+            <img src="/assets/images/phone3.webp" alt="" className="vs-footer-phone" />
+            <div className="vs-whatsapp-orb"><FaWhatsapp /></div>
+            <div className="vs-megaphone">◀</div>
+            <div className="vs-metric vs-metric-delivery">
+              <small>Delivery Rate</small><strong>98.7%</strong><span className="vs-chart">⌁╱⌁╱</span>
+            </div>
+            <div className="vs-metric vs-metric-chats">
+              <small>Active Chats</small><strong>24,560</strong><span>● ● ● ● &nbsp; +2.3K</span>
             </div>
           </div>
         </section>
       </div>
+      </div>
 
-      <footer className="footer-section">
-        <div className="footer-container">
-          <div className="footer-links-grid">
+      <footer className="vs-footer">
+      <div className="vs-footer-shell">
+        <section className="vs-footer-main">
+          <div className="vs-footer-trust">
+            <div className="vs-footer-trust-brand">
+              <img src="/assets/images/logo.png" alt="Vertex Suite" />
+              <span className="vs-powered-by">
+                <small>Powered by</small>
+                <strong>
+                  <span>Atmik Bharat</span>
+                  <span>(Innovation Workflows)</span>
+                </strong>
+              </span>
+            </div>
+            <div className="vs-partner-row">
+              <div className="vs-partner vs-meta"><FaMeta /><span><strong>Meta</strong><small>Business Partner</small></span></div>
+              <div className="vs-partner vs-salesforce"><FaSalesforce /><strong>PARTNER</strong></div>
+            </div>
+            <div className="vs-nvidia"><SiNvidia /><strong>NVIDIA</strong><span>INCEPTION PROGRAM</span></div>
+            <div className="vs-certifications">
+              <div className="vs-cert"><FaShieldAlt /><span><small>CERTIFIED</small><strong>ISO 27001:2022</strong><em>Information Security Management</em></span></div>
+              <div className="vs-cert"><FaShieldAlt /><span><small>CERTIFIED</small><strong>ISO 9001:2015</strong><em>Quality Management System</em></span></div>
+            </div>
 
-          {/*  */}
-          {/* LEFT SECTION */}
-          <div className="footer-brand-column">
-            <div className="footer-brand-card">
-              <div className="footer-partners">
-                <strong style={{ color: '#0B5FC6', letterSpacing: '2px', fontSize: '0.694rem', textTransform: 'uppercase', fontWeight: '600' }}>Strategic Partners</strong>
-                {partnerDetails.map((partner) => (
-                  <div
-                    key={partner.label}
-                    className={`partner-item ${partner.className}`}
-                  >
-                    <div className="partner-icon">{partner.icon}</div>
-                    <span>{partner.label}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="vs-contact">
+              <h3>Get in Touch</h3>
+              <a href="https://maps.google.com/?q=Bhilai+Chhattisgarh+India" target="_blank" rel="noreferrer"><FaMapMarkerAlt /> Bhilai, Chhattisgarh, India</a>
+              <a href="tel:+91831901581"><FaPhoneAlt /> +91 83190 1581</a>
+              <a href="mailto:hello@vertexsuite.in"><FaEnvelope /> hello@vertexsuite.in</a>
+              <a href="https://www.vertexsuite.in" target="_blank" rel="noreferrer"><FaGlobe /> www.vertexsuite.in</a>
+            </div>
+
+            <div className="vs-socials">
+              {socials.map(({ img, label, href }) => (
+                <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className={`vs-social-${label.toLowerCase()}`}>
+                  <img src={img} alt={label} loading="lazy" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* FOOTER LINKS */}
+          {footerColumns.map((column) => (
+            <nav className="vs-footer-column" key={column.title} aria-label={column.title}>
+              <h3>{column.title}</h3>
+              {column.links.map(([label, path]) => <Link key={label} to={path}>{label}</Link>)}
+            </nav>
+          ))}
+        </section>
 
-          {footerColumns.map((col) => {
-            return (
-              <div className="footer-link-column" key={col.title}>
-                <div className="footer-links-wrapper">
-                  <h5>{col.title}</h5>
-                  {col.links.map((link) => (
-                    <Link to={footerLinkMap[link] || "/"} key={link}>
-                      {link}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-          </div>
-
-          {/* BOTTOM */}
-          <div className="footer-bottom">
+        <section className="vs-footer-bottom">
+          <a
+            className="vs-footer-brand"
+            href="https://atmikbharat.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Atmik Bharat"
+          >
+            <img src="/assets/images/ATB.webp" alt="Atmik Bharat" />
+            <strong>ATMIK BHARAT</strong>
+          </a>
+          <div className="vs-copyright">
             <span>© 2026 Vertex Suite. All rights reserved.</span>
-
-            <div className="footer-bottom-links">
-              <Link to="/privacy-policy">Privacy Policy</Link>
-              <Link to="/terms-and-conditions">Terms of Service</Link>
-              <Link to="/refund-policy">Refund Policy</Link>
-            </div>
+            <small>Empowering Businesses with Intelligent Automation.</small>
           </div>
-        </div>
-
-        <WatermarkTrail />
+          <div className="vs-trusted-badge"><FaShieldAlt /> Trusted by <strong>500+</strong> Businesses Across India</div>
+        </section>
+      </div>
       </footer>
     </>
   );

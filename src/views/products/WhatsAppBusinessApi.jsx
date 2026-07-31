@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import Reveal from "../../components/Reveal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "../../components/AppLink";
@@ -10,18 +11,11 @@ import {
   ArrowRight,
   BarChart3,
   Bell,
-  Bot,
   CalendarDays,
   ClipboardCheck,
-  Clock,
-  Cloud,
-  Code2,
   CreditCard,
-  Database,
   Globe2,
   Image as ImageIcon,
-  Layers,
-  LayoutGrid,
   Megaphone,
   MessageCircle,
   MessageSquare,
@@ -30,8 +24,6 @@ import {
   Puzzle,
   RotateCcw,
   Search,
-  Send,
-  Settings,
   Share2,
   Shield,
   ShieldCheck,
@@ -46,34 +38,6 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
-
-function CountUp({ end, suffix = "", duration = 0.8, className, style }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    let raf;
-    const start = performance.now();
-    const tick = (now) => {
-      const p = Math.min((now - start) / (duration * 1000), 1);
-      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-      setValue(Math.round(end * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, end, duration]);
-
-  return (
-    <span ref={ref} className={className} style={style}>
-      {value}
-      {suffix}
-    </span>
-  );
-}
 
 // Per-card content: har card sirf apni template image dikhata hai.
 const cardData = [
@@ -108,28 +72,39 @@ function WhatsAppWorkflowCard() {
   return (
     <>
       <section className="bg-[#fafcff] px-4 pt-24 pb-4 text-center">
-        <h2 className="mx-auto max-w-[1320px] text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-[1.15] tracking-tight text-[#111827]">
-          Explore Pre-built <span className="text-green-600">WhatsApp</span> Templates For Every Business Scenario
-        </h2>
+        <Reveal>
+          <h2 className="mx-auto max-w-[1320px] text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-[1.15] tracking-tight text-[#111827]">
+            Explore Pre-built <span className="text-green-600">WhatsApp</span> Templates for Every Business Scenario
+          </h2>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <p className="mx-auto mt-2 max-w-[920px] !text-[1.12rem] font-bold leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]">
+             Pick the right message format for each conversation, and deliver clear, consistent messages on WhatsApp.
+            </p>
+        </Reveal>
       </section>
 
       <section
         className="relative min-h-screen overflow-hidden bg-[#fafcff] px-4 py-8"
       >
         <div className="group/cards mx-auto grid w-full max-w-[1520px] gap-3 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-          {cardData.map((card) => (
-            <div
+          {cardData.map((card, cardIndex) => (
+            <Reveal
               key={card.title}
+              /* Four-up row: left pair from the left, right pair from the right. */
+              direction={cardIndex % 4 < 2 ? "left" : "right"}
+              delay={(cardIndex % 4) * 0.09}
+              duration={0.6}
               className="group/card relative min-w-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover/cards:blur-[6px] group-hover/cards:scale-[0.96] group-hover/cards:opacity-70 hover:z-10 hover:!scale-[1.06] hover:!opacity-100 hover:!blur-none hover:-translate-y-2"
             >
               <WorkflowCard title={card.title} image={card.image} />
-            </div>
+            </Reveal>
           ))}
         </div>
 
         <div className="mx-auto mt-10 flex w-full max-w-[1520px] items-center justify-between gap-5 rounded-[16px] border border-[#E7ECF5] bg-white px-8 py-4 text-center shadow-[0_14px_38px_rgba(15,23,42,0.05)] max-md:flex-col max-md:px-5">
           <h4 className="!mb-0 text-[clamp(1rem,1.7vw,1.3rem)] font-semibold leading-tight tracking-tight text-[#0A0A0A] max-md:!text-center md:!text-left">
-            Get Your <span className="text-green-600">WhatsApp Business API</span> Ready Faster
+            Get Your Business Live on <span className="text-green-600">WhatsApp</span>
           </h4>
           <div className="flex shrink-0 items-center justify-center gap-3 max-sm:w-full max-sm:flex-col">
             <Link
@@ -154,11 +129,11 @@ function WhatsAppWorkflowCard() {
               <span className="roll-content">
                 <span className="roll-content-main">
                   <CalendarDays size={26} strokeWidth={1.6} />
-                  <span>Request Demo</span>
+                  <span>Book a Demo</span>
                 </span>
                 <span className="roll-content-hover">
                   <CalendarDays size={26} strokeWidth={1.6} />
-                  <span>Request Demo</span>
+                  <span>Book a Demo</span>
                 </span>
               </span>
             </Link>
@@ -169,8 +144,8 @@ function WhatsAppWorkflowCard() {
   );
 }
 
+
 function SystemColumnCard({ column, bgClass = "bg-transparent", borderColor = "#22C55E", borderWidth = 1 }) {
-  const ColumnIcon = column.icon;
   const cardBorder = `${borderWidth}px solid ${borderColor}`;
 
   return (
@@ -181,59 +156,48 @@ function SystemColumnCard({ column, bgClass = "bg-transparent", borderColor = "#
       className={`h-full min-h-[520px] rounded-[16px] ${bgClass} px-3 pb-5 pt-5 text-left shadow-[0_10px_24px_rgba(34,197,94,0.08)]`}
     >
       <div
-        className={`flex flex-col items-center justify-center gap-2 text-[#2F8F79] ${
-          column.key === "conversation" ? "mb-4" : "mb-6"
+        className={`flex flex-col items-center justify-start gap-2 text-[#2F8F79] ${
+          column.key === "conversation" ? "mb-4" : "h-[160px]"
         }`}
       >
         <span
-          ref={(el) => {
-            if (!el) return;
-            const bg =
-              column.key === "business"
-                ? "#C99A3F"
-                : column.key === "platform"
-                ? "#ffffff"
-                : column.key === "whatsapp"
-                ? "#00A63E"
-                : column.key === "conversation"
-                ? "#4F6EFF"
-                : "#ffffff";
-            el.style.setProperty("background-color", bg, "important");
-          }}
-          className="-mt-8 flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-transparent text-[#2F8F79] shadow-sm"
+          style={{ backgroundColor: "#FFFFFF" }}
+          className="-mt-8 flex h-[88px] w-[88px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-white text-[#2F8F79] shadow-sm"
         >
-          {column.key === "platform" ? (
-            <img
-              src="/assets/images/logo.png"
-              alt="Vertex Suite"
-              className="h-14 w-14 object-contain"
-            />
-          ) : (
-            <ColumnIcon
-              className="h-12 w-12"
-              strokeWidth={2.1}
-              style={
-                column.key === "business" ||
-                column.key === "whatsapp" ||
-                column.key === "conversation"
-                  ? { color: "#ffffff" }
-                  : undefined
-              }
-            />
-          )}
+          <img
+            src={
+              column.key === "business"
+                ? "/assets/images/BS.webp"
+                : column.key === "whatsapp"
+                ? "/assets/images/whatsapp.webp"
+                : column.key === "conversation"
+                ? "/assets/images/C4.webp"
+                : "/assets/images/logo.png"
+            }
+            alt={
+              column.key === "business"
+                ? "Business Systems"
+                : column.key === "whatsapp"
+                ? "WhatsApp Business API"
+                : column.key === "conversation"
+                ? "Customer Conversation"
+                : "Vertex Suite"
+            }
+            className={column.key === "platform" ? "h-14 w-14 object-contain" : "h-16 w-16 object-contain"}
+          />
         </span>
         <div className="text-center">
           <h4
             ref={(el) => {
               if (!el) return;
               if (column.key === "business")
-                el.style.setProperty("color", "#C99A3F", "important");
+                el.style.setProperty("color", "#00A63E", "important");
               else if (column.key === "platform")
                 el.style.setProperty("color", "#3B8CFF", "important");
               else if (column.key === "whatsapp")
                 el.style.setProperty("color", "#00A63E", "important");
               else if (column.key === "conversation")
-                el.style.setProperty("color", "#4F6EFF", "important");
+                el.style.setProperty("color", "#3B8CFF", "important");
             }}
             className="mb-0 whitespace-nowrap font-extrabold leading-tight"
             style={{ fontSize: "16px" }}
@@ -245,7 +209,7 @@ function SystemColumnCard({ column, bgClass = "bg-transparent", borderColor = "#
               ref={(el) => {
                 if (el) el.style.setProperty("color", "#8FAED1", "important");
               }}
-              className="mb-0 mt-1 text-center text-[0.74rem] font-bold leading-tight text-[#059669]"
+              className="mb-0 mt-0 text-center text-[0.74rem]! font-bold leading-tight text-[#059670]"
             >
               {column.subtitle}
             </p>
@@ -253,7 +217,7 @@ function SystemColumnCard({ column, bgClass = "bg-transparent", borderColor = "#
         </div>
       </div>
 
-      <div className={`grid ${column.key === "conversation" ? "gap-1" : "gap-3"} ${column.key === "business" ? "mt-14" : ""} ${column.key === "whatsapp" ? "mt-16" : ""} ${column.cols === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
+      <div className={`grid ${column.key === "conversation" ? "gap-1" : "gap-3"} ${column.cols === 2 ? "grid-cols-2" : "grid-cols-1"}`}>
         {column.items.map((item, index) => {
           const ItemIcon = item.icon;
           const status =
@@ -274,13 +238,13 @@ function SystemColumnCard({ column, bgClass = "bg-transparent", borderColor = "#
               style={{
                 background: "#ffffff",
                 ...(column.key === "business"
-                  ? { border: "1px solid #C99A3F" }
+                  ? { border: "1px solid #00A63E" }
                   : column.key === "platform"
                   ? { border: "1px solid #3B8CFF" }
                   : column.key === "whatsapp"
                   ? { border: "1px solid #00A63E" }
                   : column.key === "conversation"
-                  ? { border: "1px solid #4F6EFF" }
+                  ? { border: "1px solid #3B8CFF" }
                   : {}),
               }}
               className={`flex items-center gap-2 rounded-[8px] px-2 shadow-[0_4px_10px_rgba(15,23,42,0.04)] ${
@@ -293,13 +257,13 @@ function SystemColumnCard({ column, bgClass = "bg-transparent", borderColor = "#
                 }`}
                 style={
                   column.key === "business"
-                    ? { color: "#C99A3F" }
+                    ? { color: "#00A63E" }
                     : column.key === "platform"
                     ? { color: "#3B8CFF" }
                     : column.key === "whatsapp"
                     ? { color: "#00A63E" }
                     : column.key === "conversation"
-                    ? { color: "#4F6EFF" }
+                    ? { color: "#3B8CFF" }
                     : undefined
                 }
               >
@@ -357,7 +321,10 @@ function WhatsAppApiPinnedShowcase({ cards, header }) {
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    // Keep the pinned two-column experience for roomy laptop screens only.
+    // At tablet and compact-laptop widths the stacked cards are easier to read
+    // and avoid squeezing the artwork/text into narrow columns.
+    const mediaQuery = window.matchMedia("(min-width: 1280px)");
     let ctx;
 
     const setupScrollTrigger = () => {
@@ -420,20 +387,20 @@ function WhatsAppApiPinnedShowcase({ cards, header }) {
   return (
     <section
   ref={containerRef}
-  className="relative mt-0 w-full overflow-hidden bg-[#fafcff] lg:min-h-[calc(100vh-72px)]"
+  className="relative mt-0 w-full overflow-hidden bg-[#fafcff] xl:min-h-[calc(100vh-72px)]"
   id="whatsapp-api-pinned-showcase"
 >
       {/* soft background */}
 
       {/* HEADING (pinned ke saath fixed rehta hai) */}
       {header ? (
-        <div className="relative z-20 mx-auto w-full max-w-[1100px] px-4 pt-6 text-center lg:pt-8">
+        <div className="relative z-20 mx-auto w-full max-w-[1100px] px-4 pt-6 text-center xl:pt-8">
           {header}
         </div>
       ) : null}
 
       {/* DESKTOP PINNED LAYOUT */}
-      <div className="relative mx-auto hidden w-full max-w-[1280px] items-start gap-16 px-4 pt-12 pb-16 lg:flex">
+      <div className="relative mx-auto hidden w-full max-w-[1280px] items-start gap-10 px-6 pt-10 pb-16 xl:flex 2xl:gap-16">
         {/* LEFT IMAGE AREA */}
         <div className="relative flex h-[600px] w-1/2 items-center justify-center rounded-[28px]">
 
@@ -475,7 +442,7 @@ function WhatsAppApiPinnedShowcase({ cards, header }) {
         </div>
 
         {/* RIGHT TEXT SCROLLER */}
-        <div className="relative h-[600px] w-1/2 translate-x-10 overflow-hidden [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,#000_7%,#000_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,#000_7%,#000_80%,transparent_100%)]">
+        <div className="relative h-[600px] w-1/2 overflow-hidden [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,#000_7%,#000_80%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,#000_7%,#000_80%,transparent_100%)] 2xl:translate-x-10">
           <div
             ref={scrollerRef}
             className="absolute inset-0 flex w-full flex-col"
@@ -509,7 +476,7 @@ function WhatsAppApiPinnedShowcase({ cards, header }) {
       {/* end of desktop pinned layout */}
 
       {/* MOBILE / TABLET STACKED LAYOUT */}
-      <div className="relative mx-auto flex w-full max-w-[900px] flex-col gap-10 px-4 pt-8 pb-10 lg:hidden">
+      <div className="relative mx-auto flex w-full max-w-[900px] flex-col gap-8 px-4 pt-8 pb-10 sm:px-6 md:gap-10 xl:hidden">
         {cards.map((card) => (
           <article
             key={card.number}
@@ -548,7 +515,29 @@ function WhatsAppApiPinnedShowcase({ cards, header }) {
 }
 
 export default function WhatsAppBusinessApi() {
+
+
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [showStickyCta, setShowStickyCta] = useState(true);
+
+  /* Phone: the hero CTAs live in a fixed bar at the bottom of the screen. It
+     slides away near the end of the page so it never sits over the footer. */
+  useEffect(() => {
+    const update = () => {
+      const scrolledToEnd =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 260;
+      setShowStickyCta(!scrolledToEnd);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   // Typewriter effect for hero heading rotating word.
   // The leading "C" stays static; only the suffix types/deletes.
@@ -589,93 +578,32 @@ export default function WhatsAppBusinessApi() {
     return () => clearTimeout(t);
   }, [twText, twDeleting, twWordIndex]);
 
-  // Timeline sequential reveal: dot travels across circles, one card visible at a time
-  const [activeStep, setActiveStep] = useState(0);
-  const [arrivedStep, setArrivedStep] = useState(-1);
-  const [shownStep, setShownStep] = useState(-1);
-  const [dotX, setDotX] = useState(0);
-  const circleRefs = useRef([]);
-  const omnichannelSectionRef = useRef(null);
-  const omnichannelAnimationHasPlayedRef = useRef(false);
-  const [omnichannelFlowStarted, setOmnichannelFlowStarted] = useState(false);
+  const mobileScrollRef = useRef(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  const handleMobileScroll = (e) => {
+    const el = e.currentTarget;
+    const first = el.children[0];
+    if (!first) return;
+    const gap = parseFloat(window.getComputedStyle(el).columnGap || "0") || 0;
+    const slideW = first.getBoundingClientRect().width + gap;
+    if (slideW <= 0) return;
+    setActiveSlide(Math.round(el.scrollLeft / slideW));
+  };
+
+  const goToSlide = (i) => {
+    const el = mobileScrollRef.current;
+    if (!el) return;
+    const first = el.children[0];
+    if (!first) return;
+    const gap = parseFloat(window.getComputedStyle(el).columnGap || "0") || 0;
+    const slideW = first.getBoundingClientRect().width + gap;
+    el.scrollTo({ left: i * slideW, behavior: "smooth" });
+  };
+
   const shiballFlowRef = useRef(null);
   const shiballAnimationHasPlayedRef = useRef(false);
   const [shiballCardsFlipped, setShiballCardsFlipped] = useState(false);
-
-  // Section 4: left image stays pinned; the right-side content block closest to
-  // the viewport center becomes active → left image cross-fades to its image.
-  const [activeApiIndex, setActiveApiIndex] = useState(0);
-  const apiBlockRefs = useRef([]);
-  const apiScrollSectionRef = useRef(null);
-
-  useEffect(() => {
-    let raf = null;
-
-    const measure = () => {
-      const section = apiScrollSectionRef.current;
-      if (!section) return;
-
-      const sectionRect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      if (sectionRect.top > viewportHeight || sectionRect.bottom < 0) return;
-
-      const viewportCenter = window.innerHeight / 2;
-      let closest = 0;
-      let closestDist = Infinity;
-      apiBlockRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        if (rect.height === 0) return; // hidden (mobile) — skip
-        const blockCenter = rect.top + rect.height / 2;
-        const dist = Math.abs(blockCenter - viewportCenter);
-        if (dist < closestDist) {
-          closestDist = dist;
-          closest = i + 1;
-        }
-      });
-      setActiveApiIndex((prev) => (prev === closest ? prev : closest));
-    };
-
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = null;
-        measure();
-      });
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    measure(); // initial
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  useEffect(() => {
-    const section = omnichannelSectionRef.current;
-    if (!section || omnichannelAnimationHasPlayedRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || omnichannelAnimationHasPlayedRef.current) return;
-
-        omnichannelAnimationHasPlayedRef.current = true;
-        setOmnichannelFlowStarted(true);
-        observer.disconnect();
-      },
-      {
-        threshold: 0.15,
-      }
-    );
-
-    observer.observe(section);
-
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const section = shiballFlowRef.current;
@@ -742,52 +670,6 @@ export default function WhatsAppBusinessApi() {
     };
   }, []);
 
-  useEffect(() => {
-    // per-step duration: steps 0-2 normal, step 3 (all cards shown) held longer,
-    // step 4 (reset, dot waiting at start) kept short so the dot starts sooner
-    const durations = [3200, 3200, 3200, 4800, 350];
-    const id = setTimeout(() => {
-      // 0,1,2,3 reveal cards cumulatively; 4 = reset (all hidden, dot travels back to circle 1)
-      setActiveStep((s) => (s + 1) % 5);
-    }, durations[activeStep]);
-    return () => clearTimeout(id);
-  }, [activeStep]);
-
-  useEffect(() => {
-    const update = () => {
-      if (activeStep === 4) {
-        setDotX(0); // reset: dot returns to the start of the line, before circle 1
-        return;
-      }
-      const el = circleRefs.current[activeStep];
-      if (el) setDotX(el.offsetLeft + el.offsetWidth / 2);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [activeStep]);
-
-  // circle glows only once the dot has actually reached it (matches dot travel time)
-  useEffect(() => {
-    if (activeStep === 4) {
-      setArrivedStep(-1); // reset: clear glow immediately (dot jumps back to start)
-      return;
-    }
-    const travel = activeStep === 0 ? 1000 : 1600; // first move (start -> circle 1) is faster
-    const t = setTimeout(() => setArrivedStep(activeStep), travel);
-    return () => clearTimeout(t);
-  }, [activeStep]);
-
-  // card shows a short beat AFTER its circle has glowed (uniform for every card)
-  useEffect(() => {
-    if (arrivedStep < 0) {
-      setShownStep(-1); // reset: hide all cards
-      return;
-    }
-    const t = setTimeout(() => setShownStep(arrivedStep), 0);
-    return () => clearTimeout(t);
-  }, [arrivedStep]);
-
   const omnichannelCards = [
     {
       number: "01",
@@ -815,7 +697,7 @@ export default function WhatsAppBusinessApi() {
     {
       number: "02",
       title: "Connected Journey",
-      subtitle: "Customers can discover you anywhere and continue the conversation on WhatsApp",
+      subtitle: "Customers can discover you anywhere and continue the conversation on WhatsApp.",
       cta: "Higher lead conversion",
       steps: [
         {
@@ -911,20 +793,20 @@ export default function WhatsAppBusinessApi() {
       number: "01",
       title: (
         <>
-          Talk <span className="text-[#10B981]">Beyond</span> Text
+          Talk <span className="text-green-600">Beyond</span> Text
         </>
       ),
     description:
   "Customers don’t just type anymore.\n\nThey can connect instantly through voice or video interactions,\nmaking support, consultation, and communication more human and direct.",
 think: "support call inside chat",
-image: "/assets/images/01 (6).png",
+image: "/assets/images/first.webp",
 imageAlt: "WhatsApp voice and video calling experience",
     },
     {
       number: "02",
       title: (
         <>
-          Pay <span className="text-[#10B981]">Without Leaving</span>
+          Pay <span className="text-green-600">Without Leaving</span>
           <br />
           the Conversation
         </>
@@ -939,7 +821,7 @@ imageAlt: "WhatsApp voice and video calling experience",
       number: "03",
       title: (
         <>
-          <span className="text-[#10B981]">Fill, Submit, Complete</span>
+          <span className="text-green-600">Fill, Submit, Complete</span>
           <br />- Inside Chat
         </>
       ),
@@ -955,13 +837,13 @@ imageAlt: "WhatsApp voice and video calling experience",
         <>
           Launch Experiences
           <br />
-          <span className="text-[#10B981]">Beyond the Chat</span>
+          <span className="text-green-600">Beyond the Chat</span>
         </>
       ),
       description:
         "Some journeys need more than messages.\n\nOpen websites, storefronts, booking systems, or service portals directly inside WhatsApp - without forcing customers to switch apps.",
       think: "No app switching",
-      image: "/assets/images/04.png",
+      image: "/assets/images/medicare%20(1).webp",
       imageAlt: "WhatsApp interactive shopping workflow",
     },
     {
@@ -970,7 +852,7 @@ imageAlt: "WhatsApp voice and video calling experience",
         <>
           Conversations Powered by AI
           <br />
-          <span className="text-[#10B981]">Inside WhatsApp</span>
+          <span className="text-green-600">Inside WhatsApp</span>
         </>
       ),
       description:
@@ -1025,208 +907,107 @@ imageAlt: "WhatsApp voice and video calling experience",
     {
       key: "business",
       title: "Business Systems",
-      icon: Database,
       cols: 1,
       items: businessSystemsFlow,
     },
     {
       key: "platform",
       title: "Vertex Suite Platform",
-      subtitle: "Automation + Campaigns + Routing + Analytics",
-      icon: Layers,
+      subtitle: "(Automation + Campaigns + Routing + Analytics)",
       cols: 2,
       items: vertexPlatformFlow,
     },
     {
       key: "whatsapp",
       title: "WhatsApp Business API",
-      icon: FaWhatsapp,
-      whatsapp: true,
       cols: 2,
       items: whatsappApiFlow,
     },
     {
       key: "conversation",
       title: "Customer Conversation",
-      icon: Users,
       cols: 1,
       items: customerConversationFlow,
     },
   ];
 
-  const vertexHighlightCards = [
-    {
-      number: "01",
-      icon: LayoutGrid,
-      title: ["One Dashboard", "Powered by Vertex Suite"],
-      description:
-        "Manage conversations, campaigns, automation and performance - all from a single platform.",
-      bullets: ["Conversation Inbox", "Campaigns", "Automation", "Analytics"],
-      miniIcons: [MessageSquare, Megaphone, Settings, BarChart3],
-    },
-    {
-      number: "02",
-      icon: Share2,
-      title: ["Everything Connected", "Through Vertex Suite"],
-      description:
-        "Your CRM, apps and backend systems - all seamlessly connected to WhatsApp.",
-      bullets: ["CRM Integration", "APIs", "Data Sync", "Workflows"],
-      miniIcons: [Puzzle, Database, Cloud, Globe2],
-    },
-    {
-      number: "03",
-      icon: Zap,
-      title: ["Automation, Simplified"],
-      description:
-        "Design workflows once - Vertex Suite handles conversations automatically.",
-      bullets: ["Workflow Builder", "Routing", "Triggers", "Automation"],
-      miniIcons: [Workflow, Send, Clock, Bot],
-    },
-    {
-      number: "04",
-      icon: Users,
-      title: ["Built for Teams"],
-      description:
-        "Vertex Suite enables multiple agents, roles and collaboration in one system.",
-      bullets: ["Multi-Agent Support", "Role Management", "Collaboration", "Escalations"],
-      miniIcons: [UserCheck, Shield, Users, MessageCircle],
-    },
-    {
-      number: "05",
-      icon: BarChart3,
-      title: ["Insights That", "Drive Growth"],
-      description:
-        "Track performance, measure conversations and make smarter decisions with real-time analytics.",
-      bullets: ["Live Dashboards", "Reports", "Conversion Tracking", "Trends"],
-      miniIcons: [BarChart3, ClipboardCheck, MousePointerClick, Zap],
-    },
-  ];
-
-  // Section 4 card body — identical markup reused by the desktop pinned stage
-  // and the mobile stacked list (content/images/layout unchanged).
-  const renderApiCardInner = (card) => (
-    <div className="relative z-10 grid min-h-[660px] grid-cols-[50%_50%]">
-
-      {/* LEFT — image panel */}
-      <div className="relative flex min-h-[560px] items-center justify-center p-8">
-
-        {card.number === "01" && (
-          <img
-            src="/assets/images/01(6).png"
-            alt=""
-            aria-hidden="true"
-            className="relative z-10 h-auto max-h-[500px] w-[88%] object-contain drop-shadow-[0_-4px_20px_rgba(16,185,129,0.15)]"
-          />
-        )}
-        {card.number === "02" && (
-          <img src="/assets/images/02(3).png" alt="" aria-hidden="true"
-            className="relative z-10 h-auto max-h-[500px] w-[88%] object-contain drop-shadow-[0_-4px_20px_rgba(16,185,129,0.15)]" />
-        )}
-        {card.number === "03" && (
-          <img src="/assets/images/03.png" alt="" aria-hidden="true"
-            className="relative z-10 h-auto max-h-[500px] w-[88%] object-contain drop-shadow-[0_-4px_20px_rgba(16,185,129,0.15)]" />
-        )}
-        {card.number === "04" && (
-          <img src="/assets/images/medicare%20png.png" alt="" aria-hidden="true"
-            className="relative z-10 h-auto max-h-[500px] w-[88%] object-contain drop-shadow-[0_-4px_20px_rgba(16,185,129,0.15)]" />
-        )}
-        {card.number === "05" && (
-          <img src="/assets/images/05.png" alt="" aria-hidden="true"
-            className="relative z-10 h-auto max-h-[500px] w-[88%] object-contain drop-shadow-[0_-4px_20px_rgba(16,185,129,0.15)]" />
-        )}
-      </div>
-
-      {/* RIGHT — text */}
-      <div className="flex flex-col justify-center gap-6 p-14 pl-8">
-        <h3 className="text-[clamp(1.9rem,2.8vw,3rem)] font-extrabold leading-[1.1] tracking-tight text-[#0A0A0A]">
-          {card.title}
-        </h3>
-
-        <p className="whitespace-pre-line text-[1.12rem] font-medium leading-[1.72] text-[#5B6B84]">
-          {card.description}
-        </p>
-
-        <div className="flex items-center gap-3 pt-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#BBF7D0] bg-[#ECFDF5] text-[#059669] shadow-[0_0_0_3px_rgba(187,247,208,0.35)]">
-            <MessageCircle className="h-5 w-5" strokeWidth={2.4} />
-          </span>
-          <p className="!mb-0 text-[0.95rem] font-medium text-[#475569]">
-            <span className="font-bold text-[#059669]">Think:</span>{" "}{card.think}
-          </p>
-        </div>
-      </div>
-
-    </div>
-  );
-
   return (
+    <>
     <main className="whatsapp-business-api-page w-full overflow-x-clip bg-white">
       {/* ================= SECTION 1: HERO ================= */}
       <section
-        className="relative overflow-hidden bg-[#f7faf7] pt-[90px] pb-[70px] lg:min-h-[850px] max-lg:pt-[10px] max-lg:pb-[70px] max-md:pt-[35px] max-md:pb-[50px]"
+        className="relative overflow-hidden bg-[#f7faf7] pb-[70px] pt-[35px] xl:min-h-[850px] xl:pt-[90px] max-md:pb-[50px]"
       >
         <div className="container relative z-10">
-          <div className="mb-0 -mt-6 inline-flex w-fit items-center gap-2 rounded-[10px] border border-white/50 bg-white/25 px-3 py-2 text-[0.95rem] font-semibold text-green-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_28px_rgba(15,23,42,0.10)] backdrop-blur-lg ring-1 ring-white/30 lg:ml-6">
-            <img
-              src="/assets/images/whatsapp-icon.png"
-              alt="WhatsApp"
-              className="h-5 w-5 object-contain"
-            />
-            WhatsApp Channel
-          </div>
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 max-lg:text-center">
+          <div className="grid grid-cols-1 items-center gap-6 text-left md:gap-8 xl:grid-cols-[0.95fr_1.05fr] xl:gap-10 2xl:gap-12">
             {/* Left Content Column */}
-            <div className="mx-auto flex w-full max-w-[720px] flex-col gap-7 lg:mx-0 lg:-mt-6 lg:pl-6 xl:-mt-4 max-md:gap-5">
-              <div className="mt-16 flex flex-col gap-1 max-md:mt-8">
-                <h1 className="mb-0 flex w-full items-center text-[clamp(2.05rem,8vw,4.5rem)] pt-0 font-extrabold leading-[1.05] tracking-tight text-[#292929] max-lg:justify-center lg:whitespace-nowrap">
-                  <span className="font-bold">C{twText}</span>
+            <div className="mx-auto flex w-full max-w-[760px] flex-col items-start gap-7 max-md:order-2 max-md:gap-5 xl:mx-0 xl:max-w-[720px]">
+              <Reveal onMount delay={0} className="inline-flex w-fit items-center gap-2 rounded-[10px] border border-white/50 bg-white/25 px-3 py-2 text-[0.95rem] font-semibold text-green-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_28px_rgba(15,23,42,0.10)] backdrop-blur-lg ring-1 ring-white/30">
+                <img
+                  src="/assets/images/whatsapp-icon.png"
+                  alt="WhatsApp"
+                  className="h-5 w-5 object-contain"
+                />
+                WhatsApp Business API
+              </Reveal>
+
+              <div className="mt-6 flex w-full flex-col gap-1 max-md:mt-3">
+                <h1 className="mb-0 flex w-full items-center justify-start pt-0 text-left !text-[clamp(2.25rem,4vw,2.986rem)] font-extrabold leading-[1.05] tracking-tight text-[#292929] xl:whitespace-nowrap">
+                  <span className="font-extrabold" style={{ fontFamily: '"Manrope", sans-serif' }}>
+                    C{twText}
+                  </span>
                   <span
                     aria-hidden="true"
                     className="tw-caret ml-1 inline-block w-[3px] self-stretch rounded-full bg-[#292929] md:w-[4px]"
                   />
                 </h1>
 
-                <h1 className="mb-0 w-full text-[clamp(2.05rem,8vw,4.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#292929] max-lg:whitespace-normal lg:whitespace-nowrap">
-                  That Convert on <span className="text-green-600">WhatsApp</span>
+                <Reveal onMount delay={0.15}>
+                  <h1 className="mb-0 w-full text-left !text-[clamp(2.25rem,4vw,2.986rem)] font-extrabold leading-[1.05] tracking-tight text-[#292929] xl:whitespace-nowrap">
+                    That Convert on <span className="text-green-600">WhatsApp</span>
                   </h1>
+                </Reveal>
                   </div>
-                  <div className="flex max-w-[690px] flex-col gap-1 text-left">
-                   {/* <p className="m-0 max-w-[690px] text-left !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-  Keep every customer step connected, from enquiry to action, without channel drop-offs.
-</p> */}
-
+                  <Reveal onMount delay={0.3} className="flex max-w-[690px] flex-col gap-1 text-left">
                     <p className="block max-w-[690px] text-left !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
                       Keep every customer step connected, from enquiry to action, without channel drop-offs. Automate chats, support, and customer journeys with{" "}
                       <span className="whitespace-nowrap">WhatsApp Business API.</span>
                     </p>
-                  </div>
+                  </Reveal>
 
               {/* Hero stats */}
-              <div className="mt-2 grid w-full max-w-[640px] grid-cols-2 gap-3.5 max-md:gap-2 max-sm:grid-cols-1">
+              <div className="mt-2 grid w-full max-w-[640px] grid-cols-2 gap-3.5 max-md:gap-2">
                 {[
                   { value: "5M+", label: "Users Engaged", color: "#059669" },
                   { value: "3M+", label: "Citizens Served Last Year", color: "#059669" },
                   { value: "95%", label: "Message Delivery", color: "#059669" },
                   { value: "3X", label: "Faster Response", color: "#059669" },
-                ].map((s) => (
-                  <div
+                ].map((s, index) => (
+                  <Reveal
                     key={s.label}
-                    className="flex min-h-[62px] w-full flex-col items-start justify-center gap-1.5 rounded-[8px] border border-white/15 bg-transparent pl-7 pr-2 py-2.5 max-sm:items-center"
+                    onMount
+                    direction={index % 2 === 0 ? "left" : "right"}
+                    delay={0.45 + index * 0.08}
+                    duration={0.55}
+                    className="flex min-h-[96px] w-full flex-col items-start justify-center gap-1.5 rounded-[8px] border border-white/15 bg-transparent pl-7 pr-2 max-sm:items-center max-sm:px-2"
                   >
-                    <span
-                      className="mt-1 text-[2.15rem] font-extrabold leading-none"
-                      style={{ color: s.color }}
-                    >
-                      {s.value}
-                    </span>
-                    <span className="min-h-[2.1em] !text-[1.06rem] font-medium leading-tight text-[#5B667A] xl:!text-[1.14rem] max-md:!text-[0.98rem]">
-                      {s.label}
-                    </span>
-                  </div>
+                    <div className="flex translate-y-2 flex-col gap-1.5 max-sm:items-center max-sm:text-center">
+                      <span
+                        className="text-[2.15rem] font-extrabold leading-none"
+                        style={{ color: s.color }}
+                      >
+                        {s.value}
+                      </span>
+                      <span className="min-h-[2.1em] !text-[1.06rem] font-medium leading-tight text-[#5B667A] xl:!text-[1.14rem] max-md:!text-[0.98rem]">
+                        {s.label}
+                      </span>
+                    </div>
+                  </Reveal>
                 ))}
               </div>
 
-              <div className="mt-6 flex items-center gap-3 max-lg:justify-center max-sm:flex-col">
+              {/* Phone shows these as a fixed bar at the bottom of the page instead. */}
+              <Reveal onMount delay={0.85} className="mt-6 flex items-center justify-start gap-3 max-md:hidden">
                 {/* BUTTON 1 */}
                 <Link
                   to="/signup"
@@ -1234,12 +1015,12 @@ imageAlt: "WhatsApp voice and video calling experience",
                 >
                   <span className="roll-content">
                     <span className="roll-content-main">
-                      <span>Get Started</span>
+                      <span>Start Free Trial</span>
                       <ArrowRight size={20} strokeWidth={2.2} />
                     </span>
 
                     <span className="roll-content-hover">
-                      <span>Get Started</span>
+                      <span>Start Free Trial</span>
                       <ArrowRight size={20} strokeWidth={2.2} />
                     </span>
                   </span>
@@ -1252,13 +1033,13 @@ imageAlt: "WhatsApp voice and video calling experience",
                 >
                   <span className="roll-content">
                     <span className="roll-content-main">
+                      <span>Book a Demo</span>
                       <CalendarDays size={26} strokeWidth={1.6} />
-                      <span>Request a Demo</span>
                     </span>
 
                     <span className="roll-content-hover">
+                      <span>Book a Demo</span>
                       <CalendarDays size={26} strokeWidth={1.6} />
-                      <span>Request a Demo</span>
                     </span>
                   </span>
                 </Link>
@@ -1274,13 +1055,19 @@ imageAlt: "WhatsApp voice and video calling experience",
       }
     `}
                 </style>
-              </div>
+              </Reveal>
             </div>
 
             {/* Right Hero Images - Animated feature section */}
-            <div className="relative flex min-h-[620px] w-full items-center justify-center max-lg:min-h-[560px] max-md:min-h-[480px] max-sm:min-h-[420px]">
+            <Reveal
+              onMount
+              delay={0.5}
+              direction="right"
+              duration={0.75}
+              className="relative flex min-h-[420px] w-full items-center justify-center max-md:order-1 sm:min-h-[480px] md:min-h-[540px] xl:min-h-[620px]"
+            >
               <AnimatedFeatureSection />
-            </div>
+            </Reveal>
             {/* legacy hero visual removed — replaced by AnimatedFeatureSection */}
             {false && (
             <div className="relative flex min-h-[620px] w-full items-center justify-center">
@@ -1478,216 +1265,306 @@ imageAlt: "WhatsApp voice and video calling experience",
         </div>
       </section>
 
-      {/* ===== Tagline sitting ON the Section 1 / Section 2 boundary ===== */}
-      <div className="relative z-20 h-0">
-        <p className="dancing-script-regular absolute left-1/2 top-0 w-full max-w-none -translate-x-1/2 -translate-y-1/2 px-4 text-center !text-[1.15rem] !leading-[1.1] text-[#B8BEC9] opacity-60 md:whitespace-nowrap xl:!text-[1.3rem] max-md:!text-[1rem]">
-          Your customers already use WhatsApp daily. The smartest businesses meet them there.
-        </p>
-      </div>
+     
 
 
       {/* ================= SECTION 3 ================= */}
       <section
-        ref={omnichannelSectionRef}
-        className="relative min-h-screen bg-white pt-[100px] pb-[90px]"
+        className="relative min-h-screen bg-white px-4 pb-[90px] pt-[80px] md:px-6 md:pt-[100px]"
       >
         <div className="container relative z-10">
-          <h2 className="text-center text-[clamp(2.05rem,8vw,4.5rem)] font-extrabold leading-[1.1] tracking-tight text-[#111827]">
-            When Conversations Become{" "}
-            <span className="text-green-600">Omnichannel Experiences</span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-[1120px] text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]">
-            It&apos;s not just about sending messages anymore. It&apos;s about creating seamless, real-time conversations across channels,
-            <br />
-            where <span className="font-bold">WhatsApp</span> becomes the center of your customer experience.
-          </p>
+          <Reveal>
+            <h2 className="text-center text-[clamp(2.05rem,5.5vw,4.5rem)] font-extrabold leading-[1.1] tracking-tight text-[#111827]">
+           <span className="text-green-600">Conversations</span> That Stay Fast, Connected, and Relevant
+              
+            </h2>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="mx-auto mt-6 max-w-[1120px] text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]">
+             It’s not just about sending messages anymore. It’s about keeping every interaction connected through one omnichannel experience.
+              
+            </p>
+          </Reveal>
 
-        <div className="mx-auto mt-10 grid w-full max-w-[1320px] grid-cols-1 items-start justify-items-center gap-x-5 gap-y-12 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mx-auto mt-15 hidden w-full max-w-[1320px] grid-cols-1 items-start justify-items-center gap-x-5 gap-y-12 md:grid md:grid-cols-2 xl:grid-cols-3">
             {omnichannelCards.map((card) => (
-             <div
-  key={card.number}
-  className="group relative mx-auto h-[550px] w-full max-w-[420px] [perspective:1600px]"
->
+              <div
+                key={card.number}
+                className="group relative mx-auto h-[550px] w-full max-w-[420px] [perspective:1600px]"
+              >
                 <div className="relative h-full w-full transition-transform duration-[900ms] ease-[cubic-bezier(0.4,0,0.2,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
-                <div
-  className="absolute inset-0 overflow-hidden rounded-[22px] border border-white/20 bg-cover bg-center p-6 [backface-visibility:hidden]"
-  style={{ backgroundImage: 'url("/assets/images/download%20(1).jpeg")' }}
->
-                <div className="relative z-10 flex h-full flex-col">
-                  <div className="mx-auto flex min-h-[56px] w-full max-w-[340px] items-center gap-3">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] border bg-white text-[1.45rem] font-extrabold leading-none border-white/40 text-[#0F172A]">
-                      {card.number}
-                    </div>
-                    <h3
-                      className="min-w-0 flex-1 whitespace-nowrap font-extrabold leading-tight tracking-tight !text-[28px] text-white [&_*]:text-white"
-                      style={{ color: "#FFFFFF" }}
-                    >
-                      {card.title}
-                    </h3>
-                  </div>
-
-                  <p className="mx-auto mt-4 w-full max-w-[340px] translate-x-2 text-[clamp(0.6rem,0.68vw,0.68rem)] font-medium leading-snug text-white">
+                  <div
+                    className="absolute inset-0 overflow-hidden rounded-[22px] border border-white/20 bg-cover bg-center p-6 [transform:rotateY(180deg)] [backface-visibility:hidden]"
+                    style={{ backgroundImage: 'url("/assets/images/download%20(1).jpeg")' }}
+                  >
+                    <div className="relative z-10 flex h-full flex-col">
+                  <p className="mx-auto mt-1 w-full max-w-[340px] text-[clamp(0.95rem,1.05vw,1.05rem)] font-medium leading-relaxed text-white">
                     {card.subtitle}
                   </p>
 
-                  <motion.div
-                    initial="hidden"
-                    animate={omnichannelFlowStarted ? "show" : "hidden"}
-                    variants={{
-                      hidden: {},
-                      show: {
-                        transition: {
-                          staggerChildren: 0.8,
-                        },
-                      },
-                    }}
-                    className="mx-auto mt-2.5 flex w-full max-w-[340px] flex-col items-center"
-                  >
+                  <div className="mx-auto mt-8 flex w-full max-w-[340px] flex-col items-center">
                     {card.steps.map(({ icon: Icon, label, text }, index, items) => (
                       <React.Fragment key={label}>
-                        <motion.div
-                          variants={{
-                            hidden: { opacity: 0, y: 14 },
-                            show: { opacity: 1, y: 0 },
-                          }}
-                          transition={{
-                            duration: 0.7,
-                            ease: "easeOut",
-                          }}
-                          className="flex w-full items-center gap-3 rounded-[8px] border border-white/40 px-3 py-2 text-[#0F172A] bg-white"
-                        >
+                        <div className="flex w-full items-center gap-3 rounded-[8px] border border-white/40 bg-white px-3 py-2 text-[#0F172A]">
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-[#F1F5F9] text-[#0F172A]">
                             <Icon className="h-[18px] w-[18px]" strokeWidth={2.35} />
                           </div>
-                          <p className="!mb-0 !text-[clamp(0.68rem,0.78vw,0.78rem)] font-semibold leading-[1.2] text-[#0F172A]">
+                          <p className="!mb-0 !text-[clamp(0.82rem,0.92vw,0.92rem)] font-semibold leading-[1.3] text-[#0F172A]">
                             {text}
                           </p>
-                        </motion.div>
+                        </div>
                         {index < items.length - 1 && (
-                          <motion.div
-                            variants={{
-                              hidden: { opacity: 0, y: 10 },
-                              show: { opacity: 1, y: 0 },
-                            }}
-                            transition={{
-                              duration: 0.45,
-                              ease: "easeOut",
-                            }}
-                            className="flex items-center justify-center text-white/70 h-6"
-                          >
+                          <div className="flex h-10 items-center justify-center text-white/80">
                             <svg
                               aria-hidden="true"
-                              className="h-full w-7 overflow-visible"
+                              className="h-full w-8 overflow-visible"
                               viewBox="0 0 28 48"
                               fill="none"
                             >
                               <path
                                 d="M14 2V42M14 42L5 33M14 42L23 33"
                                 stroke="currentColor"
-                                strokeWidth="3"
+                                strokeWidth="2"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                               />
                             </svg>
-                          </motion.div>
+                          </div>
                         )}
                       </React.Fragment>
                     ))}
-                  </motion.div>
+                  </div>
 
-                  <motion.div
-                    initial="hidden"
-                    animate={omnichannelFlowStarted ? "show" : "hidden"}
-                    variants={{
-                      hidden: { opacity: 0, x: 70 },
-                      show: { opacity: 1, x: 0 },
-                    }}
-                    transition={{
-                      duration: 0.7,
-                      ease: "easeOut",
-                      delay: 4.4,
-                    }}
-                    className="relative mx-auto w-full max-w-[340px] overflow-hidden rounded-[18px] border border-white/30 px-5 py-3.5 text-center text-[clamp(0.9rem,1.15vw,1.08rem)] font-normal leading-none bg-white text-[#0F172A] mt-6"
-                  >
+                  <div className="relative mx-auto mt-10 w-full max-w-[340px] overflow-hidden rounded-[18px] border border-white/30 bg-white px-5 py-3.5 text-center text-[clamp(0.9rem,1.15vw,1.08rem)] font-normal leading-none text-[#0F172A]">
                     <span className="absolute left-0 top-0 h-full w-4 rounded-r-[14px] bg-[linear-gradient(180deg,#16A34A,#0B7A38)]" />
                     <span className="relative block w-full text-center tracking-tight">{card.cta}</span>
-                  </motion.div>
-                </div>
-                </div>
+                  </div>
+                    </div>
+                  </div>
 
-                {/* BACK — flip reveals the hover image */}
-                <div className="absolute inset-0 overflow-hidden rounded-[22px] [transform:rotateY(180deg)] [backface-visibility:hidden]">
-                  <img
-                    src={
-                      card.number === "01"
-                        ? "/assets/images/tq.png"
-                        : card.number === "02"
-                        ? "/assets/images/rq.png"
-                        : card.number === "03"
-                        ? "/assets/images/sq.png"
-                        : card.number === "04"
-                        ? "/assets/images/q.png" 
-                        : card.number === "05"
-                        ? "/assets/images/uq.png"
-                        : "/assets/images/uq.png"
-                    }
-                    alt=""
-                    className={`h-full w-full ${card.number === "04" ? "object-contain" : "object-cover"}`}
-                  />
-                </div>
+                  <div className="absolute inset-0 overflow-hidden rounded-[22px] [backface-visibility:hidden]">
+                    <img
+                      src={
+                        card.number === "01"
+                          ? "/assets/images/Group%2010.webp"
+                          : card.number === "02"
+                          ? "/assets/images/Group%2020.webp"
+                          : card.number === "03"
+                          ? "/assets/images/Group%2030.webp"
+                          : card.number === "04"
+                          ? "/assets/images/Group%2040.webp"
+                          : "/assets/images/Group%2050.webp"
+                      }
+                      alt={card.title}
+                      className={`h-full w-full ${card.number === "04" ? "object-contain" : "object-cover"}`}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
 
             {/* 6th CTA Card */}
-            <div
-              className="relative mx-auto h-[550px] w-full max-w-[420px] overflow-hidden rounded-[22px] border border-[rgba(56,189,248,0.45)] bg-[radial-gradient(circle_at_18%_10%,rgba(56,189,248,0.22),transparent_30%),radial-gradient(circle_at_86%_8%,rgba(37,99,235,0.18),transparent_24%),linear-gradient(145deg,#020617,#071A3D_48%,#0B1F4D)]"
+            <Reveal
+              direction="right"
+              delay={0.1}
+              duration={0.65}
+              className="relative mx-auto h-[550px] w-full max-w-[420px] overflow-hidden rounded-[22px] border border-white/20 bg-cover bg-center"
+              style={{ backgroundImage: 'url("/assets/images/download%20(1).jpeg")' }}
             >
-              {/* Blur blobs */}
-              <div className="pointer-events-none absolute -left-16 top-16 h-64 w-64 rounded-full bg-[rgba(37,99,235,0.18)] blur-3xl" />
-              <div className="pointer-events-none absolute -right-16 bottom-16 h-64 w-64 rounded-full bg-[rgba(56,189,248,0.20)] blur-3xl" />
-              <div className="pointer-events-none absolute left-1/2 top-0 h-48 w-48 -translate-x-1/2 rounded-full bg-[rgba(248,250,252,0.14)] blur-2xl" />
+              {/* Blur blob — soft warm highlight, no tint */}
 
               {/* Content */}
-              <div className="relative z-10 flex h-full flex-col items-center justify-center gap-8 px-8">
+              <div className="relative z-10 h-full px-8">
                 {/* Glowing icon circle */}
                 <div
-                  className="flex h-[120px] w-[120px] items-center justify-center rounded-full border border-[rgba(56,189,248,0.45)] bg-[rgba(37,99,235,0.18)] backdrop-blur-xl"
-                  style={{
-                    boxShadow: "0 0 40px rgba(56,189,248,0.34), 0 0 80px rgba(37,99,235,0.35), inset 0 0 20px rgba(255,255,255,0.22)",
-                  }}
+                  className="absolute left-1/2 top-[25%] flex h-[100px] w-[100px] -translate-x-1/2 items-center justify-center rounded-full border border-[rgba(22,163,74,0.35)] bg-white"
                 >
-                  <Zap className="h-14 w-14 text-[#38BDF8]" strokeWidth={2.5} />
+                  <Zap className="h-14 w-14 text-[#16A34A]" strokeWidth={2.5} />
                 </div>
 
                 {/* Heading */}
-                <h3 className="text-center text-[2rem] font-extrabold leading-tight tracking-tight text-white">
+                <h3 className="absolute left-1/2 top-[55%] w-full -translate-x-1/2 -translate-y-1/2 text-center text-[2rem] font-extrabold leading-tight tracking-tight text-white">
                   Ready to Transform?
                 </h3>
 
                 {/* Button */}
                 <Link
                   to="/book-demo"
-                  className="w-full rounded-[16px] border border-[rgba(56,189,248,0.45)] bg-[rgba(37,99,235,0.18)] px-6 py-4 text-center text-[1.05rem] font-bold text-white backdrop-blur-xl transition-all duration-300 hover:bg-[rgba(37,99,235,0.26)]"
-                  style={{
-                    boxShadow: "0 8px 28px rgba(37,99,235,0.35), inset 0 0 0 1px rgba(56,189,248,0.45)",
-                  }}
+                  className="roll-btn group absolute left-1/2 top-[66%] inline-flex -translate-x-1/2 items-center justify-center overflow-hidden rounded-[100px] border-2 border-green-600 bg-white px-7 py-2.5 text-[1rem] font-semibold !text-green-600 transition-all duration-300 hover:bg-green-600 hover:!text-green-600"
                 >
-                  Book a Demo
+                  <span className="roll-content">
+                    <span className="roll-content-main">
+                      <span>Book a Demo</span>
+                      
+                    </span>
+
+                    <span className="roll-content-hover">
+                      <span>Book a Demo</span>
+                   
+                    </span>
+                  </span>
                 </Link>
+              </div>
+            </Reveal>
+
+          </div>
+
+          {/* MOBILE — horizontal scroll (image first, then back panel) */}
+          <div className="md:hidden">
+            <div
+              ref={mobileScrollRef}
+              onScroll={handleMobileScroll}
+              className="-mx-4 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {omnichannelCards.map((card) => {
+                const imgSrc =
+                  card.number === "01"
+                    ? "/assets/images/Group%2010.webp"
+                    : card.number === "02"
+                    ? "/assets/images/Group%2020.webp"
+                    : card.number === "03"
+                    ? "/assets/images/Group%2030.webp"
+                    : card.number === "04"
+                    ? "/assets/images/Group%2040.webp"
+                    : "/assets/images/Group%2050.webp";
+                return (
+                  <React.Fragment key={card.number}>
+                    {/* Image panel */}
+                    <div className="relative aspect-[1920/2520] w-[82vw] max-w-[420px] shrink-0 snap-start overflow-hidden rounded-[22px]">
+                      <img
+                        src={imgSrc}
+                        alt={card.title}
+                        className={`h-full w-full ${card.number === "04" ? "object-contain" : "object-cover"}`}
+                      />
+                    </div>
+
+                    {/* Back panel */}
+                    <div
+                      className="relative aspect-[1920/2520] w-[82vw] max-w-[420px] shrink-0 snap-start overflow-hidden rounded-[22px] border border-white/20 bg-cover bg-center p-6"
+                      style={{ backgroundImage: 'url("/assets/images/download%20(1).jpeg")' }}
+                    >
+                      <div className="relative z-10 flex h-full flex-col">
+                        <p className="mx-auto mt-1 w-full max-w-[340px] text-[0.98rem] font-medium leading-relaxed text-white">
+                          {card.subtitle}
+                        </p>
+
+                        <div className="mx-auto mt-6 flex w-full max-w-[340px] flex-col items-center">
+                          {card.steps.map(({ icon: Icon, text }, index, items) => (
+                            <React.Fragment key={text}>
+                              <div className="flex w-full items-center gap-3 rounded-[8px] border border-white/40 bg-white px-3 py-2 text-[#0F172A]">
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-[#F1F5F9] text-[#0F172A]">
+                                  <Icon className="h-[18px] w-[18px]" strokeWidth={2.35} />
+                                </div>
+                                <p className="!mb-0 !text-[0.86rem] font-semibold leading-[1.3] text-[#0F172A]">
+                                  {text}
+                                </p>
+                              </div>
+                              {index < items.length - 1 && (
+                                <div className="flex h-8 items-center justify-center text-white/80">
+                                  <svg
+                                    aria-hidden="true"
+                                    className="h-full w-8 overflow-visible"
+                                    viewBox="0 0 28 48"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M14 2V42M14 42L5 33M14 42L23 33"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    />
+                                  </svg>
+                                </div>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+
+                        <div className="relative mx-auto mt-auto w-full max-w-[340px] overflow-hidden rounded-[18px] border border-white/30 bg-white px-4 py-3 text-center text-[0.8rem] font-normal leading-none text-[#0F172A]">
+                          <span className="absolute left-0 top-0 h-full w-4 rounded-r-[14px] bg-[linear-gradient(180deg,#16A34A,#0B7A38)]" />
+                          <span className="relative block w-full text-center tracking-tight">
+                            {card.cta}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                );
+              })}
+
+              {/* CTA card */}
+              <div
+                className="relative aspect-[1920/2520] w-[82vw] max-w-[420px] shrink-0 snap-start overflow-hidden rounded-[22px] border border-white/20 bg-cover bg-center"
+                style={{ backgroundImage: 'url("/assets/images/download%20(1).jpeg")' }}
+              >
+                <div className="relative z-10 h-full px-8">
+                  <div className="absolute left-1/2 top-[25%] flex h-[100px] w-[100px] -translate-x-1/2 items-center justify-center rounded-full border border-[rgba(22,163,74,0.35)] bg-white">
+                    <Zap className="h-14 w-14 text-[#16A34A]" strokeWidth={2.5} />
+                  </div>
+                  <h3 className="absolute left-1/2 top-[55%] w-full -translate-x-1/2 -translate-y-1/2 text-center text-[2rem] font-extrabold leading-tight tracking-tight text-white">
+                    Ready to Transform?
+                  </h3>
+                  <Link
+                    to="/book-demo"
+                    className="absolute left-1/2 top-[66%] inline-flex -translate-x-1/2 items-center justify-center overflow-hidden rounded-[100px] border-2 border-green-600 bg-white px-7 py-2.5 text-[1rem] font-semibold !text-green-600"
+                  >
+                    Book a Demo
+                  </Link>
+                </div>
               </div>
             </div>
 
+            {/* Swipe dots — windowed pager (edges fade out) */}
+            {(() => {
+              const total = omnichannelCards.length * 2 + 1;
+              const DOT = 6;
+              const GAP = 8;
+              const STEP = DOT + GAP;
+              const WINDOW = 4;
+              const start = Math.max(0, Math.min(activeSlide - 1, total - WINDOW));
+              const firstVisible = start - 1;
+              return (
+                <div className="mt-5 flex justify-center">
+                  <div
+                    className="overflow-hidden"
+                    style={{ width: (WINDOW + 2) * STEP - GAP }}
+                  >
+                    <div
+                      className="flex transition-transform duration-300 ease-out"
+                      style={{ gap: GAP, transform: `translateX(${-firstVisible * STEP}px)` }}
+                    >
+                      {Array.from({ length: total }).map((_, i) => {
+                        const inWindow = i >= start && i < start + WINDOW;
+                        const isEdge = i === firstVisible || i === start + WINDOW;
+                        const isActive = i === activeSlide;
+                        return (
+                          <button
+                            key={i}
+                            type="button"
+                            aria-label={`Go to slide ${i + 1}`}
+                            onClick={() => goToSlide(i)}
+                            style={{ width: DOT, height: DOT }}
+                            className={`shrink-0 rounded-full transition-all duration-300 ${
+                              isActive ? "bg-green-600" : "bg-slate-300"
+                            } ${
+                              inWindow
+                                ? "scale-100 opacity-100"
+                                : isEdge
+                                ? "scale-[0.5] opacity-100"
+                                : "scale-0 opacity-0"
+                            }`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </section>
-
-      {/* ===== Tagline sitting ON the Section 2 / Section 3 boundary ===== */}
-      <div className="relative z-20 h-0">
-        <p className="dancing-script-regular absolute left-1/2 top-0 w-full max-w-[1000px] -translate-x-1/2 -translate-y-1/2 px-4 text-center !text-[1.15rem] !leading-[1.1] text-[#B8BEC9] opacity-60 xl:!text-[1.3rem] max-md:!text-[1rem]">
-          To deliver this experience at scale, businesses need more than a messaging app. They need the WhatsApp Business API
-        </p>
-      </div>
 
       {/* ================= SECTION 4 ================= */}
   <section className="relative bg-[#fafcff] px-4 pt-20 pb-0">
@@ -1697,47 +1574,50 @@ imageAlt: "WhatsApp voice and video calling experience",
       cards={apiFeatureCards}
       header={
         <>
-         <h2 className="mx-auto w-full max-w-[1500px] whitespace-nowrap text-center text-[clamp(2rem,4.2vw,4.2rem)] font-extrabold leading-[1.08] tracking-tight text-black">
-  <span className="text-green-600">WhatsApp Business API </span> - The Engine Behind Scalable Conversation
-</h2>
+          <Reveal>
+            <h2 className="mx-auto w-full max-w-[1500px] text-center text-[clamp(2rem,4.2vw,4.2rem)] font-extrabold leading-[1.08] tracking-tight text-black 2xl:whitespace-nowrap">
+              <span className="text-green-600">WhatsApp Business API </span> - The Engine Behind Scalable Conversation
+            </h2>
+          </Reveal>
 
-          <p className="mx-auto mt-2 max-w-[920px] !text-[1.12rem] font-bold leading-[1.7] text-black xl:!text-[1.2rem] max-md:!text-[1rem]">
-            Extend WhatsApp into a fully integrated business system - enabling voice, video, payments, forms and interactive workflows through powerful APIs.
-          </p>
+          <Reveal delay={0.15}>
+            <p className="mx-auto mt-2 max-w-[920px] !text-[1.12rem] font-bold leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]">
+              Extend WhatsApp into a fully integrated business system - enabling voice, video, payments, forms and interactive workflows through powerful APIs.
+            </p>
+          </Reveal>
         </>
       }
     />
   </div>
 </section>
 
-      {/* ===== Tagline sitting ON the Section 3 / Section 4 boundary ===== */}
-      <div className="relative z-20 h-0">
-        <p className="dancing-script-regular absolute left-1/2 top-0 w-full max-w-[1000px] -translate-x-1/2 -translate-y-1/2 px-4 text-center !text-[1.15rem] !leading-[1.1] text-[#B8BEC9] opacity-60 xl:!text-[1.3rem] max-md:!text-[1rem]">
-          But APIs work best when everything is connected through one platform. That&rsquo;s where Vertex Suite comes in.
-        </p>
-      </div>
+    
 
       <section
         ref={shiballFlowRef}
         className="relative overflow-hidden bg-white px-4 py-24 text-center"
       >
         <div className="mx-auto w-full max-w-[1500px]">
-          <h2 className="mx-auto max-w-[980px] font-extrabold leading-[1.12] tracking-tight text-[#07122B]">
-            <span className="!font-extrabold">Turn </span>
-            <span className="text-green-600">WhatsApp Business API</span>{" "}
-            <span className="!font-extrabold">Into a Complete System with</span>{" "}
-            <span className="bg-gradient-to-r from-[#2563EB] to-[#38BDF8] bg-clip-text text-transparent">
-              Vertex Suite
-            </span>
-          </h2>
+          <Reveal>
+            <h2 className="mx-auto max-w-[980px] font-extrabold leading-[1.12] tracking-tight text-[#07122B]">
+              <span className="!font-extrabold">Turn </span>
+              <span className="text-green-600">WhatsApp Business API</span>{" "}
+              <span className="!font-extrabold">into a Complete System with</span>{" "}
+              <span className="bg-gradient-to-r from-[#2563EB] to-[#38BDF8] bg-clip-text text-transparent">
+                Vertex Suite
+              </span>
+            </h2>
+          </Reveal>
 
-          <p className="mx-auto mt-7 max-w-[1100px] !text-[1.12rem] font-medium leading-[1.75] text-[#5B6B84] xl:!text-[1.2rem] max-md:!text-[1rem]">
-            With Vertex Suite, manage integrations, conversations, automation and performance, all in one connected system.
-            <br />
-            Your CRM, website, apps and backend systems, all connected to WhatsApp through one platform VERTEX SUITE.
-          </p>
+          <Reveal delay={0.15}>
+            <p className="mx-auto mt-7 max-w-[1100px] !text-[1.12rem] font-medium leading-[1.75] text-[#5B6B84] xl:!text-[1.2rem] max-md:!text-[1rem]">
+              With Vertex Suite, manage integrations, conversations, automation and performance, all in one connected system.
+              <br />
+              Your CRM, website, apps and backend systems, all connected to WhatsApp through one platform VERTEX SUITE.
+            </p>
+          </Reveal>
 
-          <div className="mx-auto mt-14 grid w-full grid-cols-1 gap-4 lg:grid-cols-4">
+          <div className="mx-auto mt-14 grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
             {[
               { n: "1", label: "Business API Integration" },
               { n: "2", label: "Vertex Suite Platform" },
@@ -1747,9 +1627,16 @@ imageAlt: "WhatsApp voice and video calling experience",
               const column = systemFlowColumns[index];
 
               return (
-                <div
+                /* Reveal wraps the perspective element rather than replacing it —
+                   a transform on that node would flatten the card flip. */
+                <Reveal
                   key={n}
-                  className="relative h-[580px] w-full [perspective:1600px]"
+                  direction={index < 2 ? "left" : "right"}
+                  delay={index * 0.1}
+                  duration={0.65}
+                >
+                <div
+                  className="relative hidden h-[580px] w-full [perspective:1600px] md:block"
                 >
                   <motion.div
                     className="relative h-full w-full [transform-style:preserve-3d]"
@@ -1783,29 +1670,57 @@ imageAlt: "WhatsApp voice and video calling experience",
 
                     {/* BACK — white system card (auto-flips in place) */}
                     <div className="absolute inset-0 overflow-hidden rounded-[16px] [transform:rotateY(180deg)] [backface-visibility:hidden]">
-                      {column && <SystemColumnCard column={column} bgClass={index === 0 ? "bg-[#EEE2C8]" : index === 1 ? "bg-[#E1EFFF]" : index === 2 ? "bg-[#EAFBF1]" : "bg-[#E3E9FF]"} borderColor={index === 0 ? "#C99A3F" : index === 1 ? "#3B8CFF" : index === 2 ? "#00A63E" : "#94A6D6"} borderWidth={1} />}
+                      {column && <SystemColumnCard column={column} bgClass={index === 0 ? "bg-[#EAFBF1]" : index === 1 ? "bg-[#E1EFFF]" : index === 2 ? "bg-[#EAFBF1]" : "bg-[#E1EFFF]"} borderColor={index === 0 ? "#00A63E" : index === 1 ? "#3B8CFF" : index === 2 ? "#00A63E" : "#3B8CFF"} borderWidth={1} />}
                     </div>
                   </motion.div>
                 </div>
+
+                {/* MOBILE — show only the back (system) card, no flip */}
+                <div className="pt-8 md:hidden">
+                  {column && <SystemColumnCard column={column} bgClass={index === 0 ? "bg-[#EAFBF1]" : index === 1 ? "bg-[#E1EFFF]" : index === 2 ? "bg-[#EAFBF1]" : "bg-[#E1EFFF]"} borderColor={index === 0 ? "#00A63E" : index === 1 ? "#3B8CFF" : index === 2 ? "#00A63E" : "#3B8CFF"} borderWidth={1} />}
+                </div>
+                </Reveal>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* ===== Tagline sitting ON the Section 4 / Section 5 boundary ===== */}
-      <div className="relative z-20 h-0">
-        <p className="dancing-script-regular absolute left-1/2 top-0 w-full max-w-[1000px] -translate-x-1/2 -translate-y-1/2 px-4 text-center !text-[1.15rem] !leading-[1.1] text-[#B8BEC9] opacity-60 xl:!text-[1.3rem] max-md:!text-[1rem]">
-          A connected system is only part of the story, WhatsApp templates bring every customer experience to life.
-        </p>
-      </div>
+    
 
       <WhatsAppWorkflowCard />
 
       <WhatsAppFaqSection />
 
     </main>
+
+    {/* Phone: sticky CTA bar. Sits outside <main> so the page's overflow
+        clipping can never trap it. */}
+    <div
+      className={`fixed inset-x-0 bottom-0 z-40 flex gap-2.5 border-t border-[#D7E8E1] bg-white/95 px-3 py-2.5 shadow-[0_-8px_24px_rgba(7,27,77,0.14)] backdrop-blur-md transition-transform duration-300 md:hidden ${
+        showStickyCta ? "translate-y-0" : "translate-y-full"
+      }`}
+    >
+      <Link
+        to="/signup"
+        className="inline-flex flex-1 items-center justify-center gap-2 rounded-[9px]! border-2 border-green-600 bg-green-600 px-3 py-2.5 text-[0.9rem] font-semibold !text-white no-underline!"
+      >
+        <span>Start Free Trial</span>
+        <ArrowRight size={16} />
+      </Link>
+
+      <Link
+        to="/book-demo"
+        className="inline-flex flex-1 items-center justify-center gap-2 rounded-[9px]! border-2 border-green-600 bg-white px-3 py-2.5 text-[0.9rem] font-semibold !text-green-600 no-underline!"
+      >
+        <span>Book a Demo</span>
+        <CalendarDays size={18} strokeWidth={1.6} />
+      </Link>
+    </div>
+    </>
   );
+
+
 }
 
 const whatsappFaqs = [
@@ -1850,14 +1765,18 @@ function WhatsAppFaqSection() {
     <section className="relative overflow-hidden bg-white pt-[90px] pb-[90px] max-md:pt-[35px] max-md:pb-[60px]">
       <div className="mx-auto w-full max-w-[1450px] px-2">
         {/* Heading */}
-        <div className="mx-auto mb-8 max-w-[1200px] text-center">
-          <h1 className="text-center text-[clamp(2rem,4vw,3.4rem)] font-medium leading-[1.08] tracking-[-0.04em] text-[#111827]">
-            Frequently Asked Questions
-          </h1>
+        <div className="mx-auto mb-16 max-w-[1200px] text-center">
+          <Reveal>
+           <h2 className="mx-auto max-w-[1320px] text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-[1.15] tracking-tight text-[#111827]">
+              Frequently Asked Questions
+            </h2>
+          </Reveal>
 
-          <p className="mx-auto mt-4 max-w-none text-center !text-[1.12rem] font-medium leading-[1.75] text-[#5B6B84] md:whitespace-nowrap xl:!text-[1.2rem] max-md:!text-[1rem]">
-            Can’t find what you’re looking for? Our team is here to help you understand WhatsApp Business API and Vertex Suite better.
-          </p>
+          <Reveal delay={0.15}>
+            <p className="mx-auto mt-4 max-w-none text-center !text-[1.12rem] font-medium leading-[1.75] text-[#5B6B84] xl:whitespace-nowrap xl:!text-[1.2rem] max-md:!text-[1rem]">
+              Can’t find what you’re looking for? Our team is here to help you understand WhatsApp Business API and Vertex Suite better.
+            </p>
+          </Reveal>
         </div>
 
         {/* FAQ Accordion */}
@@ -1866,8 +1785,13 @@ function WhatsAppFaqSection() {
             const isOpen = activeFaq === index;
 
             return (
-              <div
+              <Reveal
                 key={index}
+                direction="center"
+                strength={0.6}
+                delay={index * 0.07}
+                duration={0.5}
+                amount={0.3}
                 className={`faq-moving-border group relative overflow-hidden rounded-[16px] border-none transition-all duration-300 ${
                   isOpen
                     ? "bg-white shadow-[0_14px_38px_rgba(15,23,42,0.055)]"
@@ -1879,35 +1803,25 @@ function WhatsAppFaqSection() {
                   onClick={() => setActiveFaq(isOpen ? null : index)}
                   className="relative z-10 flex w-full items-center justify-between gap-5 px-8 py-3.5 text-left max-md:px-5 max-md:py-3.5"
                 >
-                  {/* Right ke close button ko balance karne ke liye spacer */}
-                  {isOpen && (
-                    <span
-                      aria-hidden="true"
-                      className="h-10 w-10 shrink-0 max-md:h-9 max-md:w-9"
-                    />
-                  )}
-
                   <span
-                    className={`flex-1 text-[1.05rem] font-medium text-[#1F2937] max-md:text-[0.95rem] ${
-                      isOpen ? "text-center" : "text-left"
-                    }`}
+                    className="flex-1 text-left text-[1.05rem] font-medium text-[#111827] max-md:text-[0.95rem]"
                   >
                     {item.q}
                   </span>
 
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#111827] shadow-[0_8px_22px_rgba(15,23,42,0.08)] transition-all duration-300 max-md:h-9 max-md:w-9">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#111827] transition-all duration-300 max-md:h-9 max-md:w-9">
                     {isOpen ? <X size={18} /> : <Plus size={18} />}
                   </span>
                 </button>
 
                 {isOpen && (
                   <div className="relative z-10 px-8 pb-[26px] max-md:px-5">
-                    <p className="mx-auto !mb-0 max-w-[1050px] text-center text-[0.95rem] leading-[1.6] text-[#4B5563] max-md:text-[0.86rem]">
+                    <p className="!mb-0 max-w-[1050px] text-left text-[0.95rem] leading-[1.6] text-[#4B5563] max-md:text-[0.86rem]">
                       {item.a}
                     </p>
                   </div>
                 )}
-              </div>
+              </Reveal>
             );
           })}
         </div>

@@ -1,4 +1,4 @@
-
+﻿
 import React, { useState, useEffect, useRef } from "react";
 import Link from "../../components/AppLink";
 // import { } from "lucide-react";
@@ -6,25 +6,16 @@ import {
   motion,
   useScroll,
   useTransform,
-  useMotionValueEvent,
 } from "framer-motion";
+import Reveal from "../../components/Reveal";
 
 import {
-  Search,
-  CircleHelp,
-  ExternalLink,
-  Info,
-  Mail,
-  Phone,
   CheckCircle,
   Send,
   RefreshCw,
-  ListChecks,
   Code2,
   CalendarDays,
   ShieldCheck,
-  Zap,
-  ChevronDown,
   MousePointerClick,
   Package,
   BadgeCheck,
@@ -35,18 +26,22 @@ import {
   Truck,
   Bell,
   Headphones,
-  ArrowRight,
   SquarePen,
   CreditCard,
   Smartphone,
   MessageSquareText,
-  Plus, X 
+  Image as ImageIcon,
+  Check,
+  Plus, X,
+  Play,
+  Pause
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 import { pageContent } from "../../content/pageContent";
-import UniversalSlider from "../../components/UniversalSlider";
+import "./real-business-use-cases.css";
+import SendFlightPath from "../../components/SendFlightPath/SendFlightPath";
+import { RiH5 } from "react-icons/ri";
 
-/* ── Neon Arrow: dots appear 1-by-1, all vanish together, loop ── */
+/* â”€â”€ Neon Arrow: dots appear 1-by-1, all vanish together, loop â”€â”€ */
 const DOTS = 7;           // number of dash-dots
 const DOT_GAP = 14;       // px between dots
 const DOT_R = 2;          // radius of each dot
@@ -170,7 +165,28 @@ function NeonArrow() {
   );
 }
 
+/* Global base.css me unlayered `img { display: block }` hai, jo Tailwind ki
+   `hidden` utility ko cascade layer ki wajah se override kar deta hai. Isliye
+   merge-animation wali images ko CSS se chhupaya nahi ja sakta â€” mobile par
+   unhe render hi nahi karte. */
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
+    const update = () => setIsMobile(mq.matches);
+
+    update();
+    mq.addEventListener("change", update);
+
+    return () => mq.removeEventListener("change", update);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 function RCSImageMergeSection({ setIsMergeSectionActive }) {
+  const isMobile = useIsMobile();
   const mergeSectionRef = useRef(null);
   const leftImageRef = useRef(null);
   const rightImageRef = useRef(null);
@@ -183,7 +199,13 @@ function RCSImageMergeSection({ setIsMergeSectionActive }) {
   useEffect(() => {
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+    /* Tailwind ke `md` breakpoint (768px) ke saath aligned rakha hai, warna
+       exactly 768px par desktop layout dikhta aur wheel-lock band rehta. */
+    const isMobileView = () => window.innerWidth < 768;
+
     const applyAnimation = (progress) => {
+      /* Mobile par merge wali images render hi nahi hotin (stacked cards
+         dikhte hain), to refs null rehte hain. */
       if (!leftImageRef.current || !rightImageRef.current) return;
 
       const mergeAmount = Math.min(progress / 0.65, 1);
@@ -238,10 +260,8 @@ function RCSImageMergeSection({ setIsMergeSectionActive }) {
     };
 
     const handleWheel = (event) => {
-      const isMobile = window.innerWidth <= 768;
-
       // Mobile par normal scroll rakho, koi wheel-lock nahi
-      if (isMobile) return;
+      if (isMobileView()) return;
 
       if (!isSectionInFocus()) return;
 
@@ -315,11 +335,17 @@ function RCSImageMergeSection({ setIsMergeSectionActive }) {
       rafRef.current = requestAnimationFrame(animate);
     };
 
-    applyAnimation(0);
-    animate();
     handleMergeSectionVisibility();
 
-    window.addEventListener("wheel", handleWheel, { passive: false });
+    /* Phone par na merge-images hain aur na wheel-lock, isliye rAF loop bhi
+       mat chalao â€” warna har frame ek khaali callback scroll ko jerky karta
+       hai. */
+    if (!isMobile) {
+      applyAnimation(0);
+      animate();
+      window.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
     window.addEventListener("scroll", handleMergeSectionVisibility, {
       passive: true,
     });
@@ -338,47 +364,634 @@ function RCSImageMergeSection({ setIsMergeSectionActive }) {
         cancelAnimationFrame(rafRef.current);
       }
     };
-  }, [setIsMergeSectionActive]);
+  }, [setIsMergeSectionActive, isMobile]);
 
   return (
     <section
       ref={mergeSectionRef}
-      className="relative min-h-screen w-full overflow-hidden bg-white"
+      className="relative w-full overflow-hidden bg-white md:min-h-screen"
     >
-      <div className="relative flex min-h-screen w-full items-start justify-center overflow-hidden bg-white">
+      <div className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-white md:min-h-screen md:flex-row md:items-start">
         <div className="relative z-30 w-full px-6 pt-[75px] text-center">
-          <h1 className="mb-2 text-[clamp(2.4rem,4.2vw,4.2rem)] font-extrabold leading-tight tracking-tight text-black">
-            Understanding RCS:
-            <span className="text-[#0B5FC6]"> The Evolution of SMS</span>
-          </h1>
+          <Reveal>
+            <h2 className="mb-2 text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight tracking-tight text-black">
+              From SMS to RCS:
+              <span className="text-[#0B5FC6]"> The Evolution of Messaging</span>
+            </h2>
+          </Reveal>
 
-          <p className="mx-auto max-w-[1250px] text-center !text-[1.12rem] font-normal leading-[1.65] text-[#334155] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-            RCS is the next generation of SMS, enabling app-like messaging experiences in the native messaging inboxXno app download required.
-          </p>
+          <Reveal delay={0.15}>
+            <p className="mx-auto w-full max-w-[1250px] text-center !text-[1.12rem] font-normal leading-[1.65] text-[#334155] max-md:!text-[1rem] max-md:leading-[1.6] xl:!text-[1.2rem]">
+              The same messaging inbox, now built for interactive brand communication.
+            </p>
+          </Reveal>
         </div>
 
-        <img
-          ref={leftImageRef}
-          src="/assets/images/image-2.png"
-          alt="Left RCS visual"
-          className="absolute left-1/2 top-[59%] z-10 h-[70vh] max-h-[640px] w-auto max-w-[70vw] origin-center object-contain will-change-transform"
-        />
+        {/* Desktop: scroll-driven merge animation */}
+        {!isMobile && (
+          <>
+            <img
+              ref={leftImageRef}
+              src="/assets/images/image-2.png"
+              alt="Left RCS visual"
+              className="absolute left-1/2 top-[59%] z-10 h-[70vh] max-h-[640px] w-auto origin-center object-contain will-change-transform"
+              style={{ maxWidth: "70vw", transform: "translate(-50%, -50%)" }}
+            />
 
-        <img
-          ref={rightImageRef}
-          src="/assets/images/Rc2.png"
-          alt="Right RCS visual"
-          className="absolute left-1/2 top-[59%] z-20 h-[70vh] max-h-[640px] w-auto max-w-[70vw] origin-center object-contain will-change-transform"
-        />
+            <img
+              ref={rightImageRef}
+              src="/assets/images/Rc2.png"
+              alt="Right RCS visual"
+              className="absolute left-1/2 top-[59%] z-20 h-[70vh] max-h-[640px] w-auto origin-center object-contain will-change-transform"
+              style={{ maxWidth: "70vw", transform: "translate(-50%, -50%)" }}
+            />
+          </>
+        )}
+
+        {/* Mobile: dono cards stacked â€” pehle SMS wala, phir RCS wala */}
+        {isMobile && (
+          <div className="flex w-full flex-col items-center gap-10 px-6 pb-16 pt-10">
+            <Reveal className="w-full max-w-[300px]">
+              <img
+                src="/assets/images/image-2.png"
+                alt="SMS messaging inbox"
+                className="mx-auto h-auto w-full object-contain"
+              />
+            </Reveal>
+
+            <Reveal className="w-full max-w-[300px]" delay={0.15}>
+              <img
+                src="/assets/images/Rc2.png"
+                alt="RCS messaging inbox"
+                className="mx-auto h-auto w-full object-contain"
+              />
+            </Reveal>
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
+/* â”€â”€ How RCS Works: scroll-driven step cards â”€â”€
+   Ye components module scope par hain. RCS() ke andar rakhne se har render par
+   nayi function identity banti thi, jisse React inhe remount kar deta tha aur
+   Framer Motion ki values reset ho jaati thin (janky animation). */
+const safeRange = (start, end) => {
+  const safeStart = Math.min(Math.max(start, 0), 0.999);
+  const safeEnd = Math.min(Math.max(end, safeStart + 0.001), 1);
+
+  return [safeStart, safeEnd];
+};
+
+/* Content pinned rehta hai, to poora 0-1 range cards ke liye available hai.
+   Card 1 static hai, isliye sequence card 2 se shuru hoti hai. */
+const getCardTiming = (index) => {
+  if (index === 0) {
+    return { start: 0, end: 0.04 };
+  }
+
+  const step = index - 1;
+  const start = 0.03 + step * 0.12;
+  const end = start + 0.38;
+
+  return { start, end };
+};
+
+function StepCard({ step, index, arr, scrollYProgress }) {
+  const Icon = step.icon;
+
+  /* Card 1 static hai; baaki cards niche se one-by-one aayenge */
+  const isStatic = index === 0;
+
+  const { start, end } = getCardTiming(index);
+  const [safeStart, safeEnd] = safeRange(start, end);
+
+  /* Initial staircase: har agla card pichhle card se thoda neeche. */
+  const cardStartDown = index === 0 ? 0 : 100 + (index - 1) * 30;
+
+  const y = useTransform(scrollYProgress, [safeStart, safeEnd], [cardStartDown, 0]);
+
+  const connectorStart = index * 0.14 + 0.18;
+  const connectorEnd = connectorStart + 0.22;
+
+  const [safeConnectorStart, safeConnectorEnd] = safeRange(
+    connectorStart,
+    connectorEnd
+  );
+
+  const connectorOpacity = useTransform(
+    scrollYProgress,
+    [safeConnectorStart, safeConnectorEnd],
+    [0, 1]
+  );
+
+  const connectorScaleX = useTransform(
+    scrollYProgress,
+    [safeConnectorStart, safeConnectorEnd],
+    [0, 1]
+  );
+
+  return (
+    <div
+      style={{ zIndex: 50 - index }}
+      className="smooth-card relative overflow-visible rounded-[14px] border border-[#D7DEE8] bg-white px-4 pb-7 pt-10 text-center transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(15,23,42,0.05)]"
+    >
+
+      <div className="mx-auto mb-6 mt-1 flex h-[72px] w-[72px] items-center justify-center rounded-full border border-[#D9E9FB] bg-white shadow-[0_0_0_5px_rgba(45,127,249,0.06)]">
+        <Icon size={30} strokeWidth={1.8} className={step.iconColor} />
+      </div>
+
+      {step.titlet && (
+        <h4 className="mx-auto mb-2 max-w-none whitespace-nowrap !text-[1.2rem] font-extrabold !leading-[0.80] text-[#111827]">
+          {step.titlet}
+        </h4>
+      )}
+
+      <h4 className="mx-auto mb-2 max-w-[170px] !text-[1.2rem] font-extrabold leading-[1.35] text-[#111827]">
+        {step.title}
+      </h4>
+
+      <p className="mb-0 min-h-[95px] !text-[1rem] leading-[1.7] text-[#64748B] max-md:min-h-0">
+        {step.desc}
+      </p>
+
+      <div
+        className={`absolute bottom-4 left-1/2 h-[3px] w-[54px] -translate-x-1/2 rounded-full ${step.bottomBar}`}
+      />
+    </div>
+  );
+}
+
+const useCasesData = [
+  {
+    id: "marketing",
+    tab: "Marketing",
+    titleLine1: "Marketing",
+    titleLine2: "Campaigns",
+    description: [
+      "Create visually rich promotional campaigns that capture attention directly inside the messaging inbox.",
+      "Businesses can showcase offers using images, product cards and swipeable carousels while enabling customers to take action instantly through interactive buttons.",
+    ],
+    label: "Typical campaign actions include:",
+    points: ["View product", "Explore offer", "Visit website", "Start conversation"],
+    images: ["AA.png", "AA2.png", "AA3.png"],
+  },
+  {
+    id: "appointment",
+    tab: "Appointment",
+    titleLine1: "Appointment & Service",
+    titleLine2: "Reminders",
+    description: [
+      "Send timely reminders and service updates that keep customers informed before, during and after a scheduled interaction.",
+      "Provide interactive reminder cards with appointment details, confirmation options, rescheduling flows and support actions.",
+    ],
+    label: "Examples include:",
+    points: ["Appointment confirmation", "Service reminders", "Reschedule option", "Support request"],
+    images: ["BB.png", "BB2.png", "BB3.png", "BB4.png", "BB5.png", "BB6.png", "BB7.png"],
+  },
+  {
+    id: "tracking",
+    tab: "Tracking",
+    titleLine1: "Order Updates &",
+    titleLine2: "Delivery Tracking",
+    description: [
+      "Send real-time updates that help customers stay informed about their purchases.",
+      "Replace plain SMS alerts with interactive cards containing delivery status, tracking options and support buttons.",
+    ],
+    label: "Examples include:",
+    points: ["Order confirmation", "Shipment updates", "Delivery tracking", "Service completion alert"],
+    images: ["CC.png", "CC1.png", "CC2.png", "CC3.png", "CC4.png", "CC5.png"],
+  },
+  {
+    id: "support",
+    tab: "Support",
+    titleLine1: "Customer Support",
+    titleLine2: "Interactions",
+    description: [
+      "Provide quick assistance directly within the messaging interface.",
+      "Customers can select predefined responses, request help or reach the right support option without calling or visiting a website.",
+    ],
+    label: "Support actions may include:",
+    points: ["Report an issue", "Speak to an agent", "Request a callback", "Access FAQs"],
+    images: ["DD.png", "DD1.png", "DD2.png", "DD3.png", "DD4.png"],
+  },
+  {
+    id: "travel",
+    tab: "Travel",
+    titleLine1: "Travel & Ticketing",
+    titleLine2: "Communication",
+    description: [
+      "Travel companies can deliver rich travel information in a single interactive message.",
+      "Passengers can view itinerary details, receive travel updates and access important information without navigating multiple apps.",
+    ],
+    label: "Examples include:",
+    points: ["Booking confirmations", "Travel reminders", "Boarding information", "Itinerary updates"],
+    images: ["EE.png", "EE2.png", "EE3.png", "EE4.png", "EE5.png", "EE6.png"],
+  },
+  {
+    id: "payments",
+    tab: "Payments",
+    titleLine1: "Payments & Billing",
+    titleLine2: "Notifications",
+    description: [
+      "Send secure billing updates, payment reminders and invoice notifications directly inside the messaging inbox.",
+      "Customers can review billing details, open invoices and complete payment-related actions through interactive buttons.",
+    ],
+    label: "Examples include:",
+    points: ["Payment reminders", "Invoice alerts", "Billing updates", "Payment confirmation"],
+    images: ["FF.png", "FF2.png", "FF3.png", "FF4.png"],
+  },
+];
+
+const useCaseIcons = {
+  marketing: "M8 17V9m4 8V5m4 12v-7M5 20h14M5 4h14",
+  appointment: "M7 3v3m10-3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Zm3 8h3v3H8v-3Z",
+  tracking: "M3 6h11v11H3V6Zm11 4h4l3 3v4h-7v-7ZM7 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z",
+  support: "M4 13v-2a8 8 0 0 1 16 0v2M4 13H2v5h4v-5H4Zm16 0h2v5h-4v-5h2Zm0 5c0 2-2 3-5 3",
+  travel: "m2 16 20-8-8 20-2-8-6 2 2-6-6-4Z",
+  payments: "M3 6h18v12H3V6Zm0 4h18M7 15h4",
+};
+
+function UseCaseIcon({ name }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d={useCaseIcons[name]} />
+    </svg>
+  );
+}
+
+function getUseCaseDepth(index, activeIndex, total) {
+  let diff = index - activeIndex;
+  if (diff > total / 2) diff -= total;
+  if (diff < -total / 2) diff += total;
+  return diff;
+}
+
+function RealBusinessUseCases({ assetBase = "/rcs-use-cases", autoRotateMs = 0 }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [mobileSlideDirection, setMobileSlideDirection] = useState("right");
+  const mobileUseCaseTouchX = useRef(null);
+  const isMobile = useIsMobile();
+  // While the stack is sliding every card keeps the same 3D transform so the
+  // browser can interpolate it; once it settles the front card drops to a flat
+  // 2D transform with no filter, which keeps its text crisp.
+  const [isSliding, setIsSliding] = useState(false);
+  // Lets the visitor stop the auto-rotation on a card they want to read.
+  const [isPaused, setIsPaused] = useState(false);
+  const asset = (name) => `${assetBase.replace(/\/$/, "")}/${name}`;
+
+  useEffect(() => {
+    setIsSliding(true);
+    const timer = setTimeout(() => setIsSliding(false), 700);
+    return () => clearTimeout(timer);
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (!autoRotateMs || isPaused || isMobile) return undefined;
+
+    const timer = setInterval(() => {
+      setActiveIndex((current) => (current + 1) % useCasesData.length);
+    }, autoRotateMs);
+
+    return () => clearInterval(timer);
+  }, [autoRotateMs, activeIndex, isPaused, isMobile]);
+
+  return (
+    <section className="rcs-cases" aria-labelledby="rcs-cases-title">
+      <div className="rcs-cases__container">
+        <header className="rcs-cases__header">
+          <Reveal>
+              <h2 className="mb-3 text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight !text-[Black]">
+                Real Business Use Cases for RCS Messaging
+              </h2>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p>
+              <span className="rcs-cases__lead-line">
+                RCS enables businesses to move beyond one-way notifications and create interactive messaging experiences across the entire customer journey.
+              </span>
+              <br />
+              Below are some of the most common ways organizations use RCS to engage their customers.
+            </p>
+          </Reveal>
+        </header>
+
+        {/* Mobile mirrors the compact swipe-card experience used above. */}
+        <div className="lg:hidden">
+          <div className="mb-3 flex items-center justify-between px-1">
+            <button
+              type="button"
+              aria-label="Previous use case"
+              disabled={activeIndex === 0}
+              onClick={() => {
+                setIsPaused(true);
+                setMobileSlideDirection("left");
+                setActiveIndex((current) => Math.max(0, current - 1));
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#0B5FC6]/35 bg-white text-xl text-[#0B5FC6] shadow-sm disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              â€¹
+            </button>
+            <span className="text-xs font-semibold text-[#42617E]">
+              Swipe to explore Â· {activeIndex + 1}/{useCasesData.length}
+            </span>
+            <button
+              type="button"
+              aria-label="Next use case"
+              disabled={activeIndex === useCasesData.length - 1}
+              onClick={() => {
+                setIsPaused(true);
+                setMobileSlideDirection("right");
+                setActiveIndex((current) =>
+                  Math.min(useCasesData.length - 1, current + 1)
+                );
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#0B5FC6]/35 bg-white text-xl text-[#0B5FC6] shadow-sm disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              â€º
+            </button>
+          </div>
+
+          {(() => {
+            const item = useCasesData[activeIndex];
+
+            return (
+              <Reveal
+                key={item.id}
+                direction={mobileSlideDirection}
+                strength={0.35}
+                duration={0.38}
+                className="overflow-hidden rounded-[24px] border border-[#D8EAFE] bg-[url('/assets/images/why-bg.webp')] bg-cover bg-center shadow-[0_18px_40px_rgba(15,23,42,0.12)]"
+                onTouchStart={(event) => {
+                  mobileUseCaseTouchX.current = event.touches[0]?.clientX ?? null;
+                }}
+                onTouchEnd={(event) => {
+                  if (mobileUseCaseTouchX.current === null) return;
+                  const endX =
+                    event.changedTouches[0]?.clientX ?? mobileUseCaseTouchX.current;
+                  const distance = endX - mobileUseCaseTouchX.current;
+                  mobileUseCaseTouchX.current = null;
+
+                  if (Math.abs(distance) < 45) return;
+                  setIsPaused(true);
+
+                  if (distance < 0 && activeIndex < useCasesData.length - 1) {
+                    setMobileSlideDirection("right");
+                    setActiveIndex((current) => current + 1);
+                  } else if (distance > 0 && activeIndex > 0) {
+                    setMobileSlideDirection("left");
+                    setActiveIndex((current) => current - 1);
+                  }
+                }}
+              >
+                <div className="p-5">
+                  <div className="mb-5 flex items-center gap-3 rounded-2xl border border-[#CFE2F6] bg-white/80 px-3 py-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#0B5FC6] text-white">
+                      <span className="h-5 w-5 [&_svg]:h-full [&_svg]:w-full [&_svg]:fill-none [&_svg]:stroke-current">
+                        <UseCaseIcon name={item.id} />
+                      </span>
+                    </span>
+                    <div>
+                      <span className="block text-[0.7rem] font-extrabold uppercase tracking-[0.08em] text-[#0B5FC6]">
+                        Use case
+                      </span>
+                      <span className="block text-[0.9rem] font-bold text-[#1E293B]">
+                        {item.tab}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="m-0 flex flex-col text-[1.65rem] font-extrabold leading-[1.12]">
+                    <span className="text-black">{item.titleLine1}</span>
+                    <span className="text-[#0B5FC6]">{item.titleLine2}</span>
+                  </h3>
+
+                  <div className="my-4 flex gap-1.5">
+                    <span className="h-1 w-9 rounded-full bg-[#0B5FC6]" />
+                    <span className="h-1 w-9 rounded-full bg-[#DCE7F2]" />
+                  </div>
+
+                  <div className="space-y-3">
+                    {item.description.map((text) => (
+                      <p
+                        key={text}
+                        className="m-0 text-[0.92rem] leading-[1.55] !text-black"
+                      >
+                        {text}
+                      </p>
+                    ))}
+                  </div>
+
+                  <strong className="mb-3 mt-5 block text-[0.9rem] text-black">
+                    {item.label}
+                  </strong>
+                  <div className="grid grid-cols-2 gap-2 max-[360px]:grid-cols-1">
+                    {item.points.map((point) => (
+                      <div
+                        key={point}
+                        className="flex min-h-11 items-center gap-2 rounded-xl border border-[#CFE2F6] bg-white/80 px-3 py-2 text-[0.8rem] font-semibold leading-[1.3] text-[#1E293B]"
+                      >
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#0B5FC6]" />
+                        {point}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })()}
+        </div>
+
+        <Reveal delay={0.3} className="rcs-cases__tabs max-lg:hidden" role="tablist" aria-label="RCS use cases">
+          <span
+            className="rcs-cases__progress"
+            style={{ width: `${(activeIndex / (useCasesData.length - 1)) * 100}%` }}
+          />
+          {useCasesData.map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={index === activeIndex}
+              aria-controls="rcs-use-case-panel"
+              className={index === activeIndex ? "is-active" : ""}
+              onClick={() => setActiveIndex(index)}
+            >
+              <span className="rcs-cases__icon"><UseCaseIcon name={item.id} /></span>
+              <span>{item.tab}</span>
+            </button>
+          ))}
+        </Reveal>
+
+        <div className="rcs-cases__stage max-lg:hidden">
+          {useCasesData.map((item, index) => {
+            const depth = getUseCaseDepth(index, activeIndex, useCasesData.length);
+            const isActive = depth === 0;
+            const level = Math.min(Math.abs(depth), 3);
+            const isHidden = level >= 3 || depth < 0;
+
+            return (
+              <article
+                key={item.id}
+                id={isActive ? "rcs-use-case-panel" : undefined}
+                className={`rcs-cases__panel rcs-cases__panel--${item.id} ${isActive ? "is-active" : ""} ${
+                  isActive && !isSliding ? "is-settled" : ""
+                }`}
+                role="tabpanel"
+                aria-hidden={!isActive}
+                onClick={() => !isActive && setActiveIndex(index)}
+                style={{
+                  transform:
+                    isActive && !isSliding
+                      ? "translate(-50%, -50%) translateX(-8%)"
+                      : `translate(-50%, -50%) translateX(${level * 17 - 8}%) translateZ(${level * -200}px) rotateY(${level * -9}deg) scale(${1 - level * 0.04})`,
+                  filter: isActive && !isSliding ? "none" : `blur(${level * 3}px)`,
+                  opacity: isHidden ? 0 : 1 - level * 0.22,
+                  zIndex: 10 - level,
+                  pointerEvents: isHidden ? "none" : "auto",
+                  cursor: isActive ? "default" : "pointer",
+                }}
+              >
+                <div className="rcs-cases__copy">
+                  <div className="rcs-cases__badge">
+                    <MessageSquareMore size={13} className="shrink-0" />
+                    <span>USE CASES</span>
+                  </div>
+
+                  <h3 className="rcs-cases__title">
+                    <span className="rcs-cases__title-line1">{item.titleLine1}</span>
+                    <span className="rcs-cases__title-line2">{item.titleLine2}</span>
+                  </h3>
+
+                  <div className="rcs-cases__bar">
+                    <span className="rcs-cases__bar-blue" />
+                    <span className="rcs-cases__bar-gray" />
+                  </div>
+
+                  <div className="rcs-cases__desc">
+                    {item.description.map((text, idx) => (
+                      <p key={idx}>{text}</p>
+                    ))}
+                  </div>
+
+                  <strong className="rcs-cases__label">{item.label}</strong>
+
+                  <ul className="rcs-cases__list">
+                    {item.points.map((point) => (
+                      <li key={point}>
+                        <span className="rcs-cases__bullet" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div
+                  className="rcs-cases__visual"
+                  aria-label={`${item.title} message examples`}
+                />
+              </article>
+            );
+          })}
+        </div>
+
+        {autoRotateMs ? (
+          <div className="rcs-cases__playpause max-lg:hidden">
+            <button
+              type="button"
+              onClick={() => setIsPaused((paused) => !paused)}
+              aria-pressed={isPaused}
+              aria-label={isPaused ? "Resume use case animation" : "Pause use case animation"}
+            >
+              {isPaused ? <Play size={19} /> : <Pause size={19} />}
+              <span>{isPaused ? "Resume" : "Pause"}</span>
+            </button>
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+/* Blue arrow + label that draws in on scroll: arrow animates first, then the
+   text below it fades up. flipX / flipY orient the arrow toward the image. */
+function WhyArrowCallout({
+  text,
+  className = "",
+  labelClassName = "",
+  flipX = false,
+  flipY = false,
+  delay = 0,
+  /* Lengthens only the arrow â€” the label keeps its own size, so the text can
+     stay clear of the phone while the tip still reaches its target. */
+  size = 1,
+  /* Screen-space tilt applied after the flips, so each arrow can meet its
+     target at the angle it needs (flat for the header, steep for the cards). */
+  rotate = 0,
+  /* Shaft weight in rendered px. Divided by size below so every callout keeps
+     the same line weight no matter how long its arrow is. */
+  stroke = 2.4,
+  /* Drops just the tail end of the arc (viewBox units), deepening the curve
+     without touching the tip â€” so the callout keeps pointing where it does. */
+  tailDrop = 0,
+}) {
+  const viewport = { once: true, amount: 0.5 };
+  const svgTransform = `${rotate ? `rotate(${rotate}deg) ` : ""}${flipX ? "scaleX(-1) " : ""}${flipY ? "scaleY(-1)" : ""}`.trim();
+  const strokeWidth = stroke / size;
+
+  return (
+    <div
+      className={`pointer-events-none absolute z-30 ${className}`}
+      style={{ width: 100 * size, height: 56 * size }}
+    >
+      <motion.svg
+        width={100 * size} height={56 * size} viewBox="0 0 100 56" fill="none"
+        style={{ transform: svgTransform || undefined }}
+      >
+        {/* shaft â€” one clean sweeping arc (no S-wiggle), run all the way to the
+           tip so the head grows straight out of it */}
+        <motion.path
+          d={`M6 ${10 + tailDrop} Q 58 8, 83.5 44.6`}
+          stroke="#1d7bf4" strokeWidth={strokeWidth} strokeLinecap="round" fill="none"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={viewport}
+          transition={{ duration: 0.65, delay, ease: "easeInOut" }}
+        />
+        {/* head â€” an open chevron drawn in the same weight as the shaft, its two
+           barbs swept back 38Â° from the arc's end tangent */}
+        <motion.path
+          d="M84.2 31.6 L 83.5 44.6 L 71 40.8"
+          fill="none" stroke="#1d7bf4" strokeWidth={strokeWidth}
+          strokeLinecap="round" strokeLinejoin="round"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={viewport}
+          transition={{ duration: 0.2, delay: delay + 0.6 }}
+        />
+      </motion.svg>
+
+      <motion.span
+        className={`absolute whitespace-nowrap text-[15px] font-semibold tracking-tight text-[#1d7bf4] ${labelClassName}`}
+        initial={{ opacity: 0, y: 8 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={viewport}
+        transition={{ duration: 0.35, delay: delay + 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {text}
+      </motion.span>
+    </div>
+  );
+}
+
 function RCS() {
+  const isMobile = useIsMobile();
   const [activeFaq, setActiveFaq] = useState(null);
   const [activeTimeline, setActiveTimeline] = useState(0);
   const [activeBuildCard, setActiveBuildCard] = useState(0);
+  const [buildSlideDirection, setBuildSlideDirection] = useState("right");
+  const mobileBuildTouchX = useRef(null);
   const timelineItems = [
     {
       title: "Marketing",
@@ -946,238 +1559,54 @@ function RCS() {
     offset: ["start start", "end end"],
   });
 
-  const safeRange = (start, end) => {
-    const safeStart = Math.min(Math.max(start, 0), 0.999);
-    const safeEnd = Math.min(Math.max(end, safeStart + 0.001), 1);
-
-    return [safeStart, safeEnd];
-  };
-
-  const STEP_GAP = 0.07;
-  const STEP_DURATION = 0.28;
-  const STAIR_GAP = 58;
-
-  const getStepStart = (index) => index * STEP_GAP;
-  const getStepEnd = (index) => getStepStart(index) + STEP_DURATION;
-  /* Slow page scroll only when How RCS cards section is visible */
-  /* Content pinned rehta hai, to poora 0-1 range cards ke liye available hai.
-     Aakhri card 0.90 par settle hota hai, uske baad page aage scroll hota hai. */
-  const getCardTiming = (index) => {
-    const start = 0.06 + index * 0.13;
-    const end = start + 0.25;
-
-    return { start, end };
-  };
-
-
-  //////////////////////////////////////
-  function StepCard({ step, index, arr, scrollYProgress }) {
-    const Icon = step.icon;
-
-    /* saare cards niche se one-by-one aayenge */
-    const { start, end } = getCardTiming(index);
-    const [safeStart, safeEnd] = safeRange(start, end);
-
-    /* cards ko aur niche se start karane ke liye */
-    const cardStartDown = 240;
-
-    const y = useTransform(
-      scrollYProgress,
-      [safeStart, safeEnd],
-      [cardStartDown, 0]
-    );
-
-    const connectorStart = index * 0.13 + 0.20;
-    const connectorEnd = connectorStart + 0.22;
-
-    const [safeConnectorStart, safeConnectorEnd] = safeRange(
-      connectorStart,
-      connectorEnd
-    );
-
-    const connectorOpacity = useTransform(
-      scrollYProgress,
-      [safeConnectorStart, safeConnectorEnd],
-      [0, 1]
-    );
-
-    const connectorScaleX = useTransform(
-      scrollYProgress,
-      [safeConnectorStart, safeConnectorEnd],
-      [0, 1]
-    );
-
-    return (
-      <motion.div
-        style={{ y, zIndex: 50 - index }}
-        className="smooth-card relative overflow-visible rounded-[14px] border border-[#D7DEE8] bg-white px-4 pb-7 pt-10 text-center transition-shadow duration-300 hover:shadow-[0_14px_30px_rgba(15,23,42,0.05)]"
-      >
-        {index !== arr.length - 1 && (
-          <motion.div
-            className="pointer-events-none absolute left-[calc(100%-10px)] top-[82px] z-[9999] hidden h-[22px] w-[70px] origin-left max-xl:hidden"
-            style={{
-              opacity: connectorOpacity,
-              scaleX: connectorScaleX,
-            }}
-          >
-            <div className="neon-card-connector absolute left-0 top-1/2 h-[3px] w-full -translate-y-1/2" />
-
-            <span className="absolute right-[-3px] top-1/2 z-[5] h-0 w-0 -translate-y-1/2 border-y-[6px] border-l-[10px] border-y-transparent border-l-[#20D9FF] drop-shadow-[0_0_8px_rgba(32,217,255,0.95)]" />
-
-            <span className="neon-card-dot absolute top-1/2 h-[7px] w-[7px] -translate-y-1/2 rounded-full bg-[#20D9FF]" />
-          </motion.div>
-        )}
-
-        <div className="mx-auto mb-6 mt-1 flex h-[86px] w-[86px] items-center justify-center rounded-full border border-[#D9E9FB] bg-white shadow-[0_0_0_7px_rgba(45,127,249,0.06)]">
-          <Icon size={34} strokeWidth={1.8} className={step.iconColor} />
-        </div>
-
-        {step.titlet && (
-          <h4 className="mx-auto mb-2 max-w-none whitespace-nowrap !text-[1.2rem] font-extrabold !leading-[0.80] text-[#111827]">
-            {step.titlet}
-          </h4>
-        )}
-
-        <h4 className="mx-auto mb-2 max-w-[170px] !text-[1.2rem] font-extrabold leading-[1.35] text-[#111827]">
-          {step.title}
-        </h4>
-
-        <p className="mb-0 min-h-[95px] !text-[1rem] leading-[1.7] text-[#64748B] max-md:min-h-0">
-          {step.desc}
-        </p>
-
-        <div
-          className={`absolute bottom-4 left-1/2 h-[3px] w-[54px] -translate-x-1/2 rounded-full ${step.bottomBar}`}
-        />
-      </motion.div>
-    );
-  }
-
-  /////////////////////////////
-  // dotted lines logic in waving cards 
-  function StepDot({ dotIndex, scrollYProgress, buildStart }) {
-    const dotAppearStart = buildStart + dotIndex * 0.008;
-    const dotAppearEnd = dotAppearStart + 0.012;
-
-    const [safeDotStart, safeDotEnd] = safeRange(dotAppearStart, dotAppearEnd);
-
-    const opacity = useTransform(
-      scrollYProgress,
-      [safeDotStart, safeDotEnd],
-      [0, 1]
-    );
-
-    const scale = useTransform(
-      scrollYProgress,
-      [safeDotStart, safeDotEnd],
-      [0.35, 1]
-    );
-
-    return (
-      <motion.span
-        style={{ opacity, scale }}
-        className="h-[4px] w-[4px] rounded-full bg-[#CFCFCF]"
-      />
-    );
-  }
-
-  function StepTopNumber({ index, total, scrollYProgress }) {
-    const number = String(index + 1).padStart(2, "0");
-
-    const { end: cardEnd } = getCardTiming(index);
-
-    /* Number tabhi aaye jab uska card align ho jaaye, aur phir tika rahe */
-    const [safeNumberStart, safeNumberEnd] = safeRange(
-      cardEnd - 0.05,
-      cardEnd
-    );
-
-    const numberOpacity = useTransform(
-      scrollYProgress,
-      [safeNumberStart, safeNumberEnd],
-      [0, 1]
-    );
-
-    const numberScale = useTransform(
-      scrollYProgress,
-      [safeNumberStart, safeNumberEnd],
-      [0.75, 1]
-    );
-
-    const dots = 11;
-
-    const nextTiming = index < total - 1 ? getCardTiming(index + 1) : null;
-
-    /* Dots next card ke landing tak banenge */
-    const buildStart = nextTiming ? nextTiming.end - 0.10 : 1;
-
-    return (
-      <div className="relative flex h-[70px] items-center justify-center">
-        <motion.div
-          style={{ opacity: numberOpacity, scale: numberScale }}
-          className="relative z-20 flex h-[58px] w-[58px] items-center justify-center rounded-full border border-[#D8D8D8] bg-white text-[1.05rem] font-semibold text-[#3A3A3A] shadow-[0_3px_8px_rgba(0,0,0,0.06)]"
-        >
-          {number}
-        </motion.div>
-
-        {index !== total - 1 && (
-          <div className="absolute left-[calc(50%+34px)] top-1/2 z-10 flex h-[8px] w-[calc(100%-68px)] -translate-y-1/2 items-center justify-between">
-            {Array.from({ length: dots }).map((_, dotIndex) => (
-              <StepDot
-                key={dotIndex}
-                dotIndex={dotIndex}
-                scrollYProgress={scrollYProgress}
-                buildStart={buildStart}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  }
+  /* Blue strip stays solid and moves up with the final staircase card. */
+  const businessStripY = useTransform(
+    scrollYProgress,
+    [0.51, 0.89],
+    [150, 0]
+  );
 
   const rcsSteps = [
     {
-      titlet: "Create & Configure",
-      title: "Messages",
-      desc: "Build rich, branded messages with images, videos, product cards and interactive buttons.",
+      title: "Create the Experience",
+      desc: "Configure the audience, content, media, actions, and delivery timing.",
       icon: SquarePen,
       iconColor: "text-[#2D7FF9]",
       bottomBar: "bg-[#2D7FF9]",
     },
     {
-      title: "Send via RCS Network",
-      desc: "Route the message securely through the RCS network for delivery.",
+      title: "Trigger the Message",
+      desc: "Launch the message manually, through campaigns, or automated business events.",
       icon: Send,
       iconColor: "text-[#2D7FF9]",
       bottomBar: "bg-[#2D7FF9]",
     },
     {
-      title: "Deliver to Phone",
-      desc: "Messages arrive in the native messaging inbox on supported devices.",
+      title: "Check RCS Availability",
+      desc: "The system verifies whether the customerâ€™s device and network support RCS.",
       icon: Smartphone,
       iconColor: "text-[#2BA9D9]",
       bottomBar: "bg-[#2BA9D9]",
     },
     {
-      title: "Customer Interaction",
-      desc: "Users tap buttons, browse offers, reply instantly and complete actions.",
+      title: "Deliver to the Inbox",
+      desc: "Eligible customers receive a branded, interactive message in their native inbox.",
       icon: MessageSquareText,
       iconColor: "text-[#45A5E8]",
       bottomBar: "bg-[#2D7FF9]",
     },
     {
-      title: "Analytics Captured",
-      desc: "Track delivery, reads, clicks and engagement in real time.",
+      title: "Customer Takes Action",
+      desc: "Customers can browse, respond, confirm, track, book, or pay directly.",
       icon: BarChart3,
-      iconColor: "text-[#7A68F5]",
+      iconColor: "text-[#2D7FF9]",
       bottomBar: "bg-[#2D7FF9]",
     },
     {
-      title: "SMS Fallback",
-      desc: "If RCS is unavailable, the message is sent through SMS fallback.",
+      title: "Capture the Outcome",
+      desc: "Track delivery, engagement, button clicks, responses, and completed customer actions.",
       icon: RefreshCw,
-      iconColor: "text-[#9B7AF7]",
+      iconColor: "text-[#2D7FF9]",
       bottomBar: "bg-[#2D7FF9]",
     },
   ];
@@ -1192,24 +1621,25 @@ function RCS() {
     {
       title: "Rich Product Conversations",
       tag: "Product Cards",
-      heading: "Showcase Products with",
-      highlight: "Rich Visual Conversations",
-      desc: "Customers can scroll through items, view details and take action instantly X all within the chat interface.",
+      heading: "Showcase products, services, or offers using",
+      highlight: "visual message cards.",
+      headingSize: "!text-[20px] !font-normal",
+      desc: "Customers can scroll through items, view details, and take action instantly all within the chat interface.",
       visualTitle: "Eco-friendly Running Shoes",
-      visualSub: "₹658",
+      visualSub: "â‚¹658",
       visualDesc: "Lightweight, breathable & made from recycled materials.",
       cta: "View Product",
       points: ["View product", "Book service", "Claim offer", "Browse catalog"],
       bg: "linear-gradient(135deg, #124E8C 0%, #33B5FA 100%)",
       icon: Package,
 
-      customImage: "/assets/images/slide-card-01.png",
-      imageWidth: "280px",
-      imageTop: "100px",
-      imageScale: 0.95,
+      customImage: "/assets/images/011 (1).png",
+      imageWidth: "310px",
+      imageTop: "20px",
+      imageScale: 1.18,
       imageX: "-5px",
 
-      headingSize: "text-[clamp(20px,2.05vw,32px)]",
+      headingSize: "!text-[20px] !font-normal",
       descSize: "!text-[18px]",
       pointSize: "!text-[15px]",
       visualWidth: "max-w-[250px]",
@@ -1220,24 +1650,24 @@ function RCS() {
     {
       title: "One-Tap Customer Actions",
       tag: "Interactive Buttons",
-      heading: "Remove Friction with",
-      highlight: "One-Tap Actions",
-      desc: "Remove friction from customer interactions with interactive message buttons. Instead of typing responses, users can simply tap.",
+      heading: "Remove friction from customer interactions with",
+      highlight: "interactive message buttons.",
+      desc: "This makes every interaction faster, easier, and improves response rates.",
       visualTitle: "Order #VTX12345",
       visualSub: "Out for delivery",
-      visualDesc: "Your order will arrive today between 2:00–4:00 PM.",
+      visualDesc: "Your order will arrive today between 2:00â€“4:00 PM.",
       cta: "Track Delivery",
       points: ["Confirm Appointment", "Track Delivery", "Pay Now", "Contact Support"],
       bg: "linear-gradient(135deg, #124E8C 0%, #33B5FA 100%)",
       icon: MousePointerClick,
 
       customImage: "/assets/images/slide-card-02.png",
-      imageWidth: "300px",
-      imageTop: "225px",
-      imageScale: 1.3,
-      imageX: "-70px",
+      imageWidth: "310px",
+      imageTop: "20px",
+      imageScale: 1,
+      imageX: "-5px",
 
-      headingSize: "text-[clamp(20px,2.05vw,32px)]",
+      headingSize: "!text-[20px] !font-normal",
       descSize: "!text-[18px]",
       pointSize: "!text-[15px]",
       visualWidth: "max-w-[250px]",
@@ -1248,14 +1678,14 @@ function RCS() {
     {
       title: "Branded Messaging Experiences",
       tag: "Verified Identity",
-      heading: "Build Trust with",
-      highlight: "Branded Messaging",
-      desc: "Every message is delivered with a verified business identity. Customers immediately recognize trusted communications and engage more confidently.",
+      heading: "Every message is delivered with a",
+      highlight: "verified business identity.",
+      desc: "Customers recognize official communication and engage with more confidence.",
       visualTitle: "Elite Tech",
       visualSub: "Verified Business",
       visualDesc: "Luxury Watches, Now in a More Interactive Experience.",
       cta: "Verified",
-      points: ["Logo", "Business name", "Verification badge"],
+      points: ["Logo", "Business name", "Verification badge", "Official business profile"],
       bg: "linear-gradient(135deg, #124E8C 0%, #33B5FA 100%)",
       icon: BadgeCheck,
 
@@ -1265,7 +1695,7 @@ function RCS() {
       imageScale: 1.7,
       imageX: "-100px",
 
-      headingSize: "text-[clamp(20px,2.05vw,32px)]",
+      headingSize: "!text-[20px] !font-normal",
       descSize: "!text-[18px]",
       pointSize: "!text-[15px]",
       visualWidth: "max-w-[250px]",
@@ -1276,11 +1706,12 @@ function RCS() {
     {
       title: "Swipeable Content & Offers",
       tag: "Carousel Messaging",
-      heading: "Send Swipeable",
-      highlight: "Content & Offers",
-      desc: "Send carousel messages that allow users to swipe through multiple cards in a single message. Each card can contain its own image, text and call-to-action button.",
+      heading: "Send",
+      highlight: "carousel messages",
+      headingAfter: "that allow users to swipe through multiple cards in a single message.",
+      desc: "Each card can contain its own image, text, and call-to-action button.",
       visualTitle: "Goa Beach Retreat",
-      visualSub: "From ₹18,000",
+      visualSub: "From â‚¹18,000",
       visualDesc: "Explore travel packages, offers and service options.",
       cta: "Book Now",
       points: ["Product catalogs", "Travel packages", "Promotional campaigns", "Service options"],
@@ -1293,7 +1724,7 @@ function RCS() {
       imageScale: 1.5,
       imageX: "-55px",
 
-      headingSize: "text-[clamp(20px,2.05vw,32px)]",
+      headingSize: "!text-[20px] !font-normal",
       descSize: "!text-[18px]",
       pointSize: "!text-[15px]",
       visualWidth: "max-w-[250px]",
@@ -1304,9 +1735,9 @@ function RCS() {
     {
       title: "Engagement Signals & Insights",
       tag: "Messaging Analytics",
-      heading: "Track Real-Time",
-      highlight: "Engagement Insights",
-      desc: "Unlike traditional SMS, RCS messaging provides real engagement data. This helps teams understand customer behavior and optimize messaging strategies.",
+      heading: "Unlike traditional SMS, RCS messaging provides real engagement data.",
+      highlight: "",
+      desc: "This helps teams understand customer behavior and optimize messaging strategies.",
       visualTitle: "Delivery Rate",
       visualSub: "98%",
       visualDesc: "9,800 / 10,000 delivered with click-through and interaction data.",
@@ -1322,7 +1753,7 @@ function RCS() {
       imageScale: 1.8,
       imageX: "-250px",
 
-      headingSize: "text-[clamp(20px,2.05vw,32px)]",
+      headingSize: "!text-[20px] !font-normal",
       descSize: "!text-[18px]",
       pointSize: "!text-[15px]",
       visualWidth: "max-w-[250px]",
@@ -1333,14 +1764,19 @@ function RCS() {
     {
       title: "Universal Message Delivery",
       tag: "SMS Fallback",
-      heading: "Deliver Every Message with",
-      highlight: "Universal Fallback",
-      desc: "If a user’s device or network doesn’t support RCS, the system automatically switches to SMS fallback while RCS-enabled users enjoy the full interactive experience.",
-      visualTitle: "RCS Payload → SMS Fallback",
+      heading: "If a userâ€™s device or network doesnâ€™t support RCS, the system automatically switches to",
+      highlight: "SMS fallback.",
+      desc: "This ensures that messages are still delivered, while RCS-enabled users enjoy the full interactive experience.",
+      visualTitle: "RCS Payload â†’ SMS Fallback",
       visualSub: "Text Message",
       visualDesc: "Messages are still delivered even when RCS is unavailable.",
       cta: "SMS Fallback",
-      points: ["RCS Experience", "SMS Fallback", "Reliable delivery", "No disruption"],
+      points: [
+        "RCS capability detection",
+        "Rich RCS delivery",
+        "Automatic SMS fallback",
+        "Wider device and network reach",
+      ],
       bg: "linear-gradient(135deg, #124E8C 0%, #33B5FA 100%)",
       icon: MessageSquareMore,
 
@@ -1350,7 +1786,7 @@ function RCS() {
       imageScale: 2.2,
       imageX: "-260px",
 
-      headingSize: "text-[clamp(20px,2.05vw,32px)]",
+      headingSize: "!text-[20px] !font-normal",
       descSize: "!text-[18px]",
       pointSize: "!text-[15px]",
       visualWidth: "max-w-[250px]",
@@ -1365,12 +1801,14 @@ function RCS() {
   };
 
   return (
-    <main className="rcs-page w-full overflow-x-visible bg-[#e0f7ff] text-slate-600">
+    /* overflow-x-clip (not hidden) contains stray width without breaking the
+       sticky "How RCS Works" runway. */
+    <main className="rcs-page w-full overflow-x-clip bg-[#e0f7ff] text-slate-600">
 
-      {/* ── 1. HERO SECTION ── */}
+      {/* â”€â”€ 1. HERO SECTION â”€â”€ */}
       {/* <section className="relative bg-white min-h-[900px] pt-[140px] pb-[80px] overflow-hidden"> */}
      <section
-  className="relative overflow-hidden bg-white bg-cover bg-center bg-no-repeat pt-[190px] pb-[60px] lg:min-h-[860px] max-lg:pt-[120px] max-lg:pb-[45px] max-md:pt-[75px] max-md:pb-[35px]"
+  className="relative overflow-hidden bg-white bg-cover bg-center bg-no-repeat pt-[95px] pb-[60px] lg:min-h-[860px] max-lg:pt-[80px] max-lg:pb-[45px] max-md:pt-[55px] max-md:pb-[35px]"
   style={{
     backgroundImage:
       'linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)), url("/assets/images/bggg.jpeg")',
@@ -1379,136 +1817,80 @@ function RCS() {
 
 
   <div className="container relative z-10">
-    <div className="relative grid grid-cols-1 items-start gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 max-lg:text-center">
+    <div className="relative flex flex-col items-center gap-5 text-center">
       {/* Left Content Column */}
-      <div className="mx-auto flex w-full max-w-[720px] flex-col gap-8 lg:mx-0 lg:-mt-20 xl:-mt-20 max-md:gap-5">
-        <div className="flex flex-col gap-1">
-          <h1 className="mb-0 w-full text-[clamp(2.05rem,8vw,4.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#0B5FC6] max-lg:whitespace-normal lg:whitespace-nowrap">
-           <span className="text-[#0B5FC6]">RCS</span> Business Messaging
-          </h1>
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center gap-2 max-md:gap-2">
+        <div className="flex flex-col gap-0">
+          <Reveal onMount delay={0}>
+            <h1 className="mb-0 w-full text-center text-[clamp(2.05rem,8vw,4.5rem)] !font-extrabold leading-[1.05] tracking-tight text-[#0B5FC6]">
+              <span className="text-[#0B5FC6]">RCS</span> Business Messaging
+            </h1>
+          </Reveal>
 
-          <h2 className="mt-0 mb-2 w-full text-[clamp(1.12rem,4.6vw,2.1rem)] font-bold leading-[1.3] text-[#334155] max-lg:whitespace-normal lg:whitespace-nowrap">
-            {rcsData.heroTagline
-              ? rcsData.heroTagline.replace("RCS Business Messaging ", "")
-              : "for Rich, Interactive Customer Conversations"}
-          </h2>
+          <Reveal onMount delay={0.15}>
+            <p className="mt-0 mb-2 w-full text-center text-[1.8rem]! font-bold! leading-[1.05] tracking-tight text-[#334155]">
+              {/* Brackets live here, not in the content file â€” heroTagline is
+                  also used for the page title/schema, which stays plain. */}
+              {`${
+                rcsData.heroTagline
+                  ? rcsData.heroTagline.replace("RCS Business Messaging ", "")
+                  : "for Rich, Interactive Customer Conversations"
+              } `}
+            </p>
+          </Reveal>
         </div>
 
-        <p className="w-full max-w-[680px] !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] max-lg:mx-auto xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-          {rcsData.heroDescription}
-        </p>
+        <Reveal onMount delay={0.3}>
+          <p className="mx-auto !mb-0 w-full max-w-[900px] text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
+            {rcsData.heroDescription}
+          </p>
+        </Reveal>
 
-        <ul className="mt-16 mb-6 flex list-none flex-col gap-[3.5px] p-0 max-lg:items-center">
-          <li className="flex items-start gap-3 text-[0.95rem] font-normal leading-[1.35] text-[#242424]">
-            <CheckCircle
-              className="shrink-0 text-[#0B5FC6]"
-              size={20}
-              strokeWidth={1}
-            />
-            <h6>Rich media messaging with images, videos and carousels</h6>
-          </li>
-
-          <li className="flex items-center gap-3 text-[0.95rem] font-normal leading-[1.1] text-[#242424]">
-            <CheckCircle
-              className="shrink-0 text-[#0B5FC6]"
-              size={20}
-              strokeWidth={1}
-            />
-            <h6>Interactive buttons & suggested replies</h6>
-          </li>
-
-          <li className="flex items-center gap-3 text-[0.95rem] font-normal leading-[1.1] text-[#242424]">
-            <CheckCircle
-              className="shrink-0 text-[#0B5FC6]"
-              size={20}
-              strokeWidth={1}
-            />
-            <h6>Verified brand identity inside the messaging app</h6>
-          </li>
-
-          <li className="flex items-center gap-3 text-[0.95rem] font-normal leading-[1.1] text-[#242424]">
-            <CheckCircle
-              className="shrink-0 text-[#0B5FC6]"
-              size={20}
-              strokeWidth={1}
-            />
-            <h6>Real-time engagement insights and analytics</h6>
-          </li>
-
-          <li className="flex items-center gap-3 text-[0.95rem] font-normal leading-[1.1] text-[#242424]">
-            <CheckCircle
-              className="shrink-0 text-[#0B5FC6]"
-              size={20}
-              strokeWidth={1}
-            />
-            <h6>Automatic SMS fallback for unsupported devices</h6>
-          </li>
-        </ul>
-
-        <div className="-mt-4 flex items-center gap-3 pt-0 max-lg:justify-center max-sm:flex-col">
-          {/* BUTTON 1 */}
-          <Link
-            to="/signup"
-            className="group inline-flex items-center gap-4.5 rounded-2xl border-2 border-transparent bg-[#0B5FC6] px-3 py-3 text-[1.05rem] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0B5FC6] hover:bg-white hover:!text-[#0B5FC6] hover:shadow-[0_12px_30px_rgba(14,165,233,0.22)]"
-          >
-            <Code2
-              size={28}
-              strokeWidth={2}
-              className="text-white transition-colors duration-300 group-hover:!text-[#0B5FC6]"
-            />
-
-            <span className="transition-colors duration-300 group-hover:text-[#0B5FC6]">
-              Start Building
-            </span>
-          </Link>
-
-          {/* BUTTON 2 */}
-          <Link
-            to="/book-demo"
-            className="group inline-flex items-center gap-3 rounded-2xl border-2 border-[#0B5FC6] bg-#0B5FC6 px-3 py-3 text-[1.05rem] font-semibold !text-[#0B5FC6] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0B5FC6] hover:text-white hover:shadow-[0_12px_30px_rgba(14,165,233,0.22)]"
-          >
-            <CalendarDays
-              size={28}
-              strokeWidth={2}
-              className="pointer-events-none text-[#0B5FC6] transition-colors duration-300 group-hover:text-white"
-            />
-
-            <span className="transition-colors duration-300 group-hover:text-white">
-              Request a Demo
-            </span>
-          </Link>
-        </div>
       </div>
 
       {/* Right Visual Column */}
-      <div className="flex w-full max-w-[700px] items-start justify-end gap-4 justify-self-end lg:-mt-8 lg:ml-auto lg:pt-1 max-lg:mx-auto max-lg:justify-center max-sm:max-w-[360px]">
+      <Reveal
+        onMount
+        delay={0.45}
+        direction="center"
+        duration={0.75}
+        className="mx-auto flex w-full max-w-[690px] items-start justify-center gap-4 max-sm:max-w-[340px]"
+      >
         <img
-          src="/assets/images/RC11.png"
+          src="/assets/images/Template%20create.webp"
           alt="RCS business messaging visual one"
-          className="mt-16 h-auto w-[45%] min-w-0 object-contain max-md:mt-8"
+          className="mt-6 h-auto w-[45%] min-w-0 object-contain max-md:mt-3"
         />
         <div className="flex shrink-0 flex-col items-center gap-1 self-center">
           <span className="whitespace-nowrap text-sm font-semibold text-[#0B5FC6] max-sm:text-xs">
             Rcs Message
           </span>
-          <span className="rounded-md bg-[#22C55E] px-2.5 py-1 text-xs font-semibold text-white max-sm:px-2 max-sm:text-[10px]">
-            Sent
-          </span>
-          <div className="relative z-10 -mx-7 flex w-[calc(100%+3.5rem)] translate-x-0.5 items-center text-[#0B5FC6] max-sm:-mx-4 max-sm:w-[calc(100%+2rem)]">
-            <span className="h-[3px] flex-1 bg-[#0B5FC6]" />
-            <ArrowRight size={30} strokeWidth={2.5} className="-ml-3 shrink-0" />
-          </div>
-          <CheckCircle
+           <CheckCircle
             size={36}
             strokeWidth={2}
             className="shrink-0 text-[#22C55E] max-sm:size-6"
           />
+          <SendFlightPath
+            color="#2588F0"
+            label="RCS message in flight"
+            className="pointer-events-none relative z-10 my-1 -mx-[38px] !w-[200px] max-w-none translate-x-[6px] -translate-y-[14px] max-sm:-mx-[22px] max-sm:!w-[130px]"
+          />
+         
         </div>
-        <img
-          src="/assets/images/RC12.png"
-          alt="RCS business messaging visual two"
-          className="h-auto w-[45%] min-w-0 object-contain"
-        />
+        <div className="relative w-[45%] min-w-0 translate-x-[10px]">
+          <img
+            src="/assets/images/RCS%20p.webp"
+            alt="RCS business messaging visual two"
+            className="h-auto w-full object-contain"
+          />
+          {/* Rich card, positioned inside the phone screen above the composer. */}
+          <img
+            src="/assets/images/Template.webp"
+            alt=""
+            aria-hidden="true"
+            className="send-flight-step-1 pointer-events-none absolute left-[8%] top-[24%] w-[62%] object-contain"
+          />
+        </div>
         {false && (
         <div
           className="hero-neon-flow-wrap relative flex min-h-[780px] w-full items-center justify-center overflow-visible max-lg:min-h-[760px] max-md:min-h-[980px]"
@@ -1677,7 +2059,7 @@ function RCS() {
             </div>
           </div>
 
-          <div className="hero-neon-success-check">✓</div>
+          <div className="hero-neon-success-check">âœ“</div>
 
           <style>
             {`
@@ -2107,15 +2489,149 @@ function RCS() {
           </style>
         </div>
         )}
-      </div>
+      </Reveal>
+
+      <ul className="mt-2 mb-0 grid w-full list-none grid-cols-5 gap-2 p-0 max-lg:grid-cols-2 max-sm:grid-cols-1">
+        {[
+          "Rich Media",
+          "Interactive buttons & suggested replies",
+          "Verified brand identity inside the messaging app",
+          "Real-time engagement insights and analytics",
+          "Automatic SMS fallback for unsupported devices",
+        ].map((feature, index) => (
+          <Reveal
+            as="li"
+            key={feature}
+            onMount
+            /* Outer boxes drift in from their own edge, the middle one grows. */
+            direction={index <= 1 ? "left" : index === 2 ? "center" : "right"}
+            delay={0.6 + index * 0.08}
+            duration={0.55}
+            className={`flex min-h-[82px] !mb-0 items-center gap-3 rounded-2xl border border-[#DDE9F7] bg-white/85 px-4 text-left text-[0.95rem] font-normal leading-[1.35] text-[#242424] shadow-[0_8px_24px_rgba(15,23,42,0.06)] ${index === 4 ? "max-lg:col-span-2 max-sm:col-span-1" : ""}`}
+          >
+            {index === 0 ? (
+              <>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF6FF] text-[#0B78F0] shadow-[0_4px_12px_rgba(11,95,198,0.12)]">
+                  <ImageIcon size={27} strokeWidth={2} />
+                </span>
+                <span>
+                  <strong className="block text-[1rem] font-bold text-[#111827]">
+                    Rich Media
+                  </strong>
+                  <span className="mt-1 block text-[0.82rem] leading-[1.35] text-[#5B667A]">
+                    Images, videos &amp; carousels
+                  </span>
+                </span>
+              </>
+            ) : index === 1 ? (
+              <>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF6FF] text-[#0B78F0] shadow-[0_4px_12px_rgba(11,95,198,0.12)]">
+                  <MousePointerClick size={27} strokeWidth={2} />
+                </span>
+                <span>
+                  <strong className="block text-[1rem] font-bold text-[#111827]">
+                    Interactive Actions
+                  </strong>
+                  <span className="mt-1 block text-[0.82rem] leading-[1.35] text-[#5B667A]">
+                    Buttons &amp; suggested replies
+                  </span>
+                </span>
+              </>
+            ) : index === 2 ? (
+              <>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF6FF] text-[#0B78F0] shadow-[0_4px_12px_rgba(11,95,198,0.12)]">
+                  <ShieldCheck size={27} strokeWidth={2} />
+                </span>
+                <span>
+                  <strong className="block text-[1rem] font-bold text-[#111827]">
+                    Verified Branding
+                  </strong>
+                  <span className="mt-1 block text-[0.82rem] leading-[1.35] text-[#5B667A]">
+                    Trusted brand identity
+                  </span>
+                </span>
+              </>
+            ) : index === 3 ? (
+              <>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF6FF] text-[#0B78F0] shadow-[0_4px_12px_rgba(11,95,198,0.12)]">
+                  <BarChart3 size={27} strokeWidth={2.3} />
+                </span>
+                <span>
+                  <strong className="block text-[1rem] font-bold text-[#111827]">
+                    Live Insights
+                  </strong>
+                  <span className="mt-1 block text-[0.82rem] leading-[1.35] text-[#5B667A]">
+                    Real-time engagement analytics
+                  </span>
+                </span>
+              </>
+            ) : index === 4 ? (
+              <>
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF6FF] text-[#0B78F0] shadow-[0_4px_12px_rgba(11,95,198,0.12)]">
+                  <MessageSquareMore size={27} strokeWidth={2} />
+                </span>
+                <span>
+                  <strong className="block text-[1rem] font-bold text-[#111827]">
+                    SMS Fallback
+                  </strong>
+                  <span className="mt-1 block text-[0.82rem] leading-[1.35] text-[#5B667A]">
+                    Automatic backup for unsupported devices
+                  </span>
+                </span>
+              </>
+            ) : (
+              <>
+                <CheckCircle
+                  className="shrink-0 text-[#0B5FC6]"
+                  size={20}
+                  strokeWidth={1}
+                />
+                <h6>{feature}</h6>
+              </>
+            )}
+          </Reveal>
+        ))}
+      </ul>
+
+      <Reveal
+        onMount
+        delay={1.05}
+        className="-mt-3 flex items-center justify-center gap-1.5 pt-0 max-sm:flex-col max-sm:gap-3"
+      >
+        <Link
+          to="/signup"
+          className="group inline-flex h-[60px] min-w-[250px] items-center justify-center gap-4.5 rounded-2xl border-2 border-transparent bg-[#0B5FC6] px-10 text-[15px] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:border-[#0B5FC6] hover:bg-white hover:!text-[#0B5FC6] hover:shadow-[0_12px_30px_rgba(14,165,233,0.22)]"
+        >
+          <Code2
+            size={28}
+            strokeWidth={2}
+            className="text-white transition-colors duration-300 group-hover:!text-[#0B5FC6]"
+          />
+          <span className="transition-colors duration-300 group-hover:text-[#0B5FC6]">
+            Start Building
+          </span>
+        </Link>
+
+        <Link
+          to="/book-demo"
+          className="group inline-flex h-[60px] min-w-[250px] items-center justify-center gap-3 rounded-2xl border-2 border-[#0B5FC6] bg-white px-10 text-[15px] font-semibold !text-[#0B5FC6] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0B5FC6] hover:text-white hover:shadow-[0_12px_30px_rgba(14,165,233,0.22)]"
+        >
+          <CalendarDays
+            size={28}
+            strokeWidth={2}
+            className="pointer-events-none text-[#0B5FC6] transition-colors duration-300 group-hover:text-white"
+          />
+          <span className="transition-colors duration-300 group-hover:text-white">
+            Request a Demo
+          </span>
+          
+        </Link>
+      </Reveal>
     </div>
   </div>
 </section>
 
-
-
-
-      {/* ── 3. IMAGE MERGE SECTION ── */}
+      {/* â”€â”€ 3. IMAGE MERGE SECTION â”€â”€ */}
       <div className="relative overflow-hidden bg-white">
   <RCSImageMergeSection />
 </div>
@@ -2126,36 +2642,104 @@ function RCS() {
 
 
 
-      {/* ── 4. WHY BUSINESSES ARE MOVING TO RCS ── */}
+      {/* â”€â”€ 4. WHY BUSINESSES ARE MOVING TO RCS â”€â”€ */}
       {/* <section className="relative bg-white min-h-[900px] pt-[20px] pb-[70px] overflow-hidden"> */}
-      <section className="relative overflow-hidden bg-[#f0f9ff] pt-[100px] pb-[110px]">
+      <section className="relative overflow-hidden bg-[#f0f9ff] pb-[140px] pt-[100px] max-md:pb-[56px] max-md:pt-[58px]">
 
         {/* Content */}
-        <div className="container relative z-10 flex h-full w-full flex-col pt-[10px]">
+        <div className="container relative z-10 flex h-full w-full flex-col pt-[10px] max-md:px-4 max-md:pt-0">
           {/* Header */}
-          <div className="relative z-30 w-full px-6 text-center">
-            <h1 className="text-[clamp(2.4rem,4.2vw,4.2rem)] font-extrabold leading-tight tracking-tight text-black mb-2">
-              Why Businesses Are Moving to RCS?
-            </h1>
+          <div className="relative z-30 w-full px-6 text-center max-md:px-0">
+            <Reveal>
+              <h2 className="mb-3 text-[clamp(1.65rem,7vw,2rem)] font-extrabold leading-[1.16] tracking-tight text-black">
+                Why Businesses are Moving to RCS?
+              </h2>
+            </Reveal>
 
-            <p className="mx-auto max-w-[1250px] text-center !text-[1.12rem] leading-[1.65] font-normal text-[#334155] !mb-0 xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-              RCS combines the reach of traditional messaging with the power of modern digital experiences.
-            </p>
-
-            <p className="mx-auto max-w-[1250px] text-center !text-[1.12rem] leading-[1.65] font-normal text-[#334155] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-              Rich, interactive conversations help businesses drive stronger engagement, faster responses and more customer action.
-            </p>
+            <Reveal delay={0.15}>
+              <p className="mx-auto !mb-0 max-w-[1250px] text-center !text-[1.12rem] font-normal leading-[1.65] text-[#334155] xl:!text-[1.2rem] max-md:!text-[0.95rem] max-md:leading-[1.55]">
+                RCS is like SMS upgraded for todayâ€™s customers with brand verification, images, buttons, carousels, and quick actions built right into the message.
+              </p>
+            </Reveal>
+{/* 
+            <Reveal delay={0.3}>
+              <p className="mx-auto max-w-[1250px] text-center !text-[1.12rem] leading-[1.65] font-normal text-[#334155] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
+                It helps businesses send messages that make it easier for customers to respond, explore, book, buy, or take action.
+              </p>
+            </Reveal> */}
           </div>
 
-          {/* Cards */}
-          <div className="mx-auto mt-[55px] grid w-full max-w-none grid-cols-1 gap-x-[30px] gap-y-[30px] md:grid-cols-2 lg:grid-cols-3">
+          {/* Left image space + right card grid */}
+          {/* The reserved image panel only splits the row from xl up â€” below
+              that it left the cards too narrow to read. */}
+          <div className="mx-auto mt-[55px] grid w-full max-w-[1600px] items-start gap-[40px] max-md:mt-8 max-md:gap-7 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="relative min-h-[560px] max-md:min-h-0 xl:block">
+              {/* Artwork and its callouts scale as one unit, so enlarging the
+                  image keeps every arrow on the point it marks. */}
+              <div className="relative h-full min-h-[560px] scale-[1] max-md:min-h-0">
+              <div
+                aria-label="RCS feature image"
+                className="h-full min-h-[560px] overflow-hidden rounded-[30px] max-md:min-h-0 max-md:rounded-[22px]"
+              >
+                <img
+                  src="/assets/images/RCS aa.webp"
+                  alt="RCS rich messaging preview"
+                  className="mx-auto h-full w-[80%] object-contain p-6 max-md:h-auto max-md:w-full max-md:p-0"
+                />
+              </div>
+
+              {/* Animated blue arrow + label callouts */}
+              <div className="max-md:hidden">
+              {/* Tip lands just outside the phone's left edge, aimed at the
+                  brand logo; label sits clear of the phone. */}
+              <WhyArrowCallout
+                text="Branded"
+                className="left-[8.2%] top-[16.4%]"
+                labelClassName="right-[105%] top-[21px]"
+                rotate={-17}
+                tailDrop={8}
+                delay={0}
+              />
+              <WhyArrowCallout
+                text="Verified"
+                className="left-[56.8%] top-[14.8%]"
+                labelClassName="left-[107%] -top-[7px]"
+                flipX
+                rotate={-5}
+                size={0.7}
+                delay={0.25}
+              />
+              <WhyArrowCallout
+                text="Interactive"
+                className="left-[0.2%] top-[51.2%]"
+                /* Label sits below the tail, clear of the arc, so the arrow can
+                   stay at the card's edge instead of running over the artwork. */
+                labelClassName="left-0 top-[50px]"
+                rotate={-30}
+                tailDrop={8}
+                delay={0.5}
+              />
+              <WhyArrowCallout
+                text="Rich Visuals"
+                className="left-[75%] top-[52.9%]"
+                labelClassName="right-[-45px] top-[38px]"
+                flipX
+                rotate={-10}
+                tailDrop={20}
+                delay={0.75}
+              />
+              </div>
+              </div>
+            </div>
+
+            <div className="grid min-w-0 grid-cols-1 gap-[12px] max-md:gap-4 md:auto-rows-[minmax(210px,auto)] md:grid-cols-6">
             {[
               {
-                title: "Rich Media",
-                desc: "Send images, videos, and product cards for more engaging messages.",
+                title: "Rich Media Messaging",
+                desc: "Send visually engaging messages with images, videos and product cards instead of plain text. This allows brands to showcase offers, services or updates in a far more compelling way.",
                 gradient: "from-[#11B7F0] to-[#075FEA]",
                 icon: (
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none">
+                  <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none">
                     <rect x="9" y="12" width="26" height="22" rx="4" stroke="white" strokeWidth="3" />
                     <path d="M12 30l7-7 5 5 4-4 7 7" stroke="white" strokeWidth="3" strokeLinecap="round" />
                     <circle cx="31" cy="18" r="2.5" fill="white" />
@@ -2165,11 +2749,11 @@ function RCS() {
                 ),
               },
               {
-                title: "Verified Identity",
-                desc: "Show your brand name, logo, and verification badge to build trust instantly.",
+                title: "Verified Brand Identity",
+                desc: "Display your brand name, logo and verification badge directly in the messaging inbox. Customers immediately recognize the sender, increasing trust and engagement.",
                 gradient: "from-[#24D39A] to-[#0274C9]",
                 icon: (
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none">
+                  <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none">
                     <path
                       d="M24 6l15 6v10.5C39 32 32.8 38.8 24 42 15.2 38.8 9 32 9 22.5V12l15-6z"
                       stroke="white"
@@ -2181,11 +2765,11 @@ function RCS() {
                 ),
               },
               {
-                title: "Interactive Chats",
-                desc: "Use buttons and suggested replies so customers can act faster.",
+                title: "Interactive Conversations",
+                desc: "Enable customers to take action instantly with suggested replies and clickable buttons. They can browse offers, confirm bookings or track orders without leaving the chat.",
                 gradient: "from-[#24D5E7] to-[#0B65E8]",
                 icon: (
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none">
+                  <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none">
                     <path d="M9 12h30v20H20l-11 8V12z" stroke="white" strokeWidth="3" strokeLinejoin="round" />
                     <circle cx="19" cy="22" r="2.2" fill="white" />
                     <circle cx="24" cy="22" r="2.2" fill="white" />
@@ -2194,11 +2778,11 @@ function RCS() {
                 ),
               },
               {
-                title: "Higher Engagement",
-                desc: "Rich messaging captures attention and improves response rates.",
+                title: "Higher Engagement Rates",
+                desc: "Rich visuals and interactive messaging naturally capture attention and encourage responses. This leads to better campaign performance compared to traditional SMS.",
                 gradient: "from-[#13C8E8] to-[#0767E8]",
                 icon: (
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none">
+                  <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none">
                     <path d="M10 37h28" stroke="white" strokeWidth="3" strokeLinecap="round" />
                     <path d="M15 33v-8M24 33V20M33 33V13" stroke="white" strokeWidth="3" strokeLinecap="round" />
                     <path d="M12 24l9-8 7 5 9-11" stroke="white" strokeWidth="3" strokeLinecap="round" />
@@ -2207,33 +2791,31 @@ function RCS() {
               },
               {
                 title: "Real-Time Insights",
-                desc: "Track delivery, reads, and interactions to improve campaigns.",
+                desc: "Track delivery, reads and user interactions to understand how customers engage with your messages. These insights help optimize future campaigns and communication strategies.",
                 gradient: "from-[#16CFE9] to-[#0865E9]",
                 icon: (
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none">
+                  <svg viewBox="0 0 48 48" className="h-10 w-10" fill="none">
                     <rect x="9" y="11" width="30" height="26" rx="4" stroke="white" strokeWidth="3" />
                     <path d="M15 31v-7M24 31V18M33 31v-12" stroke="white" strokeWidth="3" strokeLinecap="round" />
                     <path d="M15 21l8-5 7 4 6-8" stroke="white" strokeWidth="2.8" strokeLinecap="round" />
                   </svg>
                 ),
               },
-              {
-                title: "SMS Fallback",
-                desc: "If RCS is unavailable, messages automatically switch to SMS.",
-                gradient: "from-[#21C8E8] to-[#0B65E8]",
-                icon: (
-                  <svg viewBox="0 0 48 48" className="h-11 w-11" fill="none">
-                    <path d="M9 12h30v20H20l-11 8V12z" stroke="white" strokeWidth="3" strokeLinejoin="round" />
-                    <text x="15" y="27" fill="white" fontSize="10" fontWeight="800">
-                      SMS
-                    </text>
-                  </svg>
-                ),
-              },
             ].map((card, index) => (
-              <div
+              <Reveal
                 key={index}
-                className="group relative h-[190px] overflow-hidden rounded-[26px] border border-[#D7E8FA] bg-white px-8 py-7 transition-all duration-300"
+                /* Each card enters from the side it sits on in the grid:
+                   0 and 3 are the left column, 1, 2 and 4 the right.
+                   Mobile par cards ek hi column me stack hote hain â€” wahan
+                   side-slide janky lagta hai, isliye seedha subtle fade-up. */
+                direction={isMobile ? "up" : index === 0 || index === 3 ? "left" : "right"}
+                strength={isMobile ? 0.2 : 1}
+                duration={isMobile ? 0.3 : 0.6}
+                amount={isMobile ? 0.08 : 0.2}
+                /* Stack me har card apne scroll par khud trigger hota hai,
+                   isliye mobile par stagger nahi chahiye. */
+                delay={isMobile ? 0 : index * 0.09}
+                className={`group relative h-full min-w-0 overflow-hidden rounded-[26px] border border-[#D7E8FA] bg-white px-7 py-7 transition-all duration-300 max-md:h-auto max-md:min-h-0 max-md:rounded-[20px] max-md:px-5 max-md:py-5 max-md:transition-none ${index === 0 ? "md:col-span-2 md:row-span-2" : ""} ${index === 1 || index === 2 ? "md:col-span-4" : ""} ${index >= 3 ? "md:col-span-3 md:min-h-[260px]" : ""}`}
               >
                 {/* Animated left blue bar */}
                 <div className="absolute left-0 top-0 h-full w-[5px] bg-[#D7E8FA] transition-all duration-300 group-hover:w-[9px] group-hover:bg-gradient-to-b group-hover:from-[#145FEF] group-hover:to-[#08C6D8]" />
@@ -2244,158 +2826,102 @@ function RCS() {
                 {/* Hover glow */}
                 <div className="absolute right-6 top-6 h-16 w-16 rounded-full bg-[#EAF6FF]/70 opacity-0 blur-[2px] transition-opacity duration-300 group-hover:opacity-100" />
 
-                <div className="relative z-10 flex h-full items-center gap-6">
-                  <div
-                    className={`flex h-[68px] w-[68px] shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br ${card.gradient} shadow-[0_12px_25px_rgba(20,95,239,0.18)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-1`}
-                  >
-                    {card.icon}
+                <div className={`relative z-10 flex h-full flex-col text-left ${index === 0 || index === 1 || index === 2 ? "justify-start" : "justify-between"}`}>
+                  <div className={`flex min-w-0 gap-4 max-md:flex-row max-md:items-center ${index === 0 ? "flex-col items-start" : "items-center"}`}>
+                    <div
+                      className={`flex h-[47px] w-[47px] shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br ${card.gradient} shadow-[0_12px_25px_rgba(20,95,239,0.18)] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-1`}
+                    >
+                      <span
+                        className="rcs-why-icon-float flex items-center justify-center"
+                        style={{ animationDelay: `${index * 0.4}s` }}
+                      >
+                        {card.icon}
+                      </span>
+                    </div>
+
+                    <h5 className={`m-0 min-w-0 break-words text-[1.05rem] font-extrabold !leading-[1.25] text-[#111936] md:text-[13px] ${index === 3 ? "md:whitespace-nowrap" : ""}`}>
+                      {card.title}
+                    </h5>
                   </div>
 
-                  <div className="text-left">
-                    <h4 className="mb-2 text-[18px] font-extrabold leading-tight text-[#111936]">
-                      {card.title}
-                    </h4>
-
-                    <p className="text-left text-[1rem] font-normal leading-[1.35] text-[#242424]">
+                  <div className={`${index === 0 ? "mt-8 max-md:mt-4" : "mt-4"} text-left`}>
+                    <p className="m-0 break-words text-left text-[1rem] font-normal leading-[1.45] text-[#242424] max-md:text-[0.94rem] max-md:leading-[1.55]">
                       {card.desc}
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
+            </div>
           </div>
         </div>
+
+        <style>
+          {`
+      @keyframes rcsWhyIconFloat {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+
+      .rcs-why-icon-float {
+        animation: rcsWhyIconFloat 3.2s ease-in-out infinite;
+        will-change: transform;
+      }
+
+      @media (max-width: 767px) {
+        .rcs-why-icon-float {
+          animation: none;
+          will-change: auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .rcs-why-icon-float {
+          animation: none;
+        }
+      }
+    `}
+        </style>
       </section>
 
-
-
-      {/* 3 images section */}
-      <section className="relative overflow-hidden bg-white pt-[35px] pb-[140px] max-md:py-[55px]">
+      {/* â”€â”€ Automatic SMS Fallback (white bg) â”€â”€ */}
+      <section className="relative overflow-hidden bg-white pt-[90px] pb-[90px] max-md:py-[55px]">
+        {/* 3 images section - Seamless SMS Fallback */}
         <div className="container">
           {/* Section Heading */}
           <div className="mx-auto mb-0 max-w-[1450px] overflow-visible text-center max-md:mb-8">
-            <h1 className="m-2 text-[clamp(1.75rem,3vw,2.5rem)] font-extrabold leading-tight text-[#0B5FC6] max-md:text-[2rem]">
-              Seamless SMS Fallback
-            </h1>
+            <Reveal>
+              <h2 className="m-2 text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight text-[#0B5FC6] max-md:text-[2rem]">
+                Automatic SMS Fallback When RCS isnâ€™t Available
+              </h2>
+            </Reveal>
 
-            <p className="mx-auto !my-2 block max-w-[1250px] text-center !text-[1.12rem] font-normal !leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:!leading-[1.6]">
-              If a device or network does not support RCS, messages automatically fall back to SMS. This ensures{" "}
-              <br className="max-lg:hidden" />
-              your communication still reaches customers without disruption.
-            </p>
+            <Reveal delay={0.15}>
+              <p className="mx-auto !my-2 block max-w-[1250px] text-center !text-[1.12rem] font-normal !leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:!leading-[1.6]">
+                If a device or network does not support RCS, messages automatically fall back to SMS.{" "}
+                <br className="max-lg:hidden" />
+                This ensures your communication still reaches customers without disruption.
+              </p>
+            </Reveal>
           </div>
 
-          {/* Visual Area */}
-          <div className="sms-fallback-visual relative mx-auto w-full max-w-[1150px] overflow-visible lg:h-[520px] lg:translate-y-[5%]">
-            {/* Business Sends */}
-            <div className="sms-heading sms-heading-left absolute left-[-15.5%] top-[-2%] z-40 max-md:static max-md:mb-3 max-md:text-center">
-              <h4 className="!text-[18px] !text-[#0B5FC6] max-md:!text-[16px]">
-                Business Sends RCS Message
-              </h4>
-            </div>
-
-            <div className="sms-card sms-card-left absolute left-[-18.5%] top-[5%] w-[32%] overflow-visible p-[2px] max-md:static max-md:mx-auto max-md:w-full max-md:max-w-[280px]">
-              <img
-                src="/assets/images/A.png"
-                alt="Business sends RCS message"
-                className="block h-auto w-full object-contain"
-              />
-            </div>
-
-            {/* RCS Supported */}
-            <div className="sms-heading sms-heading-rich absolute right-[-10%] top-[-3%] z-40 max-md:static max-md:mb-3 max-md:mt-8 max-md:text-center">
-              <h4 className="!text-[18px] !text-[#3E8B7C] max-md:!text-[16px]">
-                RCS Supported - Rich
-              </h4>
-            </div>
-
-            <div className="sms-card sms-card-rich absolute right-[-17%] top-[4%] w-[30%] overflow-visible p-[2px] max-md:static max-md:mx-auto max-md:w-full max-md:max-w-[280px]">
-              <img
-                src="/assets/images/B.png"
-                alt="RCS supported rich card"
-                className="block h-auto w-full object-contain"
-              />
-            </div>
-
-            {/* Network Check */}
-            <div className="sms-card sms-card-check absolute left-[78%] top-[60%] w-[17%] -translate-x-1/2 -translate-y-1/2 overflow-visible max-md:static max-md:mx-auto max-md:my-8 max-md:w-full max-md:max-w-[135px] max-md:translate-x-0 max-md:translate-y-0">
-              <img
-                src="/assets/images/D.png"
-                alt="Network capability check"
-                className="block h-auto w-full object-contain"
-              />
-            </div>
-
-            {/* SMS Fallback */}
-            <div className="sms-heading sms-heading-fallback absolute bottom-[6%] right-[-7.8%] z-40 max-md:static max-md:mb-3 max-md:text-center">
-              <h4 className="!text-[18px] !text-[#F86967] max-md:!text-[16px]">
-                SMS Fallback Path
-              </h4>
-            </div>
-
-            <div className="sms-card sms-card-fallback absolute bottom-[-23.5%] right-[-17%] w-[29.9%] overflow-visible p-[1px] max-md:static max-md:mx-auto max-md:w-full max-md:max-w-[280px]">
-              <img
-                src="/assets/images/C.png"
-                alt="SMS fallback path"
-                className="block h-auto w-full object-contain"
-              />
-            </div>
-
-            {/* SVG Dotted Lines + Moving Balls - Desktop Only */}
-            <svg
-              className="absolute left-0 top-[-75px] h-[118%] w-full pointer-events-none max-md:hidden"
-              viewBox="0 0 1150 520"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <filter id="glow" x="-50%" y="-50%" width="350%" height="400%">
-                  <feGaussianBlur stdDeviation="1.4" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-
-              <path
-                id="upperPath"
-                d="M 155 320 C 220 320, 330 316, 470 300 C 650 278, 835 220, 1000 140"
-                fill="none"
-                stroke="#797c60ff"
-                strokeWidth="1.6"
-                strokeDasharray="4 8"
-                strokeLinecap="round"
-              />
-
-              <path
-                id="lowerPath"
-                d="M 155 320 C 220 320, 335 326, 475 345 C 655 372, 845 430, 1000 505"
-                fill="none"
-                stroke="#6F7D80"
-                strokeWidth="1.6"
-                strokeDasharray="4 8"
-                strokeLinecap="round"
-              />
-
-              <circle r="5.5" fill="#898989" strokeWidth="1">
-                <animateMotion dur="4.5s" begin="3.2s" repeatCount="indefinite" rotate="auto">
-                  <mpath href="#lowerPath" />
-                </animateMotion>
-              </circle>
-
-              <circle r="1" fill="#f0f9ff" strokeWidth="1" filter="url(#glow)">
-                <animateMotion dur="4s" begin="2s" repeatCount="indefinite" rotate="auto">
-                  <mpath href="#upperPath" />
-                </animateMotion>
-              </circle>
-
-              <circle r="5.5" fill="#0B5FC6" strokeWidth="1">
-                <animateMotion dur="3s" begin="0s" repeatCount="indefinite" rotate="auto">
-                  <mpath href="#upperPath" />
-                </animateMotion>
-              </circle>
-            </svg>
-          </div>
+          {/* Visual */}
+          <Reveal
+            direction="center"
+            delay={0.3}
+            duration={0.75}
+            className="mx-auto mt-10 w-full max-w-[1150px] max-md:mt-7"
+          >
+            <img
+              src="/assets/images/availa.webp"
+              alt="RCS message falling back to SMS when RCS is unavailable"
+              className="mx-auto h-full max-h-[575px] w-full -translate-x-[40px] object-contain max-md:max-h-[360px] max-md:translate-x-0"
+            />
+          </Reveal>
         </div>
       </section>
 
@@ -2403,22 +2929,141 @@ function RCS() {
 
 
 
-      {/* ── 5. WHAT YOU CAN BUILD WITH VERTEX RCS? ── */}
-      <section className="relative overflow-hidden bg-[#f0f9ff] min-h-[900px] py-[80px]">
-        <div className="mx-auto w-full max-w-[1500px] px-6">
+      {/* â”€â”€ 5. WHAT YOU CAN BUILD WITH VERTEX RCS? â”€â”€ */}
+      <section className="relative min-h-[900px] overflow-hidden bg-[#f0f9ff] py-[80px] max-md:min-h-0 max-md:py-[56px]">
+        <div className="mx-auto w-full max-w-[1500px] px-6 max-md:px-4">
           {/* Heading */}
-          <div className="mx-auto mb-12 max-w-[1500px] text-center overflow-visible max-md:mb-8">
-            <h1 className="text-[clamp(2.2rem,4.5vw,3.2rem)] font-extrabold leading-tight text-[#0B5FC6] whitespace-nowrap max-lg:whitespace-normal m-2">
-              What You Can Build with Vertex RCS?
-            </h1>
+          <div className="mx-auto mb-12 max-w-[1500px] overflow-visible text-center max-md:mb-7">
+            <Reveal>
+              <h2 className="m-2 whitespace-nowrap text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight text-[#0B5FC6] max-lg:whitespace-normal max-md:m-0 max-md:text-[1.7rem] max-md:leading-[1.15]">
+                What you can Build with Vertex RCS?
+              </h2>
+            </Reveal>
 
-            <p className="mx-auto mt-2 max-w-[1450px] !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] whitespace-nowrap max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-              The Vertex Suite RCS Platform provides a complete toolkit for businesses to design, deliver and manage rich messaging experiences at scale.
-            </p>
+            <Reveal delay={0.15}>
+              <p className="mx-auto mt-2 max-w-[1450px] whitespace-nowrap !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:mt-3 max-md:!text-[0.95rem] max-md:leading-[1.55]">
+                The Vertex Suite RCS Platform provides a complete toolkit for businesses to design, deliver and manage rich messaging experiences at scale.
+              </p>
+            </Reveal>
+          </div>
+
+          {/* Mobile: touch-friendly tabs with one readable card. */}
+          <div className="md:hidden">
+            {(() => {
+              const card = buildCards[activeBuildCard];
+              const ActiveMobileIcon = card.icon;
+
+              return (
+                <>
+                <div className="mb-3 flex items-center justify-between px-1">
+                  <button
+                    type="button"
+                    aria-label="Previous card"
+                    disabled={activeBuildCard === 0}
+                    onClick={() => {
+                      setBuildSlideDirection("left");
+                      setActiveBuildCard((current) => Math.max(0, current - 1));
+                    }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#0B5FC6]/35 bg-white text-xl text-[#0B5FC6] shadow-sm disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    â€¹
+                  </button>
+                  <span className="text-xs font-semibold text-[#42617E]">
+                    Swipe to explore Â· {activeBuildCard + 1}/{buildCards.length}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Next card"
+                    disabled={activeBuildCard === buildCards.length - 1}
+                    onClick={() => {
+                      setBuildSlideDirection("right");
+                      setActiveBuildCard((current) =>
+                        Math.min(buildCards.length - 1, current + 1)
+                      );
+                    }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#0B5FC6]/35 bg-white text-xl text-[#0B5FC6] shadow-sm disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                    â€º
+                  </button>
+                </div>
+                <Reveal
+                  key={card.title}
+                  direction={buildSlideDirection}
+                  strength={0.35}
+                  duration={0.38}
+                  className="relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#0752D7] via-[#0868EA] to-[#08B8EC] px-5 py-5 text-white shadow-[0_18px_40px_rgba(4,79,180,0.22)]"
+                  onTouchStart={(event) => {
+                    mobileBuildTouchX.current = event.touches[0]?.clientX ?? null;
+                  }}
+                  onTouchEnd={(event) => {
+                    if (mobileBuildTouchX.current === null) return;
+                    const endX = event.changedTouches[0]?.clientX ?? mobileBuildTouchX.current;
+                    const distance = endX - mobileBuildTouchX.current;
+                    mobileBuildTouchX.current = null;
+
+                    if (Math.abs(distance) < 45) return;
+
+                    if (distance < 0 && activeBuildCard < buildCards.length - 1) {
+                      setBuildSlideDirection("right");
+                      setActiveBuildCard((current) => current + 1);
+                    } else if (distance > 0 && activeBuildCard > 0) {
+                      setBuildSlideDirection("left");
+                      setActiveBuildCard((current) => current - 1);
+                    }
+                  }}
+                >
+                  <div className="mb-5 flex items-center gap-3 rounded-2xl border border-white/25 bg-white/10 px-3 py-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/15">
+                      <ActiveMobileIcon size={18} strokeWidth={2.2} />
+                    </span>
+                    <h3 className="m-0 text-[1.08rem] font-extrabold leading-[1.25] text-white">
+                      {card.title}
+                    </h3>
+                  </div>
+
+                  <div className="overflow-hidden rounded-[18px] border border-white/20 bg-white/10 p-3">
+                    <img
+                      src={card.customImage}
+                      alt={card.title}
+                      className="mx-auto h-[210px] w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.2)]"
+                    />
+                  </div>
+
+                  <div className="pt-5">
+                    <p className="m-0 text-[1.03rem] font-normal leading-[1.5] !text-white">
+                      {card.heading}{" "}
+                      <span className="font-bold">{card.highlight}</span>{" "}
+                      {card.headingAfter || ""}
+                    </p>
+                    <p className="mb-0 mt-3 text-[0.92rem] leading-[1.55] !text-white">
+                      {card.desc}
+                    </p>
+
+                    <div className="mt-5 grid grid-cols-2 gap-2 max-[360px]:grid-cols-1">
+                      {card.points.map((point) => (
+                        <div
+                          key={point}
+                          className="flex min-h-11 items-center rounded-xl border border-white/25 bg-white/10 px-3 py-2 text-[0.8rem] font-semibold leading-[1.3] text-white"
+                        >
+                          {point}
+                        </div>
+                      ))}
+                    </div>
+
+                  </div>
+                </Reveal>
+                </>
+              );
+            })()}
           </div>
 
           {/* Accordion Slider */}
-          <div className="mx-auto flex h-[600px] w-full gap-[16px] overflow-hidden rounded-[24px] bg-transparent max-md:h-[820px] max-md:flex-col">
+          <Reveal
+            direction="center"
+            delay={0.3}
+            duration={0.75}
+            className="mx-auto flex h-[600px] w-full gap-[16px] overflow-hidden rounded-[24px] bg-transparent max-md:hidden"
+          >
             {buildCards.map((card, index) => {
               const isActive = activeBuildCard === index;
               const Icon = card.icon;
@@ -2432,22 +3077,24 @@ function RCS() {
 
                     setActiveBuildCard(index);
                   }}
-                  className={`group relative h-full cursor-pointer overflow-hidden rounded-[18px] shadow-[0_18px_40px_rgba(0,0,0,0.16)] transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-        ${isActive ? "flex-[1_1_0%]" : "flex-[0_0_82px]"}
+                  /* Collapsed rail narrows on tablet/laptop so the open card
+                     keeps a readable width. */
+                  className={`group relative h-full cursor-pointer overflow-hidden rounded-[18px] shadow-[0_18px_40px_rgba(0,0,0,0.16)] transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] max-md:!flex-[1_1_auto]
+        ${isActive ? "flex-[1_1_0%]" : "flex-[0_0_82px] max-xl:flex-[0_0_64px] max-lg:flex-[0_0_52px]"}
       `}
                   style={{
-                    backgroundImage: 'url("/assets/images/BBgg.jpeg")',
+                    backgroundImage: 'url("/assets/images/Blue BG.png")',
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                   }}
                 >
                   {/* MOVING HEADER - fixed place, only rotates */}
                   <div className="pointer-events-none absolute left-8 top-[26px] z-[8] h-[34px]">
-                    <div className="relative h-[34px] w-[420px]">
+                    <div className="relative h-[34px] w-[520px]">
                       {/* Icon + Title Group */}
                       <div
                         className={`absolute left-0 top-0 flex items-center gap-3 transition-transform duration-[650ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
-                          ? "rotate-0"
+                          ? "rotate-0 rounded-full border border-white/25 bg-white/10 py-[7px] pl-[7px] pr-5 backdrop-blur-[2px]"
                           : "rotate-90"
                           }`}
                         style={{
@@ -2455,15 +3102,12 @@ function RCS() {
                         }}
                       >
                         {/* Icon */}
-                        <div
-                          className={`flex shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white shadow-[0_0_16px_rgba(255,255,255,0.12)] transition-all duration-[650ms] ${isActive ? "h-8 w-8" : "h-8 w-8"
-                            }`}
-                        >
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white shadow-[0_0_16px_rgba(255,255,255,0.12)]">
                           <Icon size={16} strokeWidth={2.2} />
                         </div>
 
                         {/* Title */}
-                        <span className="block whitespace-nowrap text-[18px] font-bold leading-none tracking-[0.35px] text-white">
+                        <span className="block whitespace-nowrap text-[25px] font-bold leading-none tracking-[0.35px] text-white">
                           {card.title}
                         </span>
                       </div>
@@ -2500,35 +3144,50 @@ function RCS() {
                       }`}
                   >
                     {/* Left */}
-                    <div className="flex h-full max-w-[600px] flex-col justify-start pt-[20px] pb-[18px]">
+                    <div className="flex h-full max-w-[600px] flex-col justify-start pt-[55px] pb-[18px]">
                       <h3
-                        className={`!mb-4 max-w-[760px] ${card.headingSize || "text-[clamp(18px,1.7vw,28px)]"
-                          } font-extrabold leading-[1.08] !text-white whitespace-nowrap`}
+                        className={`!mb-4 max-w-[560px] ${card.headingSize || "text-[clamp(22px,2.1vw,34px)]"
+                          } font-extrabold leading-[1.15] !text-white`}
                       >
                         {card.heading}{" "}
-                        <span className="text-[white]">{card.highlight}</span>
+                        <span className="text-white !font-bold">{card.highlight}</span>{" "}
+                        {card.headingAfter || ""}
                       </h3>
 
                       <p
-                        className={`!mb-0 !mt-0 max-w-[680px] ${card.descSize || "text-[12.5px]"
-                          } leading-[1.45] !text-white`}
+                        className={`!mb-0 !mt-0 max-w-[520px] ${card.descSize || "text-[15px]"
+                          } leading-[1.6] !text-white`}
                       >
                         {card.desc}
                       </p>
 
-                      <div className="mt-[70px]">
-                        <p className="!mb-3 text-[12px] font-bold !text-[white]">
-                          Example actions:
+                      <div className="mt-[50px]">
+                        <p className="!mb-4 text-[15px] font-bold !text-[white]">
+                          {index === 1
+                            ? "Instead of typing responses, users can simply tap:"
+                            : index === 2
+                              ? "Your brand appears with:"
+                              : index === 3
+                                ? "Perfect for:"
+                                : index === 4
+                                  ? "Businesses can see:"
+                                  : index === 5
+                                    ? "Delivery adapts through:"
+                                    : "Example actions:"}
                         </p>
 
-                        <ul className="m-0 grid list-none gap-[10px] p-0">
+                        <ul className="m-0 flex w-fit list-none flex-col gap-[10px] p-0">
                           {card.points.map((point) => (
                             <li
                               key={point}
-                              className={`!m-0 flex items-center gap-[6px] ${card.pointSize || "text-[10px]"
-                                } !text-[white]`}
+                              className={`!m-0 flex items-center gap-[12px] ${index === 5
+                                ? "px-0 py-1"
+                                : "rounded-xl border border-white/25 bg-white/10 px-4 py-2 backdrop-blur-[2px]"
+                                } ${card.pointSize || "text-[15px]"} font-semibold !text-[white]`}
                             >
-                              <span className="h-[7px] w-[7px] shrink-0 rounded-full bg-[#24D39A]" />
+                              {index === 5 && (
+                                <span className="h-2 w-2 shrink-0 rounded-full bg-white" />
+                              )}
                               {point}
                             </li>
                           ))}
@@ -2573,14 +3232,14 @@ function RCS() {
                       }}
                       className="pointer-events-auto absolute bottom-[22px] right-[28px] z-[10000] flex h-[38px] w-[38px] items-center justify-center rounded-full border border-white/70 bg-white/10 text-[28px] leading-none text-white transition-all duration-300 hover:bg-white/20 cursor-pointer"
                     >
-                      ›
+                      â€º
                     </button>
                   )}
 
                 </div>
               );
             })}
-          </div>
+          </Reveal>
         </div>
 
         <style>
@@ -2597,85 +3256,78 @@ function RCS() {
         </style>
       </section>
 
+      {/* â”€â”€ 6. CuRich Media MessagingSend visually engaging messages with images, videos and product cards instead of plain text.
+This allows brands to showcase offers, servicesor updates in a far more compelling way.tomers can scroll through items, view details, and take action instantly all within the chat interface.ES â”€â”€ */}
+      <RealBusinessUseCases assetBase="/assets/images" autoRotateMs={4000} />
+
       {/* RCS vs SMS vs WhatsApp Business API */}
-      <section className="relative overflow-hidden !bg-white min-h-[820px] pt-[55px] pb-[45px]">
+      <section className="relative overflow-hidden !bg-[#f0f9ff] min-h-[820px] pt-[55px] pb-[45px]">
         {/* Main Header Area */}
         <div className="py-[42px] pb-[34px]">
           <div className="mx-auto w-full max-w-[1600px] px-6">
             <div className="mx-auto max-w-[1500px] text-center">
-              <h1 className="mb-2 whitespace-nowrap text-center text-[clamp(2.2rem,4.5vw,3.2rem)] font-extrabold leading-tight text-[#0B5FC6] max-lg:whitespace-normal">
-                RCS{" "}
-                <span className="text-black">vs SMS</span>
-              </h1>
+              <Reveal>
+                <h2 className="mb-2 whitespace-nowrap text-center text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight text-[#0B5FC6] max-lg:whitespace-normal">
+                  SMS{" "}
+                  <span className="text-black">vs RCS</span>
+                </h2>
+              </Reveal>
 
-              <p className="mx-auto mt-0 mb-0 max-w-[1450px] whitespace-nowrap text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-                Understanding the unique capabilities of modern communication channels.
-              </p>
+              <Reveal delay={0.15}>
+                <p className="mx-auto mt-0 mb-0 max-w-[1450px] whitespace-nowrap text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
+                  Understanding the unique capabilities of modern communication channels.
+                </p>
+              </Reveal>
 
-              <p className="mx-auto mt-0 mb-0 max-w-[1450px] whitespace-nowrap text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-                From simple text alerts to fully interactive rich-media experiences,
-                choose the right path for your customer engagement.
-              </p>
+              <Reveal delay={0.3}>
+                <p className="mx-auto mt-0 mb-0 max-w-[1450px] whitespace-nowrap text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] max-lg:whitespace-normal xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
+                  From simple text alerts to fully interactive rich-media experiences,
+                  choose the right path for your customer engagement.
+                </p>
+              </Reveal>
             </div>
           </div>
         </div>
 
-        {/* Direct Channel Comparison - Modern Card Table */}
-        <div className="relative overflow-hidden pt-[14px] pb-[14px]">
-          <div className="mx-auto w-full max-w-[1540px] px-6">
-            <div className="rounded-[24px] border-[1.5px] border-[#CBD5E1] bg-white px-6 pt-6 pb-6 max-md:px-4">
+        {/* Direct Channel Comparison - Pricing Table Style */}
+        <div className="relative pt-[14px] pb-[14px]">
+          <div className="mx-auto w-full max-w-[1450px] px-6">
+            <div className="rounded-[32px] bg-white px-12 py-12 shadow-[0_30px_70px_rgba(15,23,42,0.08)] max-md:px-5 max-md:py-8">
               {/* Heading */}
-              <h3 className="mb-0 text-center !text-[clamp(1.8rem,3vw,2.6rem)] font-extrabold leading-tight text-[#111827]">
-                Direct Channel Comparison
+              <h3 className="mx-auto mb-[70px] w-fit rounded-[14px] bg-[#E5E7EB] px-7 py-3 text-center text-[clamp(1.3rem,2vw,1.8rem)] font-light uppercase leading-tight tracking-[0.12em] text-[#111827] max-md:mb-[40px] max-md:px-5">
+                Messaging Capabilities Comparison
               </h3>
 
-              <p className="mx-auto max-w-[900px] text-center text-[1.12rem] leading-[1.5] text-[#64748B]">
-                A side-by-side look at technical features and user reach.
-              </p>
-
-              {/* Table Layout */}
-              <div className="!mt-6 w-full overflow-x-auto pb-1">
-                <div className="grid min-w-[1000px] grid-cols-[1.35fr_1fr_1fr] gap-x-5 gap-y-2">
-                  {/* Column Headers */}
-                  <div className="comparison-hover-card flex h-[64px] items-center justify-start gap-3 rounded-[16px] border border-transparent bg-[#9AA8B8] px-7 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]">
-                    <span className="relative z-10 flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white shadow-[0_2px_6px_rgba(15,23,42,0.08)]">
-                      <ListChecks
-                        size={15}
-                        strokeWidth={2.6}
-                        className="text-[#6B7A8C]"
-                      />
-                    </span>
-
-                    <h4 className="relative z-10 m-0 text-[0.95rem] font-extrabold leading-none !text-white">
+              <div className="mx-auto w-full max-w-[1144px] overflow-x-auto">
+                <div className="grid min-w-[820px] grid-cols-[0.8fr_1fr_1fr] items-center gap-x-2 gap-y-4">
+                  {/* Features column header â€” enters from the left, matching
+                      its column. SMS sits in the middle, RCS on the right. */}
+                  <Reveal
+                    direction="left"
+                    strength={0.5}
+                    duration={0.55}
+                    className="px-4 pt-5 pb-6 text-left max-md:pt-3 max-md:pb-4"
+                  >
+                    <span className="inline-block text-[2rem] font-extrabold leading-none text-[#111827] max-md:text-[1.6rem]">
                       Features
-                    </h4>
-                  </div>
+                    </span>
+                  </Reveal>
 
-                  {/* SMS Header */}
-                  <div className="comparison-hover-card overflow-hidden rounded-t-[16px] border border-transparent">
-                    <div className="relative z-10 flex h-[64px] items-center justify-center gap-3 rounded-t-[16px] bg-gradient-to-r from-[#5B8DF4] to-[#7EA7FA] px-4">
-                      <span className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-white text-[#5B8DF4] shadow-[0_10px_22px_rgba(15,23,42,0.14)]">
-                        <Smartphone size={18} strokeWidth={2.2} />
+                  {/* Channel Headers */}
+                  {["SMS", "RCS"].map((name, headerIndex) => (
+                    <Reveal
+                      key={name}
+                      direction={headerIndex === 0 ? "center" : "right"}
+                      strength={0.5}
+                      delay={0.08 + headerIndex * 0.08}
+                      duration={0.55}
+                      className="pt-5 pb-6 text-center max-md:pt-3 max-md:pb-4"
+                    >
+                      <span className="block text-[2rem] font-extrabold leading-none text-[#111827] max-md:text-[1.6rem]">
+                        {name}
                       </span>
-
-                      <h4 className="m-0 text-[1.15rem] font-extrabold leading-none text-white">
-                        SMS
-                      </h4>
-                    </div>
-                  </div>
-
-                  {/* RCS Header */}
-                  <div className="comparison-hover-card overflow-hidden rounded-t-[16px] border border-transparent">
-                    <div className="relative z-10 flex h-[64px] items-center justify-center gap-3 rounded-t-[16px] bg-gradient-to-r from-[#37A8E6] to-[#56BCEF] px-4">
-                      <span className="flex h-[32px] w-[32px] items-center justify-center rounded-full bg-white text-[#37A8E6] shadow-[0_10px_22px_rgba(15,23,42,0.14)]">
-                        <MessageSquareText size={18} strokeWidth={2.2} />
-                      </span>
-
-                      <h4 className="m-0 text-[1.15rem] font-extrabold leading-none text-white">
-                        RCS
-                      </h4>
-                    </div>
-                  </div>
+                    </Reveal>
+                  ))}
 
                   {/* Rows */}
                   {[
@@ -2687,217 +3339,106 @@ function RCS() {
                     ["Read receipts", false, true],
                     ["App installation required", false, false],
                     ["Internet required", false, true],
-                    ["Automatic fallback", false, true],
+                    ["Automatic fallback", "N/A", "SMS fallback"],
                   ].map((row, rowIndex) => (
                     <React.Fragment key={rowIndex}>
                       {/* Feature Name */}
-                      <div className="comparison-hover-card flex min-h-[42px] items-center rounded-[10px] border border-transparent bg-[#F1F4F7] px-6 text-[#64748B] hover:bg-[#E8EEF4]">
-                        <span className="relative z-10 text-[1.12rem] font-medium leading-[1.5] text-[#64748B]">
+                      <Reveal
+                        as="p"
+                        direction="left"
+                        strength={0.5}
+                        delay={rowIndex * 0.05}
+                        duration={0.5}
+                        className="m-0 px-4 text-left text-[0.95rem] !font-bold leading-[1.5] text-[#475569]"
+                      >
+                        <span className="relative inline-block origin-left pb-2 transition-transform duration-300 ease-out hover:scale-105 max-md:block max-md:w-full">
                           {row[0]}
+                          <motion.span
+                            aria-hidden="true"
+                            initial={{ scaleX: 0 }}
+                            whileInView={{ scaleX: 1 }}
+                            viewport={{ once: false, amount: 0.8 }}
+                            transition={{ duration: 0.75, delay: rowIndex * 0.06, ease: "easeOut" }}
+                            className="absolute bottom-0 left-0 h-[2px] w-[180px] origin-left rounded-full bg-[#0B78F0] max-md:w-full"
+                          />
                         </span>
-                      </div>
+                      </Reveal>
 
-                      {/* SMS */}
-                      <div className="comparison-hover-card flex min-h-[42px] items-center justify-center rounded-[10px] border border-transparent bg-[#EEF5FF] hover:bg-[#E3EEFF]">
-                        {row[1] ? (
-                          <span className="relative z-10 text-[1.08rem] font-extrabold text-[#16A34A] transition-transform duration-500">
-                            ✓
-                          </span>
-                        ) : (
-                          <span className="relative z-10 text-[1rem] font-extrabold text-red-500 transition-transform duration-500">
-                            ×
-                          </span>
-                        )}
-                      </div>
-
-                      {/* RCS */}
-                      <div className="comparison-hover-card flex min-h-[42px] items-center justify-center rounded-[10px] border border-transparent bg-[#EEF9FF] hover:bg-[#DFF3FF]">
-                        {row[2] ? (
-                          <span className="relative z-10 text-[1.08rem] font-extrabold text-[#16A34A] transition-transform duration-500">
-                            ✓
-                          </span>
-                        ) : (
-                          <span className="relative z-10 text-[1rem] font-extrabold text-red-500 transition-transform duration-500">
-                            ×
-                          </span>
-                        )}
-                      </div>
+                      {/* SMS + RCS cells â€” SMS grows in place, RCS slides from the right */}
+                      {[row[1], row[2]].map((supported, cellIndex) => (
+                        <Reveal
+                          key={cellIndex}
+                          direction={cellIndex === 0 ? "center" : "right"}
+                          strength={0.5}
+                          delay={rowIndex * 0.05 + (cellIndex + 1) * 0.06}
+                          duration={0.5}
+                          className={`flex h-[50px] w-[90%] items-center justify-center justify-self-center rounded-[12px] transition-all duration-300 ease-out hover:scale-[1.03] hover:shadow-[0_8px_20px_rgba(15,23,42,0.08)] ${supported === "N/A"
+                            ? "bg-[#EEF2F7] hover:bg-[#E4EAF2]"
+                            : supported
+                              ? "bg-[#E1F0FF] hover:bg-[#D3E8FF]"
+                              : "bg-[#FDE7E7] hover:bg-[#FADADA]"
+                            }`}
+                        >
+                          {typeof supported === "string" ? (
+                            <span className={`text-[0.9rem] font-bold ${supported === "SMS fallback" ? "text-[#0B5FC6]" : "text-[#64748B]"}`}>
+                              {supported}
+                            </span>
+                          ) : supported ? (
+                            <Check
+                              size={22}
+                              strokeWidth={3.5}
+                              className="text-[#22C55E]"
+                            />
+                          ) : (
+                            <X
+                              size={22}
+                              strokeWidth={3.5}
+                              className="text-[#EF4444]"
+                            />
+                          )}
+                        </Reveal>
+                      ))}
                     </React.Fragment>
                   ))}
                 </div>
               </div>
 
-              <div className="col-span-3 mt-0 flex min-h-[44px] items-center justify-center px-2 text-center transition-all duration-500 ease-out">
-                <span className="text-center mt-3 text-[0.95rem] font-extrabold leading-[1.35] text-[#0B5FC6]">
+              {/* Fallback Note Box */}
+              <div className="mx-auto mt-10 flex w-fit max-w-[900px] items-center justify-center rounded-[12px] border border-[#CFE4FB] bg-[#EEF6FF] px-6 py-2.5 text-center max-md:mt-7 max-md:max-w-full max-md:px-4 max-md:py-2">
+                <span className="block whitespace-nowrap text-[0.95rem] font-extrabold leading-[1.35] !text-[#0B5FC6] max-md:whitespace-normal">
                   RCS Fallback to SMS ensures 100% reach even when data is unavailable
                 </span>
               </div>
             </div>
           </div>
         </div>
-
-        <style>
-          {`
-      .comparison-hover-card {
-        position: relative;
-        overflow: hidden;
-        transform: translateY(0) scale(1);
-        transition:
-          transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
-          background 420ms cubic-bezier(0.16, 1, 0.3, 1),
-          box-shadow 420ms cubic-bezier(0.16, 1, 0.3, 1),
-          border-color 420ms cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .comparison-hover-card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-          120deg,
-          transparent 0%,
-          rgba(255,255,255,0.75) 42%,
-          transparent 70%
-        );
-        transform: translateX(-120%);
-        transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
-        pointer-events: none;
-      }
-
-      .comparison-hover-card:hover {
-        transform: translateY(-5px) scale(1.018);
-        box-shadow:
-          0 14px 30px rgba(15, 23, 42, 0.10),
-          0 0 0 1px rgba(11, 95, 198, 0.10);
-        border-color: rgba(11, 95, 198, 0.20);
-        z-index: 20;
-      }
-
-      .comparison-hover-card:hover::before {
-        transform: translateX(120%);
-      }
-
-      .comparison-hover-card:hover span {
-        transform: scale(1.08);
-      }
-
-      .comparison-hover-card span,
-      .comparison-hover-card h4 {
-        position: relative;
-        z-index: 2;
-      }
-    `}
-        </style>
       </section>
 
 
 
-      {/* When to Use Each Channel + How RCS Works */}
-      <section className="relative overflow-visible bg-[#f0f9ff] pt-[130px] pb-[60px]">
-        <div className="mx-auto w-full max-w-[1500px] px-6">
-          {/* Top Row */}
-          <div className="mx-auto flex max-w-[1320px] items-center justify-between gap-6 max-md:flex-col max-md:text-center">
-            <div className="mx-auto flex max-w-[1320px] items-center justify-center gap-6 text-center max-md:flex-col">
-              <div className="flex items-center justify-center gap-5 max-md:flex-col max-md:gap-3">
-                <div>
-                  <h1 className="mb-2 text-[2rem] font-extrabold leading-tight !text-[#111827] max-md:text-[1.7rem]">
-                    When to Use Each Channel?
-                  </h1>
-
-                  <p className="mx-auto mb-0 max-w-[650px] !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-                    Strategize your communication based on user intent and urgency.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Channel Cards */}
-          <div className="mx-auto mt-16 grid max-w-[1320px] grid-cols-3 gap-8 max-lg:grid-cols-1">
-            {[
-              {
-                title: "SMS Messaging",
-                icon: Smartphone,
-                bg: "bg-[#EDEDED]",
-                hoverBg: "hover:bg-[#192A42]",
-                iconColor: "text-[#64748B]",
-                desc: "Best for critical, time-sensitive alerts like 2FA codes, appointment reminders and urgent system notifications. Universal reach ensures delivery to every mobile phone regardless of hardware or data connection.",
-              },
-              {
-                title: "RCS Messaging",
-                icon: Zap,
-                bg: "bg-[#DCEEFF]",
-                hoverBg: "hover:bg-[#192A42]",
-                iconColor: "text-[#0B5FC6]",
-                desc: "Ideal for high-engagement marketing, interactive shipping updates, and service discovery. Leverages the native messaging app for a trusted, branded experience without requiring third-party app downloads.",
-              },
-              {
-                title: "WhatsApp Business",
-                icon: FaWhatsapp,
-                bg: "bg-[#F2FFF4]",
-                hoverBg: "hover:bg-[#192A42]",
-                iconColor: "text-[#22C55E]",
-                desc: "Perfect for deep customer support, conversational commerce, and international engagement. Offers high-security end-to-end encryption and a massive global user base for complex two-way dialogues.",
-              },
-            ].map((card, index) => {
-              const Icon = card.icon;
-
-              return (
-                <div
-                  key={index}
-                  className={`group rounded-[22px] ${card.bg} ${card.hoverBg} border border-[#E2E8F0] px-7 py-7 transition-colors duration-500 ease-out hover:shadow-[0_14px_35px_rgba(15,23,42,0.06)]`}
-                >
-                  <div className="mb-5 flex h-[48px] w-[48px] items-center justify-center rounded-[12px] bg-white shadow-[0_6px_18px_rgba(15,23,42,0.05)]">
-                    <Icon className={card.iconColor} size={22} strokeWidth={2.1} />
-                  </div>
-
-                  <h3 className="mb-2 text-[1.15rem] font-extrabold text-[#111827] transition-colors duration-500 group-hover:!text-white">
-                    {card.title}
-                  </h3>
-
-                  <p className="mb-0 text-[0.95rem] leading-[1.75] text-[#475569] transition-colors duration-500 group-hover:!text-white">
-                    {card.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Sticky How RCS Works Area - runway jitna scroll, content pinned */}
-        <div
-          ref={howRcsStickyRef}
-          className="relative mx-auto mt-[15px] h-[260vh] max-w-[1500px] overflow-visible px-6 max-xl:h-auto"
-        >
-          <div className="sticky top-[90px] max-xl:static">
-            <div className="mx-auto w-full overflow-hidden rounded-[28px] border border-[#E3EAF3] bg-white px-6 pt-[38px] pb-[28px] shadow-[0_18px_45px_rgba(15,23,42,0.07)]">
+      {/* How RCS Works */}
+      <section className="relative overflow-visible bg-white pt-[60px] pb-[60px]">
+        <div className="mx-auto max-w-[1500px] overflow-visible px-6">
+            <div className="mx-auto w-full overflow-visible bg-transparent px-6 pt-[38px] pb-[28px]">
               {/* How RCS Works */}
               <div className="mx-auto max-w-[1450px] text-center">
-                <h1 className="mb-3 text-[clamp(2rem,4vw,3rem)] font-extrabold leading-tight !text-[Black]">
-                  How RCS Messaging Works?
-                </h1>
+                <Reveal>
+                  <h2 className="mb-3 text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight !text-[Black]">
+                    How RCS Messaging Works?
+                  </h2>
+                </Reveal>
 
-                <p className="mb-0 !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-                  A seamless flow from configuration to customer action.
-                </p>
-              </div>
-
-              {/* Step Number Timeline */}
-              <div className="mx-auto mt-[28px] grid w-full !max-w-[1650px] grid-cols-[repeat(6,minmax(230px,1fr))] gap-2 max-xl:hidden">
-                {rcsSteps.map((_, index) => (
-                  <StepTopNumber
-                    key={index}
-                    index={index}
-                    total={rcsSteps.length}
-                    scrollYProgress={scrollYProgress}
-                  />
-                ))}
+                <Reveal delay={0.15}>
+                  <p className="mb-0 !text-[1.25rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.35rem] max-md:!text-[1.08rem] max-md:leading-[1.6]">
+                    From message setup to customer response, Vertex Suite manages the complete RCS journey through one connected workflow.
+                  </p>
+                </Reveal>
               </div>
 
               {/* Steps */}
               <div
                 ref={howRcsWorksRef}
-                className="smooth-scroll-section mx-auto mt-0 grid w-full !max-w-[1650px] grid-cols-[repeat(6,minmax(230px,1fr))] gap-2 overflow-visible pb-[0px] pt-[15px] max-xl:grid-cols-3 max-md:grid-cols-1"
+                className="mx-auto mt-[80px] grid w-full -translate-x-2 !max-w-[1650px] grid-cols-[repeat(6,minmax(0,1fr))] gap-3 overflow-visible pb-[0px] max-xl:grid-cols-3 max-md:translate-x-0 max-md:grid-cols-1"
               >
                 {rcsSteps.map((step, index, arr) => (
                   <StepCard
@@ -2909,27 +3450,10 @@ function RCS() {
                   />
                 ))}
               </div>
-              {/* Spacer for transformed staircase cards */}
+
               <div className="h-[20px] max-xl:h-[20px] max-md:h-[20px]" />
 
-              {/* Bottom Info Strip */}
-              <div className="mx-auto mt-2 mb-0 flex max-w-[1450px] items-center gap-2 rounded-[14px] border border-[#D8E8F8] bg-[#0B5FC6] px-5 py-3 max-md:flex-col max-md:text-center">
-                <div className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full bg-[#D6EBFF] text-[#0B5FC6]">
-                  <ShieldCheck size={32} strokeWidth={1.8} />
-                </div>
-
-                <div>
-                  <p className="mb-1 text-[0.92rem] font-extrabold uppercase tracking-[0.03em] !text-[white]">
-                    Built for Business
-                  </p>
-
-                  <p className="mb-0 text-[0.95rem] leading-[1.55] !text-[white]">
-                    RCS ensures richer conversations, stronger engagement, and reliable delivery — with intelligent fallback to keep every message moving.
-                  </p>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
 
         <style>
@@ -2994,22 +3518,22 @@ function RCS() {
 
 
 {/* FAQ - Vertex Suite RCS Platform */}
-<section className="relative overflow-hidden bg-white py-[35px] max-md:py-[35px]">
+<section className="relative overflow-hidden bg-[#f0f9ff] pt-[90px] pb-[35px] max-md:pt-[55px] max-md:pb-[35px]">
   <div className="mx-auto w-full max-w-[1450px] px-2">
     {/* Heading */}
-    <div className="mx-auto mb-8 max-w-[1200px] text-center">
-      <p className="mb-3 text-[0.72rem] font-extrabold uppercase tracking-[0.18em] text-[#4B5563]">
-        FAQ
-      </p>
+    <div className="mx-auto mb-12 max-w-[1200px] text-center max-md:mb-8">
+      <Reveal>
+        <h2 className="m-2 text-center text-[clamp(1.15rem,3.4vw,2rem)] font-extrabold leading-tight text-[#111827]">
+          Frequently Asked Questions
+        </h2>
+      </Reveal>
 
-      <h1 className="text-center text-[clamp(2rem,4vw,3.4rem)] font-medium leading-[1.08] tracking-[-0.04em] text-[#111827]">
-        Frequently Asked Questions
-      </h1>
-
-      <p className="mx-auto mt-4 max-w-[1100px] text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
-        Can’t find what you’re looking for? Our team is here to help you
-        understand Vertex Suite RCS messaging better.
-      </p>
+      <Reveal delay={0.15}>
+        <p className="mx-auto mt-2 max-w-[1100px] text-center !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]">
+          Canâ€™t find what youâ€™re looking for? Our team is here to help you
+          understand Vertex Suite RCS messaging better.
+        </p>
+      </Reveal>
     </div>
 
     {/* FAQ Accordion */}
@@ -3033,7 +3557,7 @@ function RCS() {
         {
           question: "Which devices support RCS messaging?",
           answer:
-            "RCS works on supported Android devices with compatible carriers and messaging apps. If RCS is not supported on a customer’s device, messages can fall back to SMS where configured.",
+            "RCS works on supported Android devices with compatible carriers and messaging apps. If RCS is not supported on a customerâ€™s device, messages can fall back to SMS where configured.",
         },
         {
           question: "Can I send promotional messages through RCS?",
@@ -3049,9 +3573,13 @@ function RCS() {
         const isOpen = activeFaq === index;
 
         return (
-          <div
+          <Reveal
             key={index}
-            className={`faq-moving-border group relative overflow-hidden rounded-[100px] border border-[#E7ECF5] transition-all duration-300 ${
+            direction="center"
+            delay={index * 0.07}
+            duration={0.5}
+            amount={0.3}
+            className={`faq-moving-border group relative overflow-hidden rounded-[16px] border-none transition-all duration-300 ${
               isOpen
                 ? "bg-white shadow-[0_14px_38px_rgba(15,23,42,0.055)]"
                 : "bg-[#EEF3FD]"
@@ -3060,48 +3588,31 @@ function RCS() {
             <button
               type="button"
               onClick={() => setActiveFaq(isOpen ? null : index)}
-              className="relative z-10 flex w-full items-center justify-between gap-5 px-8 py-4 text-left max-md:px-5 max-md:py-4"
+              className="relative z-10 flex w-full items-center justify-between gap-5 px-8 py-3.5 text-left max-md:px-5 max-md:py-3.5"
             >
-              <span className="flex-1 text-left text-[1rem] font-bold text-[#1F2937] max-md:text-[0.92rem]">
-  {item.question}
-</span>
+              <span
+                className="flex-1 text-left text-[1.05rem] font-medium text-[#111827] max-md:text-[0.95rem]"
+              >
+                {item.question}
+              </span>
 
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#111827] shadow-[0_8px_22px_rgba(15,23,42,0.08)] transition-all duration-300 max-md:h-9 max-md:w-9">
-  {isOpen ? <X size={18} /> : <Plus size={18} />}
-</span>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#111827] transition-all duration-300 max-md:h-9 max-md:w-9">
+                {isOpen ? <X size={18} /> : <Plus size={18} />}
+              </span>
             </button>
 
             {isOpen && (
-              <div className="relative z-10 px-8 pb-5 max-md:px-5">
-                <p className="mx-auto max-w-[1050px] text-center text-[0.95rem] leading-[1.6] text-[#4B5563] max-md:text-[0.86rem]">
+              <div className="relative z-10 px-8 pb-[26px] max-md:px-5">
+                <p className="!mb-0 max-w-[1050px] text-left text-[0.95rem] leading-[1.6] text-[#4B5563] max-md:text-[0.86rem]">
                   {item.answer}
                 </p>
               </div>
             )}
-          </div>
+          </Reveal>
         );
       })}
     </div>
 
-    {/* Bottom Notice Board / CTA */}
-    <div className="mx-auto mt-5 flex w-full max-w-[1250px] items-center justify-between gap-5 rounded-[22px] border border-[#E7ECF5] bg-white px-8 py-5 text-center shadow-[0_14px_38px_rgba(15,23,42,0.05)] max-md:flex-col max-md:px-5">
-      <div className="text-center md:text-left">
-        <h3 className="mb-1 text-[1.1rem] font-extrabold text-[#111827]">
-          Still have questions?
-        </h3>
-
-        <p className="mb-0 text-[0.92rem] leading-[1.5] text-[#5B667A]">
-          Talk to our RCS specialists and get the right solution for your business.
-        </p>
-      </div>
-
-      <Link
-        to="/book-demo"
-        className="inline-flex h-[44px] shrink-0 items-center justify-center rounded-[12px] bg-[#0B5FC6] px-6 text-[0.92rem] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover-tehover:bg-[#084EA5] hover:shadow-[0_12px_30px_rgba(11,95,198,0.22)] max-md:w-full"
-      >
-        Request a Demo
-      </Link>
-    </div>
   </div>
 
   <style>
@@ -3157,3 +3668,6 @@ function RCS() {
 }
 
 export default RCS;
+
+
+

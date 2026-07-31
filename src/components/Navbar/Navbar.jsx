@@ -44,29 +44,21 @@ const dropdownData = {
   Solutions: {
     "Industry Suites": {
       items: [
-        { title: "Social Commerce Suite", desc: "Conversational commerce", icon: Briefcase, path: "/solutions/social-commerce-suite" },
-        { title: "Marketing Suite", desc: "Deep AI marketing engine", icon: Zap, path: "/solutions/marketing-suite" },
-        { title: "Communication Channel Suite", desc: "Unified messaging console", icon: Layers, path: "/solutions/communication-channel-suite" },
-        { title: "Office Suite", desc: "Connected workplace operations", icon: Building, path: "/solutions/office-suite" },
-        { title: "Customer Rating Suite", desc: "Feedback and experience intelligence", icon: Users, path: "/solutions/customer-rating-suite" },
+        { title: "Social Commerce Suite", desc: "Conversational commerce", icon: Briefcase, path: "/solutions/social-commerce-suite", comingSoon: true },
+        { title: "Marketing Suite", desc: "Deep AI marketing engine", icon: Zap, path: "/solutions/marketing-suite", comingSoon: true },
+        { title: "Communication Channel Suite", desc: "Unified messaging console", icon: Layers, path: "/solutions/communication-channel-suite", comingSoon: true },
+        { title: "Office Suite", desc: "Connected workplace operations", icon: Building, path: "/solutions/office-suite", comingSoon: true },
+        { title: "Customer Rating Suite", desc: "Feedback and experience intelligence", icon: Users, path: "/solutions/customer-rating-suite", comingSoon: true },
+        { title: "Order & Shipment Suite", desc: "Logistics automation", icon: Building, path: "/solutions/order-shipment-suite", comingSoon: true },
+        { title: "Inventory Suite", desc: "Autonomous management", icon: Code2, path: "/solutions/inventory-suite", comingSoon: true },
+        { title: "Warehouse & Multi-Vendor Suite", desc: "Supply chain orchestration", icon: Building, path: "/solutions/warehouse-suite", comingSoon: true },
+        { title: "Billing & Payment Suite", desc: "Financial automation", icon: Briefcase, path: "/solutions/billing-suite", comingSoon: true },
+        { title: "Analytics Suite", desc: "AI-powered business insights", icon: Layers, path: "/solutions/analytics-suite", comingSoon: true },
       ],
       thumbnails: [
         { label: "Commerce", icon: Briefcase },
         { label: "Marketing", icon: Zap },
         { label: "Office", icon: Building },
-      ],
-    },
-    "Operations & Finance": {
-      items: [
-        { title: "Order & Shipment Suite", desc: "Logistics automation", icon: Building, path: "/solutions/order-shipment-suite" },
-        { title: "Inventory Suite", desc: "Autonomous management", icon: Code2, path: "/solutions/inventory-suite" },
-        { title: "Warehouse & Multi-Vendor Suite", desc: "Supply chain orchestration", icon: Building, path: "/solutions/warehouse-suite" },
-        { title: "Billing & Payment Suite", desc: "Financial automation", icon: Briefcase, path: "/solutions/billing-suite" },
-        { title: "Analytics Suite", desc: "AI-powered business insights", icon: Layers, path: "/solutions/analytics-suite" },
-      ],
-      thumbnails: [
-        { label: "Warehouse", icon: Building },
-        { label: "Billing", icon: Briefcase },
         { label: "Analytics", icon: Layers },
       ],
     },
@@ -74,11 +66,11 @@ const dropdownData = {
   Developers: {
     Documentation: {
       items: [
-        { title: "Messaging", desc: "API guides for messaging", icon: Code2, path: "/developers/messaging" },
-        { title: "Voice & Video", desc: "Call flows and WebRTC", icon: Video, path: "/developers/voice-and-video" },
-        { title: "Email", desc: "Transactional email setup", icon: Mail, path: "/developers/email" },
-        { title: "Verification", desc: "Identity and OTP guides", icon: Shield, path: "/developers/verification" },
-        { title: "Numbers & Connectivity", desc: "Global numbers and SIP docs", icon: Phone, path: "/developers/numbers-and-connectivity" },
+        { title: "Messaging", desc: "API guides for messaging", icon: Code2, path: "/developers/messaging", comingSoon: true },
+        { title: "Voice & Video", desc: "Call flows and WebRTC", icon: Video, path: "/developers/voice-and-video", comingSoon: true },
+        { title: "Email", desc: "Transactional email setup", icon: Mail, path: "/developers/email", comingSoon: true },
+        { title: "Verification", desc: "Identity and OTP guides", icon: Shield, path: "/developers/verification", comingSoon: true },
+        { title: "Numbers & Connectivity", desc: "Global numbers and SIP docs", icon: Phone, path: "/developers/numbers-and-connectivity", comingSoon: true },
       ],
       thumbnails: [
         { label: "Messaging", icon: Code2 },
@@ -88,8 +80,8 @@ const dropdownData = {
     },
     Community: {
       items: [
-        { title: "Developer Forum", desc: "Connect with builders", icon: Users, path: "/developers/developer-forum" },
-        { title: "Knowledge Center", desc: "In-depth articles", icon: BookOpen, path: "/developers/knowledge-center" },
+        { title: "Developer Forum", desc: "Connect with builders", icon: Users, path: "/developers/developer-forum", comingSoon: true },
+        { title: "Knowledge Center", desc: "In-depth articles", icon: BookOpen, path: "/developers/knowledge-center", comingSoon: true },
       ],
       thumbnails: [
         { label: "Forum", icon: Users },
@@ -100,10 +92,10 @@ const dropdownData = {
   Partners: {
     "Partner Program": {
       items: [
-        { title: "About Partners", desc: "Grow together with us", icon: Users, path: "/partners/about-partners" },
-        { title: "Become a Partner", desc: "Unlock growth opportunities", icon: Rocket, path: "/partners/become-a-partner" },
-        { title: "Find a Partner", desc: "Locate authorized partners", icon: Globe, path: "/partners/find-a-partner" },
-        { title: "Strategic Partners", desc: "Global collaboration ecosystem", icon: Briefcase, path: "/partners/strategic-partners" },
+        { title: "About Partners", desc: "Grow together with us", icon: Users, path: "/partners/about-partners", comingSoon: true },
+        { title: "Become a Partner", desc: "Unlock growth opportunities", icon: Rocket, path: "/partners/become-a-partner", comingSoon: true },
+        { title: "Find a Partner", desc: "Locate authorized partners", icon: Globe, path: "/partners/find-a-partner", comingSoon: true },
+        { title: "Strategic Partners", desc: "Global collaboration ecosystem", icon: Briefcase, path: "/partners/strategic-partners", comingSoon: true },
       ],
       thumbnails: [
         { label: "Become a Partner", icon: Rocket },
@@ -113,10 +105,10 @@ const dropdownData = {
     },
     Integrations: {
       items: [
-        { title: "Shopify", desc: "Commerce integration", icon: Briefcase, path: "/partners/shopify" },
-        { title: "HubSpot", desc: "CRM workflow integration", icon: Layers, path: "/partners/hubspot" },
-        { title: "SAP", desc: "Enterprise integration", icon: Building, path: "/partners/sap" },
-        { title: "Adobe", desc: "Experience cloud integration", icon: Code2, path: "/partners/adobe" },
+        { title: "Shopify", desc: "Commerce integration", icon: Briefcase, path: "/partners/shopify", comingSoon: true },
+        { title: "HubSpot", desc: "CRM workflow integration", icon: Layers, path: "/partners/hubspot", comingSoon: true },
+        { title: "SAP", desc: "Enterprise integration", icon: Building, path: "/partners/sap", comingSoon: true },
+        { title: "Adobe", desc: "Experience cloud integration", icon: Code2, path: "/partners/adobe", comingSoon: true },
       ],
       thumbnails: [
         { label: "Shopify", icon: Briefcase },
@@ -128,9 +120,9 @@ const dropdownData = {
   Resources: {
     Learn: {
       items: [
-        { title: "Blog", desc: "Latest news and trends", icon: BookOpen, path: "/resources/blog" },
-        { title: "Guides", desc: "In-depth tutorials and how-tos", icon: BookOpen, path: "/resources/guides" },
-        { title: "Customer Stories", desc: "Real customer success case studies", icon: Users, path: "/resources/customer-stories" },
+        { title: "Blog", desc: "Latest news and trends", icon: BookOpen, path: "/resources/blog", comingSoon: true },
+        { title: "Guides", desc: "In-depth tutorials and how-tos", icon: BookOpen, path: "/resources/guides", comingSoon: true },
+        { title: "Customer Stories", desc: "Real customer success case studies", icon: Users, path: "/resources/customer-stories", comingSoon: true },
       ],
       thumbnails: [
         { label: "Blog", icon: BookOpen },
@@ -142,13 +134,11 @@ const dropdownData = {
 };
 
 const brandColors = [
-  { main: "#2563eb", bg: "rgba(37, 99, 235, 0.05)" },
-  { main: "#16a34a", bg: "rgba(22, 163, 74, 0.05)" },
-  { main: "#ea580c", bg: "rgba(234, 88, 12, 0.05)" },
-  { main: "#9333ea", bg: "rgba(147, 51, 234, 0.05)" },
-  { main: "#db2777", bg: "rgba(219, 39, 119, 0.05)" },
-  { main: "#0891b2", bg: "rgba(8, 145, 178, 0.05)" },
+  { main: "#0b5fc6", bg: "rgba(11, 95, 198, 0.05)" },
 ];
+
+// Items flagged with `comingSoon` in the dropdown data stay visible but are not clickable.
+const COMING_SOON_LABEL = "Coming Soon";
 
 const normalizeDropdownGroup = (group) => {
   if (Array.isArray(group)) {
@@ -185,6 +175,7 @@ const getFeatureCopy = (navItem, category, group, items) => {
       featuredItem.desc ||
       `Explore ${categoryLabel.toLowerCase()} tools designed for faster customer engagement and connected operations.`,
     path: featuredItem.path || navLinkMap[navItem] || "/",
+    comingSoon: Boolean(featuredItem.comingSoon),
   };
 };
 
@@ -221,7 +212,9 @@ export default function Navbar() {
             <Link to="/" className="synthesia-brand" onClick={() => setMobileMenuOpen(false)}>
               <img src="/assets/images/logo.png" alt="Vertex Suite" className="navbar-logo-img" />
             </Link>
+          </div>
 
+          <div className="synthesia-center">
             <nav className="synthesia-nav hidden xl:flex">
               <Link
                 to="/"
@@ -257,10 +250,21 @@ export default function Navbar() {
                     }}
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
-                    <Link to={navLinkMap[item] || "/"} className={`synthesia-nav-link ${activeDropdown === item ? "active" : ""}`}>
-                      {item}
-                      {hasDropdown && <ChevronDown size={14} className="chevron-icon" />}
-                    </Link>
+                    {hasDropdown ? (
+                      // Items with a mega-dropdown only open the panel; they have no page of their own.
+                      <button
+                        type="button"
+                        className={`synthesia-nav-link synthesia-nav-trigger ${activeDropdown === item ? "active" : ""}`}
+                        aria-expanded={activeDropdown === item}
+                      >
+                        {item}
+                        <ChevronDown size={14} className="chevron-icon" />
+                      </button>
+                    ) : (
+                      <Link to={navLinkMap[item] || "/"} className="synthesia-nav-link">
+                        {item}
+                      </Link>
+                    )}
 
                     {activeDropdown === item && hasDropdown && (
                       <div className="synthesia-mega-dropdown full-width" style={megaStyle}>
@@ -288,19 +292,38 @@ export default function Navbar() {
                               {currentItems.map((subItem, sIdx) => {
                                 const Icon = subItem.icon;
                                 const color = brandColors[sIdx % brandColors.length];
-                                const badge = getItemBadge(subItem.title);
-                                return (
-                                  <Link key={subItem.title} to={subItem.path} className="mega-card" onClick={() => setActiveDropdown(null)}>
+                                const badge = subItem.comingSoon ? COMING_SOON_LABEL : getItemBadge(subItem.title);
+                                const cardInner = (
+                                  <>
                                     <div className="mega-card-icon" style={{ "--icon-color": color.main, "--icon-bg": color.bg }}>
                                       <Icon size={20} />
                                     </div>
                                     <div className="mega-card-content">
                                       <strong className="mega-title" style={{ "--hover-color": color.main }}>
                                         <span>{subItem.title}</span>
-                                        {badge && <em>{badge}</em>}
+                                        {badge && <em className={subItem.comingSoon ? "coming-soon-tag" : undefined}>{badge}</em>}
                                       </strong>
                                       {subItem.desc && <p>{subItem.desc}</p>}
                                     </div>
+                                  </>
+                                );
+
+                                if (subItem.comingSoon) {
+                                  return (
+                                    <div
+                                      key={subItem.title}
+                                      className="mega-card mega-card-disabled"
+                                      aria-disabled="true"
+                                      title={COMING_SOON_LABEL}
+                                    >
+                                      {cardInner}
+                                    </div>
+                                  );
+                                }
+
+                                return (
+                                  <Link key={subItem.title} to={subItem.path} className="mega-card" onClick={() => setActiveDropdown(null)}>
+                                    {cardInner}
                                   </Link>
                                 );
                               })}
@@ -344,10 +367,16 @@ export default function Navbar() {
                               </div>
                             </div>
 
-                            <Link to={feature.path} className="mega-feature-link" onClick={() => setActiveDropdown(null)}>
-                              Explore Suite
-                              <ArrowRight size={20} />
-                            </Link>
+                            {feature.comingSoon ? (
+                              <span className="mega-feature-link mega-feature-link-disabled" aria-disabled="true">
+                                {COMING_SOON_LABEL}
+                              </span>
+                            ) : (
+                              <Link to={feature.path} className="mega-feature-link" onClick={() => setActiveDropdown(null)}>
+                                Explore Suite
+                                <ArrowRight size={20} />
+                              </Link>
+                            )}
                           </aside>
                         </div>
                       </div>
@@ -408,11 +437,18 @@ export default function Navbar() {
                         return (
                         <div className="mobile-submenu-block" key={category}>
                           <p>{category}</p>
-                          {links.map((subItem) => (
-                            <Link to={subItem.path} className="mobile-submenu-link" key={subItem.title} onClick={() => setMobileMenuOpen(false)}>
-                              {subItem.title}
-                            </Link>
-                          ))}
+                          {links.map((subItem) =>
+                            subItem.comingSoon ? (
+                              <span className="mobile-submenu-link mobile-submenu-disabled" key={subItem.title} aria-disabled="true">
+                                {subItem.title}
+                                <em className="coming-soon-tag">{COMING_SOON_LABEL}</em>
+                              </span>
+                            ) : (
+                              <Link to={subItem.path} className="mobile-submenu-link" key={subItem.title} onClick={() => setMobileMenuOpen(false)}>
+                                {subItem.title}
+                              </Link>
+                            )
+                          )}
                         </div>
                         );
                       })}

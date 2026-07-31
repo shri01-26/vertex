@@ -556,3 +556,27 @@
     animation: none;
   }
 }
+
+/* ================= WhatsApp Broadcast hero: phone ke around orbit ================= */
+
+.wab-orbit {
+  animation: wabOrbitSpin 40s linear infinite;
+}
+
+/* Ring ke saath ghoomta hai, par content upright rahe isliye ulta spin */
+.wab-orbit-item {
+  animation: wabOrbitSpin 40s linear infinite reverse;
+}
+
+@keyframes wabOrbitSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wab-orbit,
+  .wab-orbit-item {
+    animation: none;
+  }
+}

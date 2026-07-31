@@ -270,7 +270,7 @@ export const pageContent = {
       heroTagline: "RCS Business Messaging for Rich, Interactive Customer Conversations",
       heroDescription: "Transform the native messaging inbox into a richer, smarter and more interactive customer communication experience with the Vertex Suite RCS Platform. ",
       sectionOneLiner: "Rich Communication Services (RCS) is the next evolution of SMS, designed to transform traditional text messaging into a rich, interactive communication channel.",
-      outcomeHeading: "Understanding RCS: The Evolution of SMS",
+      outcomeHeading: "From SMS to RCS: The Evolution of Messaging",
       outcomes: [
         {
           title: "SMS",

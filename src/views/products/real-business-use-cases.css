@@ -1,0 +1,275 @@
+.rcs-cases,
+.rcs-cases * { box-sizing: border-box; }
+
+.rcs-cases {
+  --blue: #0b5fc6;
+  --ink: #0f172a;
+  --body: #475569;
+  --mint: #24d39a;
+  background: #ffffff;
+  color: var(--body);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow: hidden;
+  padding: clamp(56px, 7vw, 96px) 20px;
+}
+
+.rcs-cases__container { margin: 0 auto; max-width: 1280px; }
+.rcs-cases__header { margin: 0 auto 72px; max-width: 1260px; text-align: center; }
+
+.rcs-cases__header p {
+  color: #5B667A !important; font-size: 1.12rem !important; font-weight: 400 !important;
+  line-height: 1.65 !important; margin: 0;
+}
+
+@media (min-width: 1280px) {
+  .rcs-cases__header p { font-size: 1.2rem !important; }
+}
+
+/* Keep the lead sentence on a single line on desktop; wraps normally on smaller screens */
+@media (min-width: 1024px) {
+  .rcs-cases__lead-line { white-space: nowrap; font-size: 1.12rem !important; }
+}
+
+@media (max-width: 768px) {
+  .rcs-cases__header p { font-size: 1rem !important; line-height: 1.6 !important; }
+}
+
+.rcs-cases__tabs {
+  display: grid; grid-template-columns: repeat(6, 1fr); margin: 0 auto 46px;
+  max-width: 1320px; position: relative;
+}
+.rcs-cases__tabs::before,
+.rcs-cases__progress { background: #cfe3f8; content: ""; height: 2px; left: 8.33%; position: absolute; right: 8.33%; top: 57px; }
+.rcs-cases__progress {
+  background: repeating-linear-gradient(90deg, var(--blue) 0 5px, transparent 5px 12px);
+  max-width: 83.34%; right: auto; transition: width .45s cubic-bezier(.16,1,.3,1); z-index: 1;
+}
+.rcs-cases__tabs button {
+  align-items: center; background: transparent; border: 0; color: #26364b; cursor: pointer;
+  display: flex; flex-direction: column; font: inherit; font-size: .9rem; font-weight: 700; gap: 9px;
+  min-width: 0; padding: 0; position: relative; z-index: 2;
+}
+.rcs-cases__icon {
+  align-items: center; background: #fff; border: 1px solid #bbd7f4; border-radius: 999px;
+  box-shadow: 0 10px 25px rgba(15,23,42,.06); color: var(--blue); display: flex;
+  height: 114px; justify-content: center; transition: .3s ease; width: 114px;
+}
+.rcs-cases__icon svg { fill: none; height: 48px; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.6; width: 48px; }
+.rcs-cases__tabs button:hover .rcs-cases__icon { background: #eaf4ff; border-color: var(--blue); transform: translateY(-3px); }
+.rcs-cases__tabs button.is-active { color: var(--blue); }
+.rcs-cases__tabs button.is-active .rcs-cases__icon {
+  background: var(--blue); border-color: var(--blue); box-shadow: 0 18px 40px rgba(11,95,198,.3);
+  color: #fff; height: 132px; margin-top: -9px; width: 132px;
+}
+
+.rcs-cases__stage {
+  min-height: 680px; perspective: 1900px; perspective-origin: 50% 45%;
+  position: relative; transform-style: preserve-3d;
+}
+
+.rcs-cases__panel {
+  backface-visibility: hidden; background: url('/assets/images/why-bg.webp') center/cover no-repeat #fff; border: 1px solid #d8eafe; border-radius: 34px;
+  box-shadow: 0 26px 70px rgba(15,23,42,.1); display: grid; grid-template-columns: .95fr 1.05fr;
+  left: 50%; min-height: 680px; overflow: hidden; position: absolute; top: 50%;
+  transform-style: preserve-3d; width: 100%;
+  transition:
+    transform .65s cubic-bezier(.65,0,.35,1),
+    filter .65s cubic-bezier(.65,0,.35,1),
+    opacity .65s cubic-bezier(.65,0,.35,1),
+    box-shadow .65s ease;
+}
+
+.rcs-cases__panel.is-active { box-shadow: 0 36px 90px rgba(15,23,42,.16); }
+
+/* Front card, once the slide has finished: leave the 3D/filter compositing
+   path so the text is painted sharp instead of as a scaled GPU texture. */
+.rcs-cases__panel.is-settled {
+  backface-visibility: visible;
+  transform-style: flat;
+  filter: none;
+}
+.rcs-cases__panel:not(.is-active) { user-select: none; }
+.rcs-cases__panel:not(.is-active) * { pointer-events: none; }
+.rcs-cases__copy { align-self: center; padding: clamp(32px, 5vw, 65px); position: relative; z-index: 3; }
+
+.rcs-cases__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0f6ff;
+  border: 1px solid #cce0fc;
+  border-radius: 9999px;
+  padding: 5px 14px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #0b5fc6;
+  margin-bottom: 24px;
+}
+
+.rcs-cases__title {
+  font-size: clamp(2.4rem, 3.8vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+}
+.rcs-cases__title-line1 {
+  color: #050505;
+}
+.rcs-cases__title-line2 {
+  color: #0b5fc6;
+}
+
+.rcs-cases__bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.rcs-cases__bar-blue {
+  width: 36px;
+  height: 4px;
+  background: #0b5fc6;
+  border-radius: 9999px;
+}
+.rcs-cases__bar-gray {
+  width: 36px;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+}
+
+.rcs-cases__desc p {
+  color: #000000 !important;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  margin: 0 0 16px;
+}
+
+.rcs-cases__label {
+  color: #000000 !important;
+  font-size: 0.98rem;
+  font-weight: 600;
+  display: block;
+  margin: 24px 0 14px;
+}
+
+.rcs-cases__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rcs-cases__list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #000000 !important;
+}
+.rcs-cases__bullet {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0b5fc6;
+  flex-shrink: 0;
+}
+
+.rcs-cases__visual {
+  min-height: 680px; overflow: hidden; position: relative;
+}
+.rcs-cases__orb, .rcs-cases__route { display: none !important; }
+.rcs-cases__image { filter: drop-shadow(0 18px 30px rgba(15,23,42,.2)); max-height: 58%; max-width: 48%; object-fit: contain; position: absolute; z-index: 2; }
+.rcs-cases__image--1 { left: 8%; top: 7%; }
+.rcs-cases__image--2 { right: 5%; top: 5%; }
+.rcs-cases__image--3 { bottom: 6%; left: 35%; }
+.rcs-cases__image--4 { bottom: 4%; right: 3%; }
+.rcs-cases__image--5 { left: 13%; top: 46%; width: 110px; }
+.rcs-cases__image--6 { bottom: 5%; left: 5%; width: 210px; }
+.rcs-cases__image--7 { right: 20%; top: 42%; width: 100px; }
+
+/* Marketing: phone on the right, RCS circle + arrow to its left */
+.rcs-cases__panel--marketing .rcs-cases__image--1 { left: auto; max-height: 95%; max-width: 70%; right: 16%; top: 3%; }
+/* Feature strip sits under the copy column, so the visual must not clip it */
+.rcs-cases__panel--marketing .rcs-cases__visual { overflow: visible; }
+.rcs-cases__panel--marketing .rcs-cases__image--3 { bottom: 5%; left: -60%; max-width: 80%; }
+.rcs-cases__panel--marketing .rcs-cases__image--2 { left: 8%; max-width: 20%; right: auto; top: 33%; }
+/* Dashed arc: starts at the RCS circle's top-right, curves up into the phone's left edge */
+.rcs-cases__panel--marketing .rcs-cases__route {
+  border: 2px dashed rgba(100,116,139,.55); border-radius: 50%;
+  border-bottom-color: transparent; border-right-color: transparent;
+  height: 80px; left: 20%; top: 31%; transform: none; width: 32%;
+}
+
+/* Green dot marker at the midpoint of the dashed arc */
+.rcs-cases__panel--marketing .rcs-cases__route::after {
+  background: var(--mint); border-radius: 50%; content: "";
+  height: 10px; left: 14.6%; position: absolute; top: 14.6%;
+  transform: translate(-50%, -50%); width: 10px; z-index: 3;
+}
+
+/* Pause / resume control — sits outside the card, centred under the stack */
+.rcs-cases__playpause { display: flex; justify-content: center; margin-top: 58px; }
+.rcs-cases__playpause button {
+  align-items: center; background: #fff; border: 1px solid #bbd7f4; border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(15,23,42,.08); color: var(--blue); cursor: pointer;
+  display: inline-flex; font: inherit; font-size: 1.05rem; font-weight: 700; gap: 11px;
+  padding: 10px 34px; transition: .25s ease;
+}
+.rcs-cases__playpause button:hover { background: var(--blue); border-color: var(--blue); color: #fff; transform: translateY(-2px); }
+.rcs-cases__playpause button svg { flex-shrink: 0; }
+
+@keyframes rcs-panel-in { from { opacity: 0; transform: translateX(20px) scale(.99); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 1050px) {
+  /* The compact swipe card replaces the legacy icon grid, 3D stage and
+     auto-play control on phone/tablet. `!important` is required because the
+     base component selectors set their own display values. */
+  .rcs-cases__tabs,
+  .rcs-cases__stage,
+  .rcs-cases__playpause {
+    display: none !important;
+  }
+  .rcs-cases__tabs { gap: 18px 8px; grid-template-columns: repeat(3, 1fr); }
+  .rcs-cases__tabs::before, .rcs-cases__progress { display: none; }
+  .rcs-cases__icon, .rcs-cases__tabs button.is-active .rcs-cases__icon { height: 84px; margin-top: 0; width: 84px; }
+
+  /* No 3D stack on small screens - only the active card, in normal flow */
+  .rcs-cases__stage { min-height: 0; perspective: none; }
+  .rcs-cases__panel {
+    filter: none !important; grid-template-columns: 1fr; left: auto; min-height: 0;
+    opacity: 1 !important; position: static; top: auto; transform: none !important;
+  }
+  .rcs-cases__panel:not(.is-active) { display: none; }
+  .rcs-cases__panel:not(.is-active) * { pointer-events: auto; }
+  .rcs-cases__visual { min-height: 540px; }
+  .rcs-cases__playpause { margin-top: 26px; }
+}
+
+@media (max-width: 620px) {
+  .rcs-cases { padding: 56px 16px; }
+  .rcs-cases__header { margin-bottom: 28px; }
+  .rcs-cases__header h2 {
+    font-size: 1.7rem !important;
+    line-height: 1.15 !important;
+    margin: 0 0 12px !important;
+  }
+  .rcs-cases__header p { font-size: .95rem !important; line-height: 1.55 !important; }
+  .rcs-cases__tabs { grid-template-columns: repeat(2, 1fr); }
+  .rcs-cases__icon, .rcs-cases__tabs button.is-active .rcs-cases__icon { height: 70px; width: 70px; }
+  .rcs-cases__panel { border-radius: 24px; }
+  .rcs-cases__copy { padding: 32px 22px; }
+  .rcs-cases__copy ul { grid-template-columns: 1fr; }
+  .rcs-cases__visual { min-height: 430px; }
+  .rcs-cases__image { max-height: 52%; max-width: 55%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rcs-cases__panel { animation: none; transition: none; }
+  .rcs-cases__icon, .rcs-cases__progress { transition: none; }
+}
+

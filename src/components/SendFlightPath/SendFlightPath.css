@@ -1,0 +1,148 @@
+.send-flight {
+  --send-flight-color: #2588f0;
+  --send-flight-cycle: 5.5s;
+  width: 100%;
+  line-height: 0;
+  background: transparent;
+}
+
+.send-flight__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/*
+ * The mask stroke is a single dash as long as the whole path (pathLength=1),
+ * so pulling its offset from 1 to 0 sweeps it along the curve and the line
+ * underneath appears to be drawn from start to end.
+ */
+.send-flight__reveal {
+  animation: send-flight-draw var(--send-flight-cycle)
+    cubic-bezier(0.42, 0, 0.28, 1) infinite;
+}
+
+@keyframes send-flight-draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  55%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+ * One opacity for the line and the icon together, so they can never fade out
+ * at different times. The reset back to the undrawn state happens while the
+ * whole group is invisible.
+ */
+.send-flight__stage {
+  animation: send-flight-fade var(--send-flight-cycle) ease-in-out infinite;
+}
+
+@keyframes send-flight-fade {
+  0%,
+  78% {
+    opacity: 1;
+  }
+  94%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The icon stays still; it only appears once the line has finished drawing. */
+.send-flight__icon {
+  opacity: 0;
+  animation: send-flight-land var(--send-flight-cycle) ease-in-out infinite;
+}
+
+@keyframes send-flight-land {
+  0%,
+  38% {
+    opacity: 0;
+  }
+  48%,
+  100% {
+    opacity: 1;
+  }
+}
+
+.send-flight__halo {
+  opacity: 0.18;
+}
+
+/*
+ * Chat content that rides the same 5.5s cycle as the flight path: it lands
+ * after the send icon reaches the phone (icon is in place at ~48%), step 1
+ * first and step 2 right behind it, then both leave with the line.
+ */
+.send-flight-step-1,
+.send-flight-step-2 {
+  opacity: 0;
+  animation-duration: 5.5s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+.send-flight-step-1 {
+  animation-name: send-flight-step-1;
+}
+
+.send-flight-step-2 {
+  animation-name: send-flight-step-2;
+}
+
+@keyframes send-flight-step-1 {
+  0%,
+  50% {
+    opacity: 0;
+  }
+  57%,
+  80% {
+    opacity: 1;
+  }
+  94%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes send-flight-step-2 {
+  0%,
+  60% {
+    opacity: 0;
+  }
+  67%,
+  80% {
+    opacity: 1;
+  }
+  94%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .send-flight-step-1,
+  .send-flight-step-2 {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .send-flight__reveal,
+  .send-flight__stage,
+  .send-flight__icon {
+    animation: none;
+    opacity: 1;
+  }
+
+  .send-flight__reveal {
+    stroke-dashoffset: 0;
+  }
+}

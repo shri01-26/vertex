@@ -21,7 +21,6 @@ import {
   Headphones,
   MessageCircle,
   MessageSquareText,
-  MessagesSquare,
   MousePointerClick,
   Network,
   RotateCcw,
@@ -37,71 +36,16 @@ import {
   ChevronRight,
   CircleDot,
   FileText,
-  ImageIcon,
   ShoppingBag,
   Target,
-  BookOpen,
   ChevronLeft,
   Pause,
   Play,
   Smartphone,
   BarChart3,
   LockKeyhole,
+  ClipboardList,
 } from "lucide-react";
-
-const floatingFeatures = [
-  {
-    title: "Instant Answers",
-    icon: Zap,
-    position: "left-0 top-[8%] lg:left-[-5%] lg:top-[13%]",
-    delay: 0,
-  },
-  {
-    title: "Task Automation",
-    icon: Workflow,
-    position: "right-0 top-[5%] lg:right-[-2%] lg:top-[12%]",
-    delay: 0.4,
-  },
-  {
-    title: "Smart Routing",
-    icon: Network,
-    position: "left-0 top-[42%] lg:left-[-10%] lg:top-[45%]",
-    delay: 0.8,
-  },
-  {
-    title: "24/7 Availability",
-    icon: Clock3,
-    position: "right-0 top-[40%] lg:right-[-8%] lg:top-[43%]",
-    delay: 1.2,
-  },
-  {
-    title: "Lead Qualification",
-    icon: UserRoundCheck,
-    position: "left-[4%] bottom-[5%] lg:left-[-2%] lg:bottom-[8%]",
-    delay: 1.6,
-  },
-  {
-    title: "Clean Data Capture",
-    icon: Database,
-    position: "right-[2%] bottom-[4%] lg:right-[-4%] lg:bottom-[8%]",
-    delay: 2,
-  },
-];
-
-const bottomFeatures = [
-  {
-    title: "Instant Replies",
-    icon: MessageCircle,
-  },
-  {
-    title: "Always Available",
-    icon: Clock3,
-  },
-  {
-    title: "Smart & Scalable",
-    icon: BrainCircuit,
-  },
-];
 
 const fadeUp = {
   hidden: {
@@ -134,18 +78,19 @@ const businessApiHeadingProps = {
 };
 
 function AnimatedTypingText({ text, className = "" }) {
-  const width = `${text.length}ch`;
-  const underlineWidth = `${Math.max(text.length - 0.2, 1)}ch`;
-
   return (
     <span
-      className={`relative inline-flex max-w-full items-baseline whitespace-nowrap text-[#16A34A] ${className}`}
-      style={{ minWidth: `min(${width}, 100%)` }}
+      className={`chatbot-hero-keyword relative inline-block max-w-full whitespace-nowrap align-baseline leading-[inherit] !text-[#10b957] ${className}`}
+      style={{ contain: "layout paint", color: "#10b957" }}
     >
+      <span className="invisible inline-block whitespace-nowrap leading-[inherit] !text-[#10b957]" style={{ color: "#10b957" }}>
+        {text}
+      </span>
+
       <motion.span
         initial={{ width: 0 }}
         animate={{
-          width: ["0ch", width, width, "0ch", "0ch"],
+          width: ["0%", "100%", "100%", "0%", "0%"],
         }}
         transition={{
           duration: 4.8,
@@ -154,19 +99,32 @@ function AnimatedTypingText({ text, className = "" }) {
           repeatDelay: 0.45,
           ease: "linear",
         }}
-        className="inline-block overflow-hidden whitespace-nowrap align-bottom"
+        className="absolute left-0 top-0 inline-block overflow-hidden whitespace-nowrap leading-[inherit] !text-[#10b957]"
+        style={{ color: "#10b957" }}
       >
         {text}
       </motion.span>
 
       <motion.span
-        animate={{ opacity: [1, 1, 0, 0, 1] }}
-        transition={{
-          duration: 0.85,
-          repeat: Infinity,
-          ease: "linear",
+        animate={{
+          left: ["0%", "100%", "100%", "0%", "0%"],
+          opacity: [1, 1, 0, 0, 1],
         }}
-        className="ml-[3px] inline-block h-[0.9em] w-[3px] rounded-full bg-[#16A34A] align-middle"
+        transition={{
+          left: {
+            duration: 4.8,
+            times: [0, 0.38, 0.58, 0.9, 1],
+            repeat: Infinity,
+            repeatDelay: 0.45,
+            ease: "linear",
+          },
+          opacity: {
+            duration: 0.85,
+            repeat: Infinity,
+            ease: "linear",
+          },
+        }}
+        className="absolute top-[0.08em] inline-block h-[0.9em] w-[3px] rounded-full bg-[#10b957]"
       />
 
       <motion.span
@@ -181,8 +139,7 @@ function AnimatedTypingText({ text, className = "" }) {
           repeatDelay: 0.45,
           ease: "linear",
         }}
-        className="absolute -bottom-1 left-0 -z-10 h-[8px] origin-left rounded-full bg-[#DDF8E7]"
-        style={{ width: `min(${underlineWidth}, 100%)` }}
+        className="absolute -bottom-1 left-0 -z-10 h-[8px] w-full origin-left rounded-full bg-[#DDF8E7]"
       />
     </span>
   );
@@ -194,21 +151,21 @@ function AnimatedTypingText({ text, className = "" }) {
 const beforeSupportPoints = [
   "Delayed responses during peak hours",
   "High dependency on human agents",
-  "Customers wait for answers",
-  "Repetitive queries consume time",
-  "Leads disappear due to slow follow-ups",
-  "No tracking of conversation outcomes",
-  "Manual handoffs between teams",
+  "Customers waiting for answers",
+  "Repetitive queries consuming time",
+  "Slow follow-ups",
+  "Manual data collection",
+  "Limited conversation tracking",
 ];
 
 const afterSupportPoints = [
-  "Instant responses to common questions",
-  "AI-powered conversation routing",
-  "Smart handling of high-demand periods",
-  "Lead qualification through automated flows",
-  "Continuous follow-ups and reminders",
-  "24/7 customer availability",
-  "Clear conversation and engagement data",
+  "Faster responses to common questions",
+  "Automated handling of repetitive queries",
+  "Guided conversations with buttons, lists and Flows",
+  "Routing to departments or agents",
+  "Automated lead qualification",
+  "Structured data captured in chat",
+  "Send reminders and follow-ups using approved templates",
 ];
 
 const comparisonContainer = {
@@ -317,41 +274,14 @@ function ComparisonSection() {
       <div className="mx-auto max-w-[1440px]">
         {/* Section heading */}
         <div className="mx-auto max-w-[900px] text-center">
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 18,
-              scale: 0.92,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.7,
-            }}
-            transition={{
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/90 px-4 py-2 text-xs font-bold text-emerald-700 shadow-sm backdrop-blur-lg sm:text-sm"
-          >
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[#19B75A]">
-              <Workflow size={15} />
-            </span>
-            Before and After WhatsApp Automation
-          </motion.div>
-
           <motion.h2
             {...businessApiHeadingProps}
-            className="mx-auto max-w-none whitespace-nowrap text-center text-[clamp(1.65rem,4.4vw,4.2rem)] font-extrabold leading-[1.1] tracking-tight text-[#111827]"
+            className="wa-section-heading mx-auto max-w-none whitespace-nowrap text-center text-[clamp(1.65rem,4.4vw,4.2rem)] font-extrabold leading-[1.1] tracking-normal text-[#111827] max-md:whitespace-normal"
           >
-            <span className="block">A broken support flow becomes a</span>
+            <span className="block">Turn a Broken Support Flow into a</span>
             <span className="block">
-              <span className="text-[#16A34A]">chatbot-powered</span>{" "}
-              customer experience
+              <span className="text-[#16A34A]">Chatbot-Powered</span> Customer
+              Experience
             </span>
           </motion.h2>
 
@@ -371,11 +301,9 @@ function ComparisonSection() {
               duration: 0.7,
               delay: 0.2,
             }}
-            className="mx-auto mt-6 max-w-[1120px] text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]"
+            className="wa-section-sub mx-auto mt-6 max-w-[1280px] text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] md:whitespace-nowrap"
           >
-            See how AI automation transforms every step of the customer support
-            journey—from delayed replies and manual handoffs to instant,
-            structured and measurable conversational flows.
+            See how a WhatsApp chatbot turns delayed support into faster, structured, and manageable conversations.
           </motion.p>
         </div>
 
@@ -428,52 +356,61 @@ function ComparisonSection() {
             />
 
             {/* Card heading */}
-            <div className="flex items-center justify-between border-b border-red-100 bg-red-50/55 px-5 py-3.5 sm:px-6">
-              <div className="flex items-center gap-3">
-                <motion.span
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          scale: [1, 1.08, 1],
-                        }
-                  }
-                  transition={{
-                    duration: 2.2,
-                    repeat: Infinity,
-                  }}
-                  className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-100 text-red-500"
-                >
-                  <AlertCircle size={22} />
-                </motion.span>
+            <div className="cmp-card-head flex items-center justify-between border-b border-red-100 bg-red-50/55 px-3 py-1.5 sm:px-4">
+              <div className="min-w-0">
+                <p className="text-[9.5px] font-black uppercase tracking-[0.1em] !text-red-600">
+                  Before
+                </p>
 
-                <div className="min-w-0">
-                  <p className="text-base font-black uppercase tracking-[0.16em] !text-red-600">
-                    Before
-                  </p>
+                <div className="mt-1 flex items-center gap-2.5">
+                  <motion.span
+                    animate={
+                      reduceMotion
+                        ? undefined
+                        : {
+                            scale: [1, 1.08, 1],
+                          }
+                    }
+                    transition={{
+                      duration: 2.2,
+                      repeat: Infinity,
+                    }}
+                    className="-mt-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-red-500"
+                    style={{ transform: "translateY(-4px)" }}
+                  >
+                    <AlertCircle size={16} />
+                  </motion.span>
 
-                  <h3 className="mt-0.5 whitespace-nowrap text-base font-black text-[#281315] sm:text-lg">
+                  <h3
+                    className="cmp-card-title inline-block whitespace-nowrap !text-[1.12rem] !font-medium !leading-none text-[#281315]"
+                    style={{
+                      fontSize: "1.12rem",
+                      lineHeight: 1,
+                      transform: "translateY(0)",
+                    }}
+                  >
                     Manual Support Experience
                   </h3>
                 </div>
               </div>
 
-              <span className="rounded-full border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-500">
+              <span className="cmp-card-badge rounded-full border border-red-200 bg-white px-2.5 py-1 text-[10px] font-bold leading-none text-red-500">
                 Broken Flow
               </span>
             </div>
 
-            {/* Customer image area */}
-            <div className="relative mx-5 mt-4 h-[170px] overflow-hidden rounded-[22px] sm:mx-6 sm:h-[185px]">
+            {/* Before image area */}
+            <div className="cmp-media relative mx-5 -mt-6 flex justify-center overflow-hidden rounded-[22px] sm:mx-6">
               <img
-                src="https://images.unsplash.com/photo-1542596594-649edbc13630?auto=format&fit=crop&w=1100&q=85"
-                alt="Customer waiting for support response"
-                className="h-full w-full object-cover object-center"
+                src="/assets/images/before.webp"
+                alt="Manual support experience before automation"
+                loading="lazy"
+                className="block h-auto w-[54%] object-contain"
               />
 
-              <div className="absolute inset-0 bg-gradient-to-r from-[#301417]/70 via-[#301417]/25 to-transparent" />
+              <div className="hidden absolute inset-0 bg-gradient-to-r from-[#301417]/70 via-[#301417]/25 to-transparent" />
 
-              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="hidden absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/60 to-transparent" />
 
               {/* Slow response badge */}
               <motion.div
@@ -490,7 +427,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute left-4 top-4 max-w-[150px] rounded-2xl rounded-bl-sm border border-white/50 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md"
+                className="hidden absolute left-4 top-4 max-w-[150px] rounded-2xl rounded-bl-sm border border-white/50 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md"
               >
                 <p className="text-[11px] font-medium text-slate-500">
                   Customer
@@ -517,7 +454,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute bottom-4 right-4 max-w-[170px] rounded-2xl rounded-br-sm border border-red-100 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md"
+                className="hidden absolute bottom-4 right-4 max-w-[170px] rounded-2xl rounded-br-sm border border-red-100 bg-white/95 px-4 py-3 shadow-xl backdrop-blur-md"
               >
                 <div className="flex items-center gap-2 text-red-500">
                   <Clock3 size={15} />
@@ -548,7 +485,7 @@ function ComparisonSection() {
                 </div>
               </motion.div>
 
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full border border-white/30 bg-black/35 px-3 py-2 text-xs font-bold text-white backdrop-blur-md">
+              <div className="hidden absolute bottom-4 left-4 items-center gap-2 rounded-full border border-white/30 bg-black/35 px-3 py-2 text-xs font-bold text-white backdrop-blur-md">
                 <Headphones size={14} />
                 Waiting for an agent
               </div>
@@ -563,7 +500,7 @@ function ComparisonSection() {
                 once: true,
                 amount: 0.2,
               }}
-              className="space-y-1.5 px-5 py-4 sm:px-6"
+              className="cmp-list space-y-1 px-5 py-2.5 sm:px-6"
             >
               {beforeSupportPoints.map((point, index) => (
                 <motion.div
@@ -578,7 +515,7 @@ function ComparisonSection() {
                     stiffness: 280,
                     damping: 22,
                   }}
-                  className="group relative flex items-start gap-2.5 overflow-hidden rounded-xl bg-red-50/25 px-3 py-2 transition-all duration-300 hover:bg-red-50/45 hover:shadow-[0_6px_18px_rgba(239,68,68,0.06)]"
+                  className="group relative flex items-start gap-2 overflow-hidden rounded-xl bg-red-50/25 px-3 py-1.5 transition-all duration-300 hover:bg-red-50/45 hover:shadow-[0_6px_18px_rgba(239,68,68,0.06)]"
                 >
                   {/* Moving red highlight */}
                   <motion.span
@@ -827,44 +764,60 @@ function ComparisonSection() {
             />
 
             {/* Card heading */}
-            <div className="flex items-center justify-between border-b border-emerald-100 bg-emerald-50/55 px-5 py-3.5 sm:px-6">
-              <div className="flex items-center gap-3">
-                <motion.span
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          rotate: [0, 8, -8, 0],
-                          scale: [1, 1.08, 1],
-                        }
-                  }
-                  transition={{
-                    duration: 3.2,
-                    repeat: Infinity,
-                  }}
-                  className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-[#19B75A]"
-                >
-                  <Sparkles size={22} />
-                </motion.span>
+            <div className="cmp-card-head flex items-center justify-between border-b border-emerald-100 bg-emerald-50/55 px-3 py-1.5 sm:px-4">
+              <div className="min-w-0">
+                <p className="text-[9.5px] font-black uppercase tracking-[0.1em] !text-emerald-600">
+                  After
+                </p>
 
-                <div>
-                  <p className="text-base font-black uppercase tracking-[0.16em] !text-emerald-600">
-                    After
-                  </p>
+                <div className="mt-1 flex items-center gap-2.5">
+                  <motion.span
+                    animate={
+                      reduceMotion
+                        ? undefined
+                        : {
+                            rotate: [0, 8, -8, 0],
+                            scale: [1, 1.08, 1],
+                          }
+                    }
+                    transition={{
+                      duration: 3.2,
+                      repeat: Infinity,
+                    }}
+                    className="-mt-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 text-[#19B75A]"
+                    style={{ transform: "translateY(-4px)" }}
+                  >
+                    <Sparkles size={16} />
+                  </motion.span>
 
-                  <h3 className="mt-1 text-xl font-black text-[#0C2C1B]">
-                    AI Chatbot Experience
+                  <h3
+                    className="cmp-card-title inline-block whitespace-nowrap !text-[1.12rem] !font-medium !leading-none text-[#0C2C1B]"
+                    style={{ fontSize: "1.12rem", lineHeight: 1 }}
+                  >
+                    WhatsApp Chatbot Experience
                   </h3>
                 </div>
               </div>
 
-              <span className="rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-xs font-bold text-emerald-600">
+              <span className="cmp-card-badge rounded-full border border-emerald-200 bg-white px-2.5 py-1 text-[10px] font-bold leading-none text-emerald-600">
                 Automated
               </span>
             </div>
 
-            {/* Chatbot visual */}
-            <div className="relative mx-5 mt-4 h-[170px] overflow-hidden rounded-[22px] border border-emerald-100 bg-[radial-gradient(circle_at_center,#dffff0_0%,#f4fff8_45%,#ffffff_100%)] sm:mx-6 sm:h-[185px]">
+            {/* After image area */}
+            <div className="cmp-media relative mx-5 -mt-6 flex h-[clamp(260px,27vw,390px)] justify-center overflow-hidden rounded-[22px] sm:mx-6">
+              <img
+                src="/assets/images/after.webp"
+                alt="AI chatbot experience after automation"
+                loading="lazy"
+                className="block object-contain"
+                style={{
+                  width: "60%",
+                  height: "auto",
+                  maxWidth: "60%",
+                }}
+              />
+
               {/* Background circles */}
               <motion.div
                 animate={
@@ -879,7 +832,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "linear",
                 }}
-                className="absolute left-1/2 top-1/2 h-[185px] w-[185px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-emerald-300"
+                className="hidden absolute left-1/2 top-1/2 h-[185px] w-[185px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-emerald-300"
               />
 
               <motion.div
@@ -896,7 +849,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300/40 blur-2xl"
+                className="hidden absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-300/40 blur-2xl"
               />
 
               {/* Central bot */}
@@ -914,7 +867,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute left-1/2 top-1/2 flex h-[105px] w-[105px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[34px] border-[6px] border-white bg-[#071B2C] text-[#4AF087] shadow-[0_24px_50px_rgba(15,118,63,0.25)]"
+                className="hidden absolute left-1/2 top-1/2 h-[105px] w-[105px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[34px] border-[6px] border-white bg-[#071B2C] text-[#4AF087] shadow-[0_24px_50px_rgba(15,118,63,0.25)]"
               >
                 <Bot size={48} />
 
@@ -948,7 +901,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute left-3 top-4 max-w-[150px] rounded-2xl rounded-bl-sm border border-emerald-100 bg-white px-4 py-3 shadow-lg"
+                className="hidden absolute left-3 top-4 max-w-[150px] rounded-2xl rounded-bl-sm border border-emerald-100 bg-white px-4 py-3 shadow-lg"
               >
                 <p className="text-[10px] font-bold text-slate-400">Customer</p>
 
@@ -972,7 +925,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute bottom-4 right-3 max-w-[175px] rounded-2xl rounded-br-sm border border-emerald-200 bg-[#EFFFF4] px-4 py-3 shadow-lg"
+                className="hidden absolute bottom-4 right-3 max-w-[175px] rounded-2xl rounded-br-sm border border-emerald-200 bg-[#EFFFF4] px-4 py-3 shadow-lg"
               >
                 <div className="flex items-center gap-2">
                   <Zap size={13} className="text-[#19B75A]" />
@@ -1002,7 +955,7 @@ function ComparisonSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute right-3 top-4 flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-2 shadow-lg"
+                className="hidden absolute right-3 top-4 items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-2 shadow-lg"
               >
                 <CheckCircle2 size={14} className="text-[#19B75A]" />
 
@@ -1021,7 +974,7 @@ function ComparisonSection() {
                 once: true,
                 amount: 0.2,
               }}
-              className="space-y-1.5 px-5 py-4 sm:px-6"
+              className="cmp-list space-y-1 px-5 py-2.5 sm:px-6"
             >
               {afterSupportPoints.map((point, index) => (
                 <motion.div
@@ -1036,7 +989,7 @@ function ComparisonSection() {
                     stiffness: 280,
                     damping: 22,
                   }}
-                  className="group relative flex items-start gap-2.5 overflow-hidden rounded-xl bg-emerald-50/25 px-3 py-2 transition-all duration-300 hover:bg-emerald-50/45 hover:shadow-[0_6px_18px_rgba(34,197,94,0.07)]"
+                  className="group relative flex items-start gap-2 overflow-hidden rounded-xl bg-emerald-50/25 px-3 py-1.5 transition-all duration-300 hover:bg-emerald-50/45 hover:shadow-[0_6px_18px_rgba(34,197,94,0.07)]"
                 >
                   {/* Moving green highlight */}
                   <motion.span
@@ -1147,210 +1100,6 @@ function ComparisonSection() {
           </motion.article>
         </div>
 
-        {/* Bottom explanation card */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 35,
-            scale: 0.97,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.35,
-          }}
-          transition={{
-            duration: 0.75,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="mt-5 overflow-hidden rounded-[24px] border border-emerald-100 bg-white/90 shadow-[0_25px_70px_rgba(15,118,63,0.09)] backdrop-blur-xl"
-        >
-          <div className="grid items-center gap-4 px-5 py-4 lg:grid-cols-[1fr_auto] lg:px-6">
-            {/* Message */}
-            <div className="flex items-start gap-4">
-              <motion.span
-                animate={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        rotate: [0, 8, -8, 0],
-                      }
-                }
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                }}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#25D366] text-white shadow-[0_12px_28px_rgba(37,211,102,0.25)]"
-              >
-                <MessageCircle size={24} fill="currentColor" />
-              </motion.span>
-
-              <div>
-                <h4 className="text-base font-black text-[#071B2C] sm:text-lg">
-                  A WhatsApp chatbot does more than answer messages.
-                </h4>
-
-                <p className="mt-1.5 max-w-[760px] text-sm font-medium leading-6 text-slate-600">
-                  It connects customer intent with the right response, workflow,
-                  team and next action—without making customers wait.
-                </p>
-              </div>
-            </div>
-
-            {/* Status */}
-            <div className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-xs font-black text-emerald-700">
-              <span className="relative flex h-2.5 w-2.5">
-                <motion.span
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          scale: [1, 1.9, 1],
-                          opacity: [0.6, 0, 0.6],
-                        }
-                  }
-                  transition={{
-                    duration: 1.8,
-                    repeat: Infinity,
-                  }}
-                  className="absolute inset-0 rounded-full bg-[#25D366]"
-                />
-
-                <span className="relative h-2.5 w-2.5 rounded-full bg-[#25D366]" />
-              </span>
-              Intelligent workflow active
-            </div>
-          </div>
-
-          {/* Workflow */}
-          <div className="border-t border-emerald-100 bg-[#F8FFFA] px-5 py-3.5 sm:px-6">
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {[
-                {
-                  label: "Customer Message",
-                  icon: MessageSquareText,
-                },
-                {
-                  label: "Intent Trigger",
-                  icon: Zap,
-                },
-                {
-                  label: "Bot Reply",
-                  icon: Bot,
-                },
-                {
-                  label: "Smart Route",
-                  icon: Route,
-                },
-                {
-                  label: "Business Action",
-                  icon: MousePointerClick,
-                },
-              ].map((step, index, array) => {
-                const Icon = step.icon;
-
-                return (
-                  <React.Fragment key={step.label}>
-                    <motion.div
-                      initial={{
-                        opacity: 0,
-                        y: 18,
-                        scale: 0.9,
-                      }}
-                      whileInView={{
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                      }}
-                      viewport={{
-                        once: true,
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        delay: index * 0.1,
-                      }}
-                      whileHover={{
-                        y: -4,
-                        scale: 1.03,
-                      }}
-                      className="flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-4 py-2.5 text-xs font-extrabold text-[#173527] shadow-sm"
-                    >
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[#19B75A]">
-                        <Icon size={14} />
-                      </span>
-
-                      {step.label}
-                    </motion.div>
-
-                    {index < array.length - 1 && (
-                      <motion.div
-                        initial={{
-                          opacity: 0,
-                          scaleX: 0,
-                        }}
-                        whileInView={{
-                          opacity: 1,
-                          scaleX: 1,
-                        }}
-                        viewport={{
-                          once: true,
-                        }}
-                        transition={{
-                          duration: 0.45,
-                          delay: index * 0.1 + 0.2,
-                        }}
-                        className="relative hidden h-px w-7 origin-left bg-emerald-200 sm:block"
-                      >
-                        <motion.span
-                          animate={
-                            reduceMotion
-                              ? undefined
-                              : {
-                                  x: [0, 22, 0],
-                                }
-                          }
-                          transition={{
-                            duration: 1.8,
-                            repeat: Infinity,
-                            ease: "easeInOut",
-                          }}
-                          className="absolute -top-1 h-2 w-2 rounded-full bg-[#25D366]"
-                        />
-                      </motion.div>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Bottom section label */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 15,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.6,
-            delay: 0.2,
-          }}
-          className="mt-7 flex items-center justify-center gap-2 text-center text-xs font-bold text-emerald-600"
-        >
-          <MessageCircle size={15} />
-          What Your WhatsApp Chatbot Is Built to Do
-        </motion.div>
       </div>
     </section>
   );
@@ -1367,10 +1116,11 @@ const chatbotBookPages = [
     id: "answer",
     number: "01",
     eyebrow: "ANSWER",
-    title: "Instant Resolution",
-    heading: "Answer every customer question instantly.",
+    title: "Fast, Consistent Customer Responses",
+    tabTitle: "Fast Responses",
+    heading: "Fast, consistent customer responses.",
     description:
-      "Give customers accurate and immediate answers without making them wait for a support agent.",
+      "Handle common customer questions with approved knowledge, business rules, and automated replies reducing dependence on human availability.",
     color: "#16A34A",
     softColor: "#ECFDF3",
     borderColor: "#BBF7D0",
@@ -1379,9 +1129,9 @@ const chatbotBookPages = [
       "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1200&q=88",
     imageAlt: "Customer using an AI chatbot",
     points: [
-      "Instant answers to common customer questions",
-      "Accurate product, service and policy information",
-      "Available throughout the complete customer journey",
+      "Respond to FAQs, product queries, policies, and service questions",
+      "Process voice notes through connected speech-to-text capabilities, where enabled",
+      "Support buttons, lists, images, videos, PDFs, and other WhatsApp message formats",
     ],
     type: "answer",
   },
@@ -1389,10 +1139,11 @@ const chatbotBookPages = [
     id: "guide",
     number: "02",
     eyebrow: "GUIDE",
-    title: "Interactive Flows",
-    heading: "Guide every customer towards the right action.",
+    title: "Structured Journeys That Simplify Decisions",
+    tabTitle: "Guided Journeys",
+    heading: "Structured journeys that simplify decisions.",
     description:
-      "Turn complex customer journeys into simple conversational steps with intelligent branching and guided choices.",
+      "Use interactive options and guided steps to help customers find relevant information without unnecessary back-and-forth.",
     color: "#2563EB",
     softColor: "#EFF6FF",
     borderColor: "#BFDBFE",
@@ -1401,9 +1152,9 @@ const chatbotBookPages = [
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=88",
     imageAlt: "Customer journey and analytics dashboard",
     points: [
-      "Structured conversational journeys",
-      "Smart branching based on customer intent",
-      "Step-by-step customer guidance",
+      "Present quick replies, menus, and lists for clearer customer choices",
+      "Launch WhatsApp Flows for forms, registrations, bookings, and guided data collection",
+      "Apply conditions and routing rules through Vertex Suite to personalise each journey",
     ],
     type: "guide",
   },
@@ -1411,21 +1162,22 @@ const chatbotBookPages = [
     id: "assist",
     number: "03",
     eyebrow: "ASSIST",
-    title: "High-Value Tasks",
-    heading: "Complete important customer tasks inside chat.",
+    title: "Help Customers Complete Routine Tasks",
+    tabTitle: "Routine Tasks",
+    heading: "Help customers complete routine tasks.",
     description:
-      "Capture information, qualify leads, book appointments and complete customer actions without leaving WhatsApp.",
-    color: "#7C3AED",
-    softColor: "#F5F3FF",
-    borderColor: "#DDD6FE",
+      "Guide customers through supported service actions directly from the conversation, while keeping each step connected to the relevant business system.",
+    color: "#16A34A",
+    softColor: "#ECFDF3",
+    borderColor: "#BBF7D0",
     icon: FileText,
     image:
       "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=88",
     imageAlt: "Business professional completing digital tasks",
     points: [
-      "Capture and validate customer information",
-      "Book appointments and product demonstrations",
-      "Complete important service requests",
+      "Handle bookings, orders, ticket creation and status updates",
+      "Capture clean, structured data for CRM and backend systems",
+      "Trigger actions based on user responses or pre-set rules",
     ],
     type: "assist",
   },
@@ -1433,21 +1185,22 @@ const chatbotBookPages = [
     id: "automate",
     number: "04",
     eyebrow: "AUTOMATE",
-    title: "End-to-End Workflows",
-    heading: "Turn customer conversations into business actions.",
+    title: "Keep Processes Moving in the Background",
+    tabTitle: "Workflow Automation",
+    heading: "Keep processes moving in the background.",
     description:
-      "Connect every message with automated replies, intelligent routing, notifications and backend workflows.",
-    color: "#F97316",
-    softColor: "#FFF7ED",
-    borderColor: "#FED7AA",
+      "Connect conversations with workflows that route requests, update systems, and continue customer communication automatically.",
+    color: "#2563EB",
+    softColor: "#EFF6FF",
+    borderColor: "#BFDBFE",
     icon: Settings2,
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=88",
     imageAlt: "Automated business workflow on a laptop",
     points: [
-      "Trigger automated replies and follow-ups",
-      "Route conversations to the correct team",
-      "Connect chat with business systems",
+      "Create leads, support tickets, tasks, or connected workflow actions",
+      "Send reminders and follow-ups using approved templates when required",
+      "Transfer complex conversations to human agents with available context",
     ],
     type: "automate",
   },
@@ -1473,6 +1226,25 @@ const bookPageVariants = {
     x: direction > 0 ? "-100%" : "100%",
     rotateY: direction > 0 ? -35 : 35,
     scale: 0.96,
+  }),
+};
+
+/* Phones get a flat horizontal slide instead of the 3D page turn —
+   the perspective flip reads as a glitch on a narrow screen. */
+const bookSlideVariants = {
+  enter: (direction) => ({
+    opacity: 0,
+    x: direction > 0 ? "100%" : "-100%",
+  }),
+
+  center: {
+    opacity: 1,
+    x: 0,
+  },
+
+  exit: (direction) => ({
+    opacity: 0,
+    x: direction > 0 ? "-100%" : "100%",
   }),
 };
 
@@ -1661,140 +1433,72 @@ function BookConnector({ color, delay, height = 30 }) {
    ANSWER VISUAL
 ========================================================= */
 
-function AnswerBookVisual({ page, animationCycle, reduceMotion }) {
+function AnswerBookVisual({ animationCycle }) {
   return (
     <motion.div
       key={`answer-${animationCycle}`}
-      className="relative h-[520px] w-full overflow-hidden rounded-[30px] border border-emerald-100 bg-[#F7FFF9]"
+      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="book-visual pointer-events-none relative flex h-[700px] w-full items-center justify-center overflow-hidden bg-transparent p-0"
     >
-      <motion.img
-        src={page.image}
-        alt={page.imageAlt}
-        className="absolute inset-0 h-full w-full object-cover"
-        animate={
-          reduceMotion
-            ? undefined
-            : {
-                scale: [1, 1.07, 1],
-              }
-        }
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      <div className="relative h-[86%] w-[86%] -translate-x-5">
+        <svg
+          aria-hidden="true"
+          className="absolute inset-0 z-0 h-full w-full overflow-visible"
+          viewBox="0 0 1200 980"
+          fill="none"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <defs>
+            <linearGradient id="chatbotOrbitLine" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#16A34A" stopOpacity="0.12" />
+              <stop offset="48%" stopColor="#22C55E" stopOpacity="0.52" />
+              <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.18" />
+            </linearGradient>
+            <filter id="chatbotOrbitGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#032416]/90 via-[#032416]/20 to-black/5" />
+          <path
+            d="M278 178 C470 95 760 96 965 190"
+            stroke="url(#chatbotOrbitLine)"
+            strokeWidth="3"
+            strokeDasharray="8 12"
+            strokeLinecap="round"
+            opacity="0.42"
+          />
+          <path
+            d="M245 210 C152 356 154 566 250 724"
+            stroke="url(#chatbotOrbitLine)"
+            strokeWidth="3"
+            strokeDasharray="8 12"
+            strokeLinecap="round"
+            opacity="0.38"
+          />
+          <path
+            d="M250 724 C336 812 452 854 592 852"
+            stroke="url(#chatbotOrbitLine)"
+            strokeWidth="2"
+            strokeDasharray="6 11"
+            strokeLinecap="round"
+            opacity="0.24"
+          />
+        </svg>
 
-      <motion.div
-        initial={{
-          opacity: 0,
-          x: -30,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          x: 0,
-          y: 0,
-        }}
-        transition={{
-          duration: 0.6,
-          delay: 0.5,
-        }}
-        className="absolute left-6 top-8 max-w-[270px] rounded-[24px] rounded-bl-md border border-white/70 bg-white/95 px-5 py-4 shadow-2xl backdrop-blur-md"
-      >
-        <p className="text-[10px] font-black uppercase tracking-[0.16em] text-slate-400">
-          Customer
-        </p>
-
-        <p className="mt-2 text-sm font-black text-[#173527] sm:text-base">
-          Where is my order?
-        </p>
-      </motion.div>
-
-      <motion.div
-        initial={{
-          opacity: 0,
-          x: 35,
-          y: 25,
-          scale: 0.9,
-        }}
-        animate={{
-          opacity: 1,
-          x: 0,
-          y: 0,
-          scale: 1,
-        }}
-        transition={{
-          duration: 0.65,
-          delay: 1.2,
-        }}
-        className="absolute bottom-8 right-6 max-w-[310px] rounded-[24px] rounded-br-md border border-emerald-200 bg-[#EFFFF4]/95 px-5 py-4 shadow-2xl backdrop-blur-md"
-      >
-        <div className="flex items-center gap-2">
-          <Bot size={16} style={{ color: page.color }} />
-
-          <span
-            className="text-[10px] font-black uppercase tracking-[0.15em]"
-            style={{
-              color: page.color,
-            }}
-          >
-            Instant Response
-          </span>
-        </div>
-
-        <p className="mt-2 text-sm font-bold leading-6 text-[#173527]">
-          Your order is out for delivery and will arrive today.
-        </p>
-      </motion.div>
-
-      <motion.div
-        initial={{
-          opacity: 0,
-          scale: 0.7,
-        }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-          y: reduceMotion ? 0 : [0, -12, 0],
-          rotate: reduceMotion ? 0 : [0, 3, -3, 0],
-        }}
-        transition={{
-          opacity: {
-            delay: 1.8,
-            duration: 0.5,
-          },
-          scale: {
-            delay: 1.8,
-            duration: 0.5,
-          },
-          y: {
-            duration: 4,
-            repeat: Infinity,
-          },
-          rotate: {
-            duration: 5,
-            repeat: Infinity,
-          },
-        }}
-        className="absolute right-[12%] top-[31%] flex h-24 w-24 items-center justify-center rounded-[34px] border-[7px] border-white bg-[#071B2C] text-[#48ED81] shadow-[0_25px_60px_rgba(7,27,44,0.35)]"
-      >
-        <Bot size={47} />
-
-        <motion.span
-          animate={{
-            scale: [1, 1.8, 1],
-            opacity: [0.4, 0, 0.4],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-          }}
-          className="absolute right-2 top-2 h-4 w-4 rounded-full bg-[#25D366]"
+        <img
+          src="/assets/images/chatbotbook1.webp"
+          alt="WhatsApp chatbot automated response preview"
+          className="relative z-10 h-full w-full object-contain"
+          loading="lazy"
         />
-      </motion.div>
+        <span className="absolute left-[3.5%] top-[4%] z-20 h-9 w-9 rounded-full bg-[#F9FCFE] blur-[2px]" />
+      </div>
     </motion.div>
   );
 }
@@ -1802,317 +1506,22 @@ function AnswerBookVisual({ page, animationCycle, reduceMotion }) {
 /* =========================================================
    GUIDE VISUAL
 ========================================================= */
-function GuideBookVisual({
-  page,
-  animationCycle,
-  reduceMotion,
-}) {
-  const actions = [
-    {
-      label: "Track Order",
-      icon: ShoppingBag,
-    },
-    {
-      label: "Book Demo",
-      icon: CalendarCheck2,
-    },
-    {
-      label: "Get Support",
-      icon: Users,
-    },
-  ];
-
+function GuideBookVisual({ animationCycle }) {
   return (
     <motion.div
       key={`guide-${animationCycle}`}
-      className="relative flex h-[520px] w-full items-center justify-center overflow-hidden rounded-[30px] border border-blue-100 bg-[#F7FAFF] p-4"
+      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="book-visual pointer-events-none relative flex h-[700px] w-full items-center justify-center overflow-visible bg-transparent p-0"
     >
-      {/* Background glow */}
-      <motion.div
-        animate={
-          reduceMotion
-            ? undefined
-            : {
-                scale: [1, 1.18, 1],
-                opacity: [0.3, 0.65, 0.3],
-              }
-        }
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute h-64 w-64 rounded-full bg-blue-200/50 blur-[70px]"
-      />
-
-      <div className="relative z-10 flex h-full w-full max-w-[460px] flex-col justify-center">
-        {/* Customer message */}
-        <BookFlowNode
-          icon={MessageSquareText}
-          label="Customer Message"
-          sublabel="I want to track my order"
-          color={page.color}
-          softColor={page.softColor}
-          delay={0}
-          compact
+      <div className="relative h-[88%] w-[92%] -translate-x-6 translate-y-6">
+        <img
+          src="/assets/images/chatbotbook2.webp"
+          alt="WhatsApp chatbot guided journey preview"
+          className="relative z-10 h-full w-full object-contain"
+          loading="lazy"
         />
-
-        <BookConnector
-          color={page.color}
-          delay={0.45}
-          height={18}
-        />
-
-        {/* Intent identified */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            scale: 0.8,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          transition={{
-            delay: 0.9,
-            type: "spring",
-          }}
-          className="mx-auto flex max-w-[215px] items-center justify-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-[10px] font-black text-white shadow-[0_12px_28px_rgba(37,99,235,0.24)]"
-        >
-          <motion.span
-            animate={
-              reduceMotion
-                ? undefined
-                : {
-                    rotate: [0, 7, -7, 0],
-                  }
-            }
-            transition={{
-              duration: 2.6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          >
-            <BrainCircuit size={14} />
-          </motion.span>
-
-          AI Identifies Intent
-        </motion.div>
-
-        <BookConnector
-          color={page.color}
-          delay={1.35}
-          height={18}
-        />
-
-        {/* Decision */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 12,
-            scale: 0.85,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          transition={{
-            delay: 1.75,
-            type: "spring",
-          }}
-          className="mx-auto flex max-w-[210px] items-center justify-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-[10px] font-black text-blue-700"
-        >
-          <GitBranch size={14} />
-          Select Next Action
-        </motion.div>
-
-        {/* Branching lines */}
-        <div className="relative mx-auto h-[52px] w-full max-w-[390px]">
-          <svg
-            viewBox="0 0 390 52"
-            className="absolute inset-0 h-full w-full"
-            fill="none"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <motion.path
-              d="M195 0 V12 C195 22 66 20 66 39 V50"
-              stroke={page.color}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{
-                pathLength: 0,
-                opacity: 0,
-              }}
-              animate={{
-                pathLength: 1,
-                opacity: 1,
-              }}
-              transition={{
-                duration: 0.9,
-                delay: 2.2,
-                ease: "easeInOut",
-              }}
-            />
-
-            <motion.path
-              d="M195 0 V50"
-              stroke={page.color}
-              strokeWidth="2"
-              strokeLinecap="round"
-              initial={{
-                pathLength: 0,
-                opacity: 0,
-              }}
-              animate={{
-                pathLength: 1,
-                opacity: 1,
-              }}
-              transition={{
-                duration: 0.8,
-                delay: 2.45,
-                ease: "easeInOut",
-              }}
-            />
-
-            <motion.path
-              d="M195 0 V12 C195 22 324 20 324 39 V50"
-              stroke={page.color}
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{
-                pathLength: 0,
-                opacity: 0,
-              }}
-              animate={{
-                pathLength: 1,
-                opacity: 1,
-              }}
-              transition={{
-                duration: 0.9,
-                delay: 2.7,
-                ease: "easeInOut",
-              }}
-            />
-
-            {[66, 195, 324].map((cx, index) => (
-              <motion.circle
-                key={cx}
-                cx={cx}
-                cy="49"
-                r="2.8"
-                fill={page.color}
-                initial={{
-                  opacity: 0,
-                  scale: 0,
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                }}
-                transition={{
-                  delay: 3 + index * 0.15,
-                  type: "spring",
-                }}
-              />
-            ))}
-          </svg>
-        </div>
-
-        {/* Action cards */}
-        <div className="grid grid-cols-3 gap-3">
-          {actions.map((action, index) => {
-            const Icon = action.icon;
-
-            return (
-              <motion.div
-                key={action.label}
-                initial={{
-                  opacity: 0,
-                  y: 18,
-                  scale: 0.85,
-                  filter: "blur(4px)",
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  filter: "blur(0px)",
-                }}
-                transition={{
-                  delay: 3.1 + index * 0.2,
-                  type: "spring",
-                }}
-                whileHover={{
-                  y: -5,
-                  scale: 1.04,
-                }}
-                className="rounded-xl border border-blue-100 bg-white px-2 py-2.5 text-center shadow-[0_8px_22px_rgba(37,99,235,0.08)]"
-              >
-                <motion.div
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          y: [0, -3, 0],
-                        }
-                  }
-                  transition={{
-                    duration: 2.5,
-                    delay: index * 0.3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <Icon
-                    size={17}
-                    className="mx-auto text-blue-600"
-                  />
-                </motion.div>
-
-                <p className="mt-1 text-[9px] font-black text-blue-800">
-                  {action.label}
-                </p>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        {/* Final connector */}
-        <BookConnector
-          color={page.color}
-          delay={3.8}
-          height={18}
-        />
-
-        {/* Completed */}
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 12,
-            scale: 0.88,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          transition={{
-            delay: 4.15,
-            type: "spring",
-          }}
-          className="mx-auto flex max-w-[225px] items-center justify-center gap-2 rounded-full bg-[#071B2C] px-4 py-2 text-[10px] font-black text-white"
-        >
-          <CheckCircle2
-            size={14}
-            className="text-[#42E982]"
-          />
-
-          Guided Flow Completed
-        </motion.div>
       </div>
     </motion.div>
   );
@@ -2122,210 +1531,22 @@ function GuideBookVisual({
    ASSIST VISUAL
 ========================================================= */
 
-function AssistBookVisual({ page, animationCycle }) {
-  const formRows = [
-    {
-      label: "Customer Name",
-      value: "Aarav Sharma",
-      icon: UserRoundCheck,
-    },
-    {
-      label: "Selected Service",
-      value: "Product Demonstration",
-      icon: FileText,
-    },
-    {
-      label: "Preferred Time",
-      value: "4:00 PM",
-      icon: CalendarCheck2,
-    },
-  ];
-
+function AssistBookVisual({ animationCycle }) {
   return (
     <motion.div
       key={`assist-${animationCycle}`}
-      className="relative flex h-[520px] w-full items-center justify-center overflow-hidden rounded-[30px] border border-violet-100 bg-[#FBF9FF] p-6"
+      initial={{ opacity: 0, scale: 0.96, y: 16 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className="book-visual pointer-events-none relative flex h-[700px] w-full items-center justify-center overflow-visible bg-transparent p-0"
     >
-      <motion.div
-        animate={{
-          scale: [1, 1.18, 1],
-          opacity: [0.3, 0.65, 0.3],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-        }}
-        className="absolute h-64 w-64 rounded-full bg-violet-200/50 blur-[70px]"
-      />
-
-      <div className="relative z-10 flex min-h-[440px] w-full max-w-[460px] flex-col justify-center rounded-[28px] border border-violet-100 bg-white p-6 shadow-[0_25px_65px_rgba(124,58,237,0.13)]">
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: -15,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-          }}
-          className="flex items-center justify-between"
-        >
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-violet-500">
-              Appointment Flow
-            </p>
-
-            <h4 className="mt-1 text-lg font-black text-[#2E1065]">
-              Product Demonstration
-            </h4>
-          </div>
-
-          <motion.span
-            initial={{
-              scale: 0,
-              rotate: -35,
-            }}
-            animate={{
-              scale: 1,
-              rotate: 0,
-            }}
-            transition={{
-              delay: 0.25,
-              type: "spring",
-            }}
-            className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-100 text-violet-600"
-          >
-            <CalendarCheck2 size={26} />
-
-            <motion.span
-              animate={{
-                scale: [1, 1.7, 1],
-                opacity: [0.3, 0, 0.3],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-              }}
-              className="absolute inset-0 rounded-2xl border border-violet-400"
-            />
-          </motion.span>
-        </motion.div>
-
-        <div className="mt-5 space-y-3">
-          {formRows.map((row, index) => {
-            const Icon = row.icon;
-            const delay = 0.6 + index * 0.75;
-
-            return (
-              <motion.div
-                key={row.label}
-                initial={{
-                  opacity: 0,
-                  x: -30,
-                  filter: "blur(6px)",
-                }}
-                animate={{
-                  opacity: 1,
-                  x: 0,
-                  filter: "blur(0px)",
-                }}
-                transition={{
-                  duration: 0.5,
-                  delay,
-                }}
-                className="flex items-center gap-3 rounded-2xl border border-violet-100 bg-violet-50/55 px-4 py-3"
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-violet-600 shadow-sm">
-                  <Icon size={20} />
-                </span>
-
-                <div className="min-w-0 flex-1">
-                  <p className="text-[9px] font-bold text-slate-400">
-                    {row.label}
-                  </p>
-
-                  <p className="mt-1 text-sm font-black text-slate-700">
-                    {row.value}
-                  </p>
-                </div>
-
-                <motion.span
-                  initial={{
-                    scale: 0,
-                    rotate: -35,
-                  }}
-                  animate={{
-                    scale: 1,
-                    rotate: 0,
-                  }}
-                  transition={{
-                    delay: delay + 0.35,
-                    type: "spring",
-                  }}
-                  className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-600 text-white"
-                >
-                  <Check size={14} strokeWidth={3} />
-                </motion.span>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        <motion.div
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          transition={{
-            delay: 3,
-          }}
-          className="mt-5"
-        >
-          <div className="flex justify-between text-[10px] font-bold">
-            <span className="text-slate-400">Information completed</span>
-
-            <span className="text-violet-600">100%</span>
-          </div>
-
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-violet-100">
-            <motion.div
-              initial={{
-                width: "0%",
-              }}
-              animate={{
-                width: "100%",
-              }}
-              transition={{
-                duration: 1.2,
-                delay: 3.1,
-              }}
-              className="h-full rounded-full bg-gradient-to-r from-violet-600 to-purple-400"
-            />
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 15,
-            scale: 0.9,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          transition={{
-            delay: 4.2,
-            type: "spring",
-          }}
-          className="mt-5 flex items-center justify-center gap-2 rounded-2xl bg-violet-600 px-4 py-3 text-xs font-black text-white shadow-[0_12px_30px_rgba(124,58,237,0.25)]"
-        >
-          <CheckCircle2 size={17} />
-          Task successfully completed
-        </motion.div>
+      <div className="relative h-[88%] w-[92%] translate-y-6">
+        <img
+          src="/assets/images/chatbotbook3.webp"
+          alt="WhatsApp chatbot guided task completion preview"
+          className="relative z-10 h-full w-full object-contain"
+          loading="lazy"
+        />
       </div>
     </motion.div>
   );
@@ -2354,7 +1575,7 @@ function AutomateBookVisual({ page, animationCycle }) {
   return (
     <motion.div
       key={`automate-${animationCycle}`}
-      className="relative flex h-[520px] w-full items-center justify-center overflow-hidden rounded-[30px] border border-orange-100 bg-[#FFFCF8] p-6"
+      className="book-visual relative flex h-[520px] w-full items-center justify-center overflow-hidden rounded-[30px] border border-blue-100 bg-[#F8FBFF] p-6"
     >
       <motion.div
         animate={{
@@ -2365,7 +1586,7 @@ function AutomateBookVisual({ page, animationCycle }) {
           duration: 4,
           repeat: Infinity,
         }}
-        className="absolute h-64 w-64 rounded-full bg-orange-200/50 blur-[70px]"
+        className="absolute h-64 w-64 rounded-full bg-blue-200/50 blur-[70px]"
       />
 
       <div className="relative z-10 w-full max-w-[460px]">
@@ -2393,7 +1614,7 @@ function AutomateBookVisual({ page, animationCycle }) {
             delay: 0.9,
             type: "spring",
           }}
-          className="mx-auto flex max-w-[240px] items-center justify-center gap-2 rounded-full bg-orange-600 px-5 py-3 text-xs font-black text-white shadow-[0_15px_35px_rgba(249,115,22,0.28)]"
+          className="mx-auto flex max-w-[240px] items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-3 text-xs font-black text-white shadow-[0_15px_35px_rgba(37,99,235,0.28)]"
         >
           <Bot size={17} />
           AI Processes Intent
@@ -2416,7 +1637,7 @@ function AutomateBookVisual({ page, animationCycle }) {
             delay: 1.75,
             type: "spring",
           }}
-          className="mx-auto flex max-w-[230px] items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-orange-50 px-4 py-3 text-xs font-black text-orange-700"
+          className="mx-auto flex max-w-[230px] items-center justify-center gap-2 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3 text-xs font-black text-blue-700"
         >
           <GitBranch size={16} />
           Select Business Action
@@ -2487,11 +1708,11 @@ function AutomateBookVisual({ page, animationCycle }) {
                   delay: 3.1 + index * 0.2,
                   type: "spring",
                 }}
-                className="rounded-xl border border-orange-100 bg-white px-2 py-2.5 text-center shadow-[0_8px_22px_rgba(249,115,22,0.08)]"
+                className="rounded-xl border border-blue-100 bg-white px-2 py-2.5 text-center shadow-[0_8px_22px_rgba(37,99,235,0.08)]"
               >
-                <Icon size={17} className="mx-auto text-orange-500" />
+                <Icon size={17} className="mx-auto text-blue-500" />
 
-                <p className="mt-1 text-[9px] font-black text-orange-800">
+                <p className="mt-1 text-[9px] font-black text-blue-800">
                   {action.label}
                 </p>
               </motion.div>
@@ -2562,8 +1783,33 @@ if (page.type === "guide") {
    COMPLETE BOOK SECTION
 ========================================================= */
 
+/* Matches the phone breakpoint used by the mobile styles below.
+   Starts false so the server and the first client render agree. */
+function useIsPhone() {
+  const [isPhone, setIsPhone] = React.useState(false);
+
+  React.useEffect(() => {
+    const phoneQuery = window.matchMedia("(max-width: 767px)");
+
+    const syncIsPhone = () => {
+      setIsPhone(phoneQuery.matches);
+    };
+
+    syncIsPhone();
+
+    phoneQuery.addEventListener("change", syncIsPhone);
+
+    return () => {
+      phoneQuery.removeEventListener("change", syncIsPhone);
+    };
+  }, []);
+
+  return isPhone;
+}
+
 function ChatbotBookSection() {
   const reduceMotion = useReducedMotion();
+  const isPhone = useIsPhone();
 
   const [activePage, setActivePage] = React.useState(0);
   const [direction, setDirection] = React.useState(1);
@@ -2571,7 +1817,15 @@ function ChatbotBookSection() {
   const [animationCycle, setAnimationCycle] = React.useState(0);
 
   const page = chatbotBookPages[activePage];
+  const isAnswerPage = page.id === "answer";
+  const isGuidePage = page.id === "guide";
+  const isAssistPage = page.id === "assist";
+  const isCompactBookPage = isAnswerPage || isGuidePage || isAssistPage;
   const lastPageIndex = chatbotBookPages.length - 1;
+
+  /* Pages only turn on their own from tablet up. On phones the
+     chapter stays put until the reader taps an arrow or a dot. */
+  const isAutoPlaying = !isPaused && !isPhone;
 
   const goToPage = React.useCallback(
     (nextPage) => {
@@ -2605,7 +1859,7 @@ function ChatbotBookSection() {
 
   /* Automatically turn book pages */
   React.useEffect(() => {
-    if (isPaused) return undefined;
+    if (!isAutoPlaying) return undefined;
 
     const autoSlideInterval = window.setInterval(() => {
       setDirection(1);
@@ -2620,11 +1874,11 @@ function ChatbotBookSection() {
     return () => {
       window.clearInterval(autoSlideInterval);
     };
-  }, [isPaused]);
+  }, [isAutoPlaying]);
 
   /* Restart inner animations continuously */
  React.useEffect(() => {
-  if (isPaused) return undefined;
+  if (!isAutoPlaying) return undefined;
 
   const pageDuration =
     page.type === "guide"
@@ -2644,7 +1898,7 @@ function ChatbotBookSection() {
   return () => {
     window.clearTimeout(autoSlideTimer);
   };
-}, [activePage, isPaused, page.type]);
+}, [activePage, isAutoPlaying, page.type]);
   return (
     <section className="relative isolate overflow-hidden bg-white px-5 py-16 sm:px-8 lg:px-12 lg:py-20 xl:px-20">
       <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,#ffffff_0%,#f7fff9_52%,#ffffff_100%)]" />
@@ -2665,112 +1919,43 @@ function ChatbotBookSection() {
       <div className="mx-auto max-w-[1480px]">
         {/* Section heading */}
 
-        <div className="mx-auto max-w-[900px] text-center">
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 18,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-black text-emerald-700 shadow-sm"
-          >
-            <BookOpen size={16} />
-            Interactive Chatbot Journey
-          </motion.div>
-
+        <div className="mx-auto max-w-[1280px] text-center">
           <motion.h2
             {...businessApiHeadingProps}
-            className="mx-auto max-w-none whitespace-nowrap text-center text-[clamp(1.65rem,4.4vw,4.2rem)] font-extrabold leading-[1.1] tracking-tight text-[#111827]"
+            className="wa-section-heading mx-auto max-w-none whitespace-nowrap text-center text-[clamp(1.65rem,4.4vw,4.2rem)] font-extrabold leading-[1.1] tracking-normal text-[#111827] max-md:whitespace-normal"
           >
-            One Chatbot.{" "}
-            <span className="text-[#16A34A]">Unlimited Possibilities.</span>
+            What Your WhatsApp{" "}
+            <span className="!text-[#10b957]" style={{ color: "#10b957" }}>
+              Chatbot
+            </span>{" "}
+            Is Built to Do
           </motion.h2>
 
-          <p className="mx-auto mt-6 max-w-[1120px] text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]">
-            Explore each chatbot capability as an interactive book. Pages turn
-            automatically, or use the controls to move through the experience.
+          <p className="wa-section-sub mx-auto mt-6 max-w-none whitespace-nowrap text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:whitespace-normal max-md:!text-[1rem]">
+            Answer customer questions, guide decisions, complete routine
+            tasks, and automate connected actions through structured
+            WhatsApp conversations.
           </p>
-        </div>
-
-        {/* Book navigation tabs */}
-
-        <div className="mx-auto mt-7 grid max-w-[1040px] grid-cols-2 gap-1.5 rounded-[16px] border border-slate-100 bg-white p-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.05)] md:grid-cols-4">
-          {chatbotBookPages.map((bookPage, index) => {
-            const Icon = bookPage.icon;
-            const isActive = activePage === index;
-
-            return (
-              <motion.button
-                key={bookPage.id}
-                type="button"
-                onClick={() => goToPage(index)}
-                whileHover={{
-                  y: -2,
-                }}
-                whileTap={{
-                  scale: 0.98,
-                }}
-                className="relative flex items-center gap-2 overflow-hidden rounded-[12px] px-3 py-2 text-left"
-                style={{
-                  backgroundColor: isActive
-                    ? bookPage.softColor
-                    : "transparent",
-                }}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="active-book-tab"
-                    className="absolute inset-0 rounded-[12px]"
-                    style={{
-                      border: `1px solid ${bookPage.borderColor}`,
-                    }}
-                  />
-                )}
-
-                <span
-                  className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px]"
-                  style={{
-                    color: bookPage.color,
-                    backgroundColor: isActive ? "#ffffff" : bookPage.softColor,
-                  }}
-                >
-                  <Icon size={18} />
-                </span>
-
-                <div className="relative min-w-0">
-                  <p className="truncate text-xs font-black text-[#13251C]">
-                    {bookPage.title}
-                  </p>
-                </div>
-              </motion.button>
-            );
-          })}
         </div>
 
         {/* Main book */}
 
         <div
-          className="relative mt-6"
+          className="book-stage relative mt-10"
           style={{
-            perspective: "1800px",
+            perspective: isPhone ? "none" : "1800px",
           }}
         >
           <AnimatePresence initial={false} mode="popLayout" custom={direction}>
             <motion.article
               key={page.id}
               custom={direction}
-              variants={bookPageVariants}
+              variants={isPhone ? bookSlideVariants : bookPageVariants}
               initial="enter"
               animate="center"
               exit="exit"
               transition={{
-                duration: 0.9,
+                duration: isPhone ? 0.45 : 0.9,
                 ease: [0.22, 1, 0.36, 1],
               }}
               drag={reduceMotion ? false : "x"}
@@ -2786,11 +1971,20 @@ function ChatbotBookSection() {
                   previousPage();
                 }
               }}
-              className="relative w-full overflow-hidden rounded-[38px] border bg-white shadow-[0_35px_100px_rgba(15,23,42,0.13)]"
+              className="relative w-full overflow-hidden rounded-[38px] border bg-white bg-cover bg-center bg-no-repeat shadow-[0_35px_100px_rgba(15,23,42,0.13)]"
               style={{
                 borderColor: page.borderColor,
-                transformStyle: "preserve-3d",
-                transformOrigin: direction > 0 ? "left center" : "right center",
+                backgroundImage: isGuidePage
+                  ? "linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.28)), url('/assets/images/chatbotbg2.webp')"
+                  : isAssistPage
+                    ? "linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.28)), url('/assets/images/chatbotbg3.webp')"
+                    : "linear-gradient(90deg, rgba(255,255,255,0.86), rgba(255,255,255,0.62)), url('/assets/images/chatbotbg.webp')",
+                transformStyle: isPhone ? "flat" : "preserve-3d",
+                transformOrigin: isPhone
+                  ? "center"
+                  : direction > 0
+                    ? "left center"
+                    : "right center",
               }}
             >
               {/* Animated top color */}
@@ -2812,16 +2006,26 @@ function ChatbotBookSection() {
 
               {/* Book center spine */}
 
-              <div className="pointer-events-none absolute bottom-8 left-1/2 top-8 z-20 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-200 to-transparent lg:block" />
+              {!isCompactBookPage && (
+                <div className="pointer-events-none absolute bottom-8 left-1/2 top-8 z-20 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-200 to-transparent lg:block" />
+              )}
 
-              <div className="pointer-events-none absolute bottom-8 left-1/2 top-8 z-10 hidden w-16 -translate-x-1/2 bg-gradient-to-r from-transparent via-slate-100/45 to-transparent lg:block" />
+              {!isCompactBookPage && (
+                <div className="pointer-events-none absolute bottom-8 left-1/2 top-8 z-10 hidden w-16 -translate-x-1/2 bg-gradient-to-r from-transparent via-slate-100/45 to-transparent lg:block" />
+              )}
 
               {/* Page content */}
 
-              <div className="grid min-h-[650px] lg:h-[650px] lg:grid-cols-2">
+              <div className={`book-page-grid grid ${isCompactBookPage ? "min-h-[700px] lg:h-[700px] lg:grid-cols-[0.82fr_1.18fr]" : "min-h-[650px] lg:h-[650px] lg:grid-cols-2"}`}>
                 {/* Left book page */}
 
-                <div className="relative flex flex-col justify-center overflow-hidden px-7 py-10 sm:px-10 lg:px-12 xl:px-16">
+                <div
+                  className={`book-left-page relative flex flex-col overflow-hidden px-7 sm:px-10 ${
+                    isCompactBookPage
+                      ? "justify-start bg-transparent pb-4 pt-8 lg:px-10 xl:px-12"
+                      : "justify-center py-10 lg:px-12 xl:px-16"
+                  }`}
+                >
                   <motion.div
                     initial={{
                       opacity: 0,
@@ -2847,10 +2051,14 @@ function ChatbotBookSection() {
                               }
                         }
                         transition={{
-                          duration: isPaused ? 0 : 5,
+                          duration: isAutoPlaying ? 5 : 0,
                           ease: "linear",
                         }}
-                        className="flex h-14 w-14 items-center justify-center rounded-[20px] text-base font-black text-white shadow-lg"
+                        className={`book-chapter-badge flex items-center justify-center font-black text-white shadow-lg ${
+                          isCompactBookPage
+                            ? "h-11 w-11 rounded-[15px] text-[13px]"
+                            : "h-14 w-14 rounded-[20px] text-base"
+                        }`}
                         style={{
                           backgroundColor: page.color,
                           boxShadow: `0 14px 32px ${page.color}35`,
@@ -2861,29 +2069,65 @@ function ChatbotBookSection() {
 
                       <div>
                         <p
-                          className="text-xs font-black uppercase tracking-[0.2em]"
+                          className={`inline-flex w-fit items-center rounded-md border font-black uppercase tracking-[0.16em] ${
+                            isCompactBookPage ? "px-3.5 py-1.5 text-[18px] leading-none" : "px-2.5 py-1 text-xs"
+                          }`}
                           style={{
                             color: page.color,
+                            backgroundColor: page.softColor,
+                            borderColor: page.borderColor,
+                            boxShadow: `0 10px 24px ${page.color}18`,
                           }}
                         >
                           {page.eyebrow}
                         </p>
 
-                        <p className="mt-1 text-sm font-bold text-slate-400">
+                        <p className={`${isCompactBookPage ? "mt-1.5 text-[12px]" : "mt-1 text-sm"} font-bold text-slate-400`}>
                           Chapter {activePage + 1} of {chatbotBookPages.length}
                         </p>
                       </div>
                     </div>
 
-                    <h3 className="mt-7 text-[34px] font-black leading-[1.04] tracking-[-0.045em] text-[#071B2C] sm:text-[42px] xl:text-[49px]">
-                      {page.heading}
-                    </h3>
+                    {isAnswerPage ? (
+                      <h3 className="book-page-title mt-4 text-[28px] font-black leading-[1.05] tracking-normal text-[#071B2C] sm:text-[34px] xl:text-[37px]">
+                        <span className="block">Fast, consistent</span>
+                        <span className="block text-[#16A34A]">
+                          customer responses.
+                        </span>
+                      </h3>
+                    ) : (
+                      <h3 className={`book-page-title font-black tracking-normal text-[#071B2C] ${
+                        isCompactBookPage
+                          ? "mt-4 text-[28px] leading-[1.05] sm:text-[34px] xl:text-[37px]"
+                          : "mt-7 text-[34px] leading-[1.04] sm:text-[42px] xl:text-[49px]"
+                      }`}>
+                        {page.heading}
+                      </h3>
+                    )}
 
-                    <p className="mt-5 max-w-[540px] text-sm font-medium leading-7 text-slate-600 sm:text-base">
+                    <p
+                      className={`book-page-desc max-w-[540px] font-medium ${
+                        isCompactBookPage
+                          ? "mt-4 text-[13px] leading-[1.55] text-[#0F2740]"
+                          : "mt-5 text-sm leading-7 text-slate-600 sm:text-base"
+                      }`}
+                    >
                       {page.description}
                     </p>
 
-                    <div className="mt-7 space-y-3">
+                    {isAnswerPage ? (
+                      <div className="mt-4 !text-[21px] !font-medium !leading-[1.2] !text-[#16A34A]">
+                        Highlights:
+                      </div>
+                    ) : null}
+
+                    <div
+                      className={`book-points ${
+                        isCompactBookPage
+                          ? "mt-2 divide-y divide-slate-300"
+                          : "mt-7 space-y-3"
+                      }`}
+                    >
                       {page.points.map((point, index) => (
                         <motion.div
                           key={point}
@@ -2899,42 +2143,98 @@ function ChatbotBookSection() {
                             delay: 0.65 + index * 0.15,
                             duration: 0.5,
                           }}
-                          className="flex items-start gap-3"
+                          className={`flex items-start ${
+                            isCompactBookPage ? "gap-0 py-2" : "gap-3"
+                          }`}
                         >
-                          <motion.span
-                            animate={
-                              reduceMotion
-                                ? undefined
-                                : {
-                                    scale: [1, 1.12, 1],
-                                  }
-                            }
-                            transition={{
-                              duration: 2.4,
-                              delay: index * 0.25,
-                              repeat: Infinity,
-                            }}
-                            className="relative mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                            style={{
-                              color: page.color,
-                              backgroundColor: page.softColor,
-                            }}
-                          >
-                            <Check size={14} strokeWidth={3} />
-                          </motion.span>
+                          {!isCompactBookPage ? (
+                            <motion.span
+                              animate={
+                                reduceMotion
+                                  ? undefined
+                                  : {
+                                      scale: [1, 1.12, 1],
+                                    }
+                              }
+                              transition={{
+                                duration: 2.4,
+                                delay: index * 0.25,
+                                repeat: Infinity,
+                              }}
+                              className="relative mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                              style={{
+                                color: page.color,
+                                backgroundColor: page.softColor,
+                              }}
+                            >
+                              <Check size={14} strokeWidth={3} />
+                            </motion.span>
+                          ) : null}
 
-                          <p className="text-sm font-bold leading-6 text-slate-600">
-                            {point}
-                          </p>
+                          {isAnswerPage ? (
+                            <p className="max-w-[540px] text-[12.5px] font-medium leading-[1.45] text-[#26364D]">
+                              {index === 0 ? (
+                                <>
+                                  <strong className="font-black text-[#111827]">
+                                    Respond to FAQs, product queries, policies, and service questions
+                                  </strong>
+                                </>
+                              ) : index === 1 ? (
+                                <>
+                                  <strong className="font-black text-[#111827]">
+                                    Process voice notes
+                                  </strong>
+                                  {" through connected speech-to-text capabilities, where enabled"}
+                                </>
+                              ) : (
+                                <>
+                                  <strong className="font-black text-[#111827]">
+                                    Support buttons, lists, images, videos, PDFs, and other WhatsApp message formats
+                                  </strong>
+                                </>
+                              )}
+                            </p>
+                          ) : isCompactBookPage ? (
+                            <p className="max-w-[540px] text-[12.5px] font-medium leading-[1.45] text-[#26364D]">
+                              {index === 0 ? (
+                                <>
+                                  <strong className="font-black text-[#111827]">
+                                    Present quick replies, menus, and lists
+                                  </strong>
+                                  {" for clearer customer choices"}
+                                </>
+                              ) : index === 1 ? (
+                                <>
+                                  <strong className="font-black text-[#111827]">
+                                    Launch WhatsApp Flows
+                                  </strong>
+                                  {" for forms, registrations, bookings, and guided data collection"}
+                                </>
+                              ) : (
+                                <>
+                                  <strong className="font-black text-[#111827]">
+                                    Apply conditions and routing rules
+                                  </strong>
+                                  {" through Vertex Suite to personalise each journey"}
+                                </>
+                              )}
+                            </p>
+                          ) : (
+                            <p className="text-sm font-bold leading-6 text-slate-600">
+                              {point}
+                            </p>
+                          )}
                         </motion.div>
                       ))}
                     </div>
 
                     {/* Page status */}
 
-                    <div className="mt-9 flex flex-wrap items-center gap-3">
+                    <div className={`book-page-status flex flex-wrap items-center gap-3 ${isCompactBookPage ? "mt-2" : "mt-9"}`}>
                       <div
-                        className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-black"
+                        className={`flex items-center gap-2 rounded-full font-black ${
+                          isCompactBookPage ? "px-3 py-1 text-[10px]" : "px-4 py-2 text-xs"
+                        }`}
                         style={{
                           color: page.color,
                           backgroundColor: page.softColor,
@@ -2953,7 +2253,11 @@ function ChatbotBookSection() {
 
                 {/* Right book page */}
 
-                <div className="relative flex min-h-[580px] items-center p-5 sm:p-7 lg:p-8">
+                <div
+                  className={`book-right-page relative flex items-center justify-center ${
+                    isAnswerPage ? "min-h-[700px] p-0 lg:-ml-4 lg:w-[calc(100%+1rem)]" : "min-h-[580px] p-5 sm:p-7 lg:p-8"
+                  }`}
+                >
                   <ChatbotBookVisual
                     page={page}
                     animationCycle={animationCycle}
@@ -2962,21 +2266,23 @@ function ChatbotBookSection() {
                 </div>
               </div>
 
-              {/* Page turn highlight */}
+              {/* Page turn highlight — belongs to the 3D flip only */}
 
-              <motion.div
-                initial={{
-                  x: direction > 0 ? "-120%" : "120%",
-                }}
-                animate={{
-                  x: direction > 0 ? "150%" : "-150%",
-                }}
-                transition={{
-                  duration: 1.1,
-                  delay: 0.1,
-                }}
-                className="pointer-events-none absolute inset-y-0 z-40 w-40 -skew-x-12 bg-gradient-to-r from-transparent via-white/65 to-transparent"
-              />
+              {!isPhone && (
+                <motion.div
+                  initial={{
+                    x: direction > 0 ? "-120%" : "120%",
+                  }}
+                  animate={{
+                    x: direction > 0 ? "150%" : "-150%",
+                  }}
+                  transition={{
+                    duration: 1.1,
+                    delay: 0.1,
+                  }}
+                  className="pointer-events-none absolute inset-y-0 z-40 w-40 -skew-x-12 bg-gradient-to-r from-transparent via-white/65 to-transparent"
+                />
+              )}
             </motion.article>
           </AnimatePresence>
 
@@ -2993,7 +2299,7 @@ function ChatbotBookSection() {
               scale: 0.94,
             }}
             aria-label="Previous book page"
-            className="absolute left-3 top-1/2 z-50 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071B2C] shadow-[0_14px_35px_rgba(15,23,42,0.15)] backdrop-blur-md sm:-left-5"
+            className="book-nav book-nav-prev absolute left-3 top-1/2 z-50 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071B2C] shadow-[0_14px_35px_rgba(15,23,42,0.15)] backdrop-blur-md sm:-left-5"
           >
             <ChevronLeft size={22} />
           </motion.button>
@@ -3011,7 +2317,7 @@ function ChatbotBookSection() {
               scale: 0.94,
             }}
             aria-label="Next book page"
-            className="absolute right-3 top-1/2 z-50 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071B2C] shadow-[0_14px_35px_rgba(15,23,42,0.15)] backdrop-blur-md sm:-right-5"
+            className="book-nav book-nav-next absolute right-3 top-1/2 z-50 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071B2C] shadow-[0_14px_35px_rgba(15,23,42,0.15)] backdrop-blur-md sm:-right-5"
           >
             <ChevronRight size={22} />
           </motion.button>
@@ -3040,10 +2346,10 @@ function ChatbotBookSection() {
                       width: "0%",
                     }}
                     animate={{
-                      width: isPaused ? "0%" : "100%",
+                      width: isAutoPlaying ? "100%" : "0%",
                     }}
                     transition={{
-                      duration: isPaused ? 0 : 6,
+                      duration: isAutoPlaying ? 6 : 0,
                       ease: "linear",
                     }}
                     className="absolute inset-y-0 left-0 rounded-full"
@@ -3073,31 +2379,33 @@ function ChatbotBookSection() {
             {String(chatbotBookPages.length).padStart(2, "0")}
           </div>
 
-          {/* Play / pause */}
+          {/* Play / pause — nothing to pause on phones */}
 
-          <motion.button
-            type="button"
-            onClick={() => setIsPaused((paused) => !paused)}
-            whileHover={{
-              y: -2,
-            }}
-            whileTap={{
-              scale: 0.96,
-            }}
-            className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black text-[#173527] shadow-sm"
-          >
-            {isPaused ? (
-              <>
-                <Play size={14} style={{ color: page.color }} />
-                Resume pages
-              </>
-            ) : (
-              <>
-                <Pause size={14} style={{ color: page.color }} />
-                Pause pages
-              </>
-            )}
-          </motion.button>
+          {!isPhone && (
+            <motion.button
+              type="button"
+              onClick={() => setIsPaused((paused) => !paused)}
+              whileHover={{
+                y: -2,
+              }}
+              whileTap={{
+                scale: 0.96,
+              }}
+              className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-black text-[#173527] shadow-sm"
+            >
+              {isPaused ? (
+                <>
+                  <Play size={14} style={{ color: page.color }} />
+                  Resume pages
+                </>
+              ) : (
+                <>
+                  <Pause size={14} style={{ color: page.color }} />
+                  Pause pages
+                </>
+              )}
+            </motion.button>
+          )}
         </div>
       </div>
     </section>
@@ -3110,61 +2418,43 @@ function ChatbotBookSection() {
 const whatsappLaunchSteps = [
   {
     number: "1",
-    eyebrow: "Train Your Chatbot",
-    title: "Train Your Chatbot",
+    eyebrow: "Connect Setup",
+    title: "Connect Your WhatsApp Business Setup",
     description:
-      "Add your FAQs, product details, services and business data. Your chatbot learns your knowledge and understands customer intent.",
-    color: "#16A34A",
-    softColor: "#ECFDF3",
-    icon: BrainCircuit,
+      "Connect your WABA, phone number, webhooks, and templates.",
+    color: "#3E8B7C",
+    softColor: "#E4F3EE",
+    icon: ShieldCheck,
   },
   {
     number: "2",
-    eyebrow: "Build Journeys Visually",
-    title: "Build Journeys Visually",
+    eyebrow: "Build Chatflows",
+    title: "Build Chatflows with Drag and Drop",
     description:
-      "Design and automate customer conversations using a simple visual flow builder—without writing code.",
-    color: "#22C55E",
-    softColor: "#F0FDF4",
+      "Build conversation journeys using drag-and-drop messages, buttons, lists, conditions, and APIs.",
+    color: "#3E8B7C",
+    softColor: "#E4F3EE",
     icon: Workflow,
   },
   {
     number: "3",
-    eyebrow: "Deploy on WhatsApp",
-    title: "Deploy on WhatsApp",
+    eyebrow: "Configure Logic",
+    title: "Set Triggers, Rules and Routing",
     description:
-      "Connect the chatbot to your WhatsApp Business API and go live instantly. Your chatbot starts answering, guiding and assisting customers 24/7.",
-    color: "#16A34A",
-    softColor: "#ECFDF3",
+      "Route users based on intent, responses, and logic.",
+    color: "#3E8B7C",
+    softColor: "#E4F3EE",
+    icon: Route,
+  },
+  {
+    number: "4",
+    eyebrow: "Test & Publish",
+    title: "Test, Publish and Improve",
+    description:
+      "Test journeys, publish the chatbot, and monitor performance.",
+    color: "#3E8B7C",
+    softColor: "#E4F3EE",
     icon: Smartphone,
-  },
-];
-
-const whatsappLaunchTrustItems = [
-  {
-    title: "WhatsApp Business API",
-    subtitle: "Official Access",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Go Live in Minutes",
-    subtitle: "Fast Setup",
-    icon: Zap,
-  },
-  {
-    title: "API Automation",
-    subtitle: "Many Connectors",
-    icon: Workflow,
-  },
-  {
-    title: "Grow Engagement",
-    subtitle: "Sales Conversion",
-    icon: BarChart3,
-  },
-  {
-    title: "Enterprise Grade",
-    subtitle: "Security",
-    icon: LockKeyhole,
   },
 ];
 
@@ -3179,7 +2469,6 @@ function WhatsAppLaunchCard({
   onActivate,
   children,
 }) {
-  const Icon = step.icon;
   const isActive = activeStep === index;
 
   return (
@@ -3197,7 +2486,7 @@ function WhatsAppLaunchCard({
         duration: 0.5,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="group relative flex h-[570px] min-w-0 flex-1 cursor-pointer flex-col overflow-hidden rounded-[30px] border bg-white p-5"
+      className="wa-launch-card group relative flex h-[470px] min-w-0 cursor-pointer flex-col overflow-hidden rounded-[22px] border bg-white p-5"
       style={{
         borderColor: isActive
           ? `${step.color}55`
@@ -3216,7 +2505,7 @@ function WhatsAppLaunchCard({
         }}
         className="absolute inset-x-0 top-0 h-[5px] origin-left"
         style={{
-          background: `linear-gradient(90deg,${step.color},#86EFAC,${step.color})`,
+          background: "linear-gradient(90deg,#3E8B7C,#377d70,#2c6a5e)",
         }}
       />
 
@@ -3243,69 +2532,22 @@ function WhatsAppLaunchCard({
       {/* Header */}
 
       <div className="relative z-10">
-        <div className="flex items-start gap-3">
-          <motion.button
-            type="button"
-            whileTap={{
-              scale: 0.9,
-            }}
-            animate={
-              isActive
-                ? {
-                    scale: [1, 1.1, 1],
-                  }
-                : undefined
-            }
-            transition={{
-              duration: 2,
-              repeat: isActive ? Infinity : 0,
-            }}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-black text-white"
-            style={{
-              backgroundColor: step.color,
-              boxShadow: `0 9px 25px ${step.color}35`,
-            }}
-          >
-            {step.number}
-          </motion.button>
-
+        <div className="flex items-start">
           <div className="min-w-0 flex-1">
-            <p className="text-[12px] font-black text-[#071B2C]">
-              {step.number}. {step.title}
-            </p>
-
-            <p className="mt-2 text-[10px] font-medium leading-[16px] text-slate-500">
-              {step.description}
+            <p className="wa-launch-card-title text-left text-[12px] font-black text-[#071B2C]">
+              {step.title}
             </p>
           </div>
-
-          <motion.span
-            animate={
-              isActive
-                ? {
-                    rotate: [0, 7, -7, 0],
-                    scale: [1, 1.08, 1],
-                  }
-                : undefined
-            }
-            transition={{
-              duration: 3,
-              repeat: Infinity,
-            }}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-            style={{
-              color: step.color,
-              backgroundColor: step.softColor,
-            }}
-          >
-            <Icon size={19} />
-          </motion.span>
         </div>
+
+        <p className="wa-launch-card-desc mt-3 text-left text-[11px] font-medium leading-[17px] text-slate-500">
+          {step.description}
+        </p>
       </div>
 
       {/* Visual */}
 
-      <div className="relative mt-5 min-h-0 flex-1">
+      <div className="wa-launch-visual relative mt-4 min-h-0 flex-1 overflow-hidden">
         {children}
       </div>
     </motion.article>
@@ -3368,6 +2610,142 @@ function WhatsAppLaunchArrow({
 /* =========================================================
    STEP 1 — TRAIN VISUAL
 ========================================================= */
+
+function WhatsAppSetupVisual({
+  active,
+  animationCycle,
+  reduceMotion,
+}) {
+  const setupItems = [
+    {
+      label: "WhatsApp Business Account",
+      status: "Connected",
+      icon: BadgeCheck,
+    },
+    {
+      label: "Phone Number",
+      status: "+91 98765 43210",
+      icon: Smartphone,
+    },
+    {
+      label: "Webhook Events",
+      status: "Subscribed",
+      icon: Network,
+    },
+    {
+      label: "Message Templates",
+      status: "Approved",
+      icon: FileText,
+    },
+  ];
+
+  return (
+    <motion.div
+      key={`setup-${animationCycle}`}
+      className="relative h-full overflow-hidden rounded-[24px] border border-emerald-100 bg-[linear-gradient(180deg,#F8FFFB_0%,#ECFDF3_100%)]"
+    >
+      <div
+        className="absolute inset-0 opacity-45"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(22,163,74,0.14) 1px,transparent 1px)",
+          backgroundSize: "18px 18px",
+        }}
+      />
+
+      <motion.div
+        animate={
+          active && !reduceMotion
+            ? {
+                scale: [1, 1.08, 1],
+                opacity: [0.35, 0.65, 0.35],
+              }
+            : undefined
+        }
+        transition={{
+          duration: 3.4,
+          repeat: Infinity,
+        }}
+        className="absolute -right-20 -top-16 h-56 w-56 rounded-full border border-emerald-200 bg-white/50"
+      />
+
+      <div className="absolute inset-x-4 bottom-5 top-5 z-10 rounded-[18px] border border-emerald-100 bg-white/95 p-4 shadow-[0_18px_42px_rgba(22,163,74,0.1)] backdrop-blur-md">
+        <div className="mb-3 flex items-center justify-between border-b border-emerald-50 pb-2">
+          <div className="flex items-center gap-2">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+              <Settings2 size={13} />
+            </span>
+
+            <p className="text-[8px] font-black text-[#14532D]">
+              Setup
+            </p>
+          </div>
+
+          <span className="rounded-full bg-emerald-50 px-2 py-1 text-[6px] font-black text-emerald-700">
+            API Ready
+          </span>
+        </div>
+
+        <div className="relative space-y-2">
+          <span className="absolute bottom-4 left-[13px] top-4 w-px bg-emerald-200" />
+
+          {setupItems.map((item, index) => {
+            const Icon = item.icon;
+
+            return (
+              <motion.div
+                key={item.label}
+                initial={{
+                  opacity: 0,
+                  x: -16,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                transition={{
+                  delay: 0.2 + index * 0.22,
+                }}
+                className="relative z-10 flex items-center gap-2.5 rounded-xl border border-emerald-50 bg-[#FBFFFC] px-3 py-2"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-emerald-100 bg-white text-emerald-600">
+                  <Icon size={14} />
+                </span>
+
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-[9px] font-black text-[#14532D]">
+                    {item.label}
+                  </p>
+
+                  <p className="mt-0.5 truncate text-[7px] font-bold text-slate-400">
+                    {item.status}
+                  </p>
+                </div>
+
+                <motion.span
+                  initial={{
+                    scale: 0,
+                  }}
+                  animate={{
+                    scale: 1,
+                  }}
+                  transition={{
+                    delay: 0.45 + index * 0.22,
+                    type: "spring",
+                  }}
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"
+                >
+                  <Check size={11} strokeWidth={3} />
+                </motion.span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+    </motion.div>
+  );
+}
 
 function TrainChatbotVisual({
   active,
@@ -3725,9 +3103,13 @@ function JourneyBuilderVisual({
 }) {
   const sidebarItems = [
     "Message",
+    "Question",
     "Buttons",
+    "List",
+    "Media",
+    "Form",
     "Condition",
-    "API",
+    "API Call",
     "Action",
   ];
 
@@ -4071,25 +3453,6 @@ function JourneyBuilderVisual({
         </div>
       </div>
 
-      {/* Builder status */}
-
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: 10,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          delay: 3.2,
-        }}
-        className="flex h-8 shrink-0 items-center justify-center gap-1.5 border-t border-emerald-50 bg-[#F8FFF9] text-[7px] font-black text-emerald-700"
-      >
-        <CheckCircle2 size={11} />
-        No code. Just drag, drop and publish.
-      </motion.div>
     </motion.div>
   );
 }
@@ -4097,6 +3460,201 @@ function JourneyBuilderVisual({
 /* =========================================================
    STEP 3 — WHATSAPP DEPLOY VISUAL
 ========================================================= */
+
+function RoutingLogicVisual({
+  active,
+  animationCycle,
+  reduceMotion,
+}) {
+  const routes = [
+    {
+      label: "Support",
+      detail: "Route to support team",
+      icon: Headphones,
+    },
+    {
+      label: "Sales",
+      detail: "Route to sales team",
+      icon: ShoppingBag,
+    },
+    {
+      label: "Booking",
+      detail: "Open booking flow",
+      icon: CalendarCheck2,
+    },
+  ];
+
+  return (
+    <motion.div
+      key={`routing-${animationCycle}`}
+      className="relative h-full overflow-hidden rounded-[24px] border border-emerald-100 bg-white"
+    >
+      <div className="flex h-9 items-center justify-between border-b border-emerald-50 bg-[#F8FFF9] px-3">
+        <div className="flex items-center gap-1.5 text-[7px] font-black text-emerald-700">
+          <Route size={11} />
+          Routing Logic
+        </div>
+
+        <span className="rounded-full bg-emerald-50 px-2 py-1 text-[6px] font-black text-emerald-700">
+          Saved
+        </span>
+      </div>
+
+      <div
+        className="relative h-[calc(100%-36px)] overflow-hidden"
+        style={{
+          backgroundImage:
+            "radial-gradient(rgba(22,163,74,0.12) 1px,transparent 1px)",
+          backgroundSize: "16px 16px",
+        }}
+      >
+        <svg
+          viewBox="0 0 400 340"
+          className="absolute inset-0 h-full w-full"
+          fill="none"
+          preserveAspectRatio="none"
+        >
+          <motion.path
+            d="M200 54 V96"
+            stroke="#22C55E"
+            strokeWidth="2"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+          />
+          <motion.path
+            d="M200 144 V184 C200 204 70 202 70 252 V282"
+            stroke="#22C55E"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1, delay: 0.95 }}
+          />
+          <motion.path
+            d="M200 144 V282"
+            stroke="#22C55E"
+            strokeWidth="2"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.85, delay: 1.1 }}
+          />
+          <motion.path
+            d="M200 144 V184 C200 204 330 202 330 252 V282"
+            stroke="#22C55E"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1, delay: 1.25 }}
+          />
+        </svg>
+
+        <motion.div
+          initial={{ opacity: 0, y: -16, scale: 0.88 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.1, type: "spring" }}
+          className="absolute left-1/2 top-5 flex w-[136px] -translate-x-1/2 items-center gap-2 rounded-xl border border-emerald-100 bg-white px-2.5 py-2 shadow-[0_10px_24px_rgba(22,163,74,0.1)]"
+        >
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
+            <Zap size={13} />
+          </span>
+
+          <div>
+            <p className="text-[6px] font-bold text-slate-400">
+              Trigger
+            </p>
+
+            <p className="text-[8px] font-black text-[#14532D]">
+              Keyword: booking
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.78 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.65, type: "spring" }}
+          className="absolute left-1/2 top-[31%] w-[148px] -translate-x-1/2 rounded-xl border border-emerald-100 bg-[#F0FDF4] px-3 py-2 text-center shadow-sm"
+        >
+          <p className="text-[6px] font-bold text-slate-400">
+            Condition
+          </p>
+
+          <p className="mt-0.5 text-[7px] font-black text-emerald-800">
+            What is the customer looking for?
+          </p>
+        </motion.div>
+
+        {active && (
+          <motion.span
+            initial={{ left: "50%", top: "19%", opacity: 0 }}
+            animate={{
+              top: ["19%", "32%", "55%", "82%"],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 3.7,
+              repeat: Infinity,
+              repeatDelay: 0.7,
+            }}
+            className="absolute z-20 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-emerald-400"
+            style={{
+              boxShadow: "0 0 14px #22C55E",
+            }}
+          />
+        )}
+
+        <div className="absolute inset-x-3 bottom-8 grid grid-cols-3 gap-2">
+          {routes.map((route, index) => {
+            const Icon = route.icon;
+
+            return (
+              <motion.div
+                key={route.label}
+                initial={{ opacity: 0, y: 18, scale: 0.86 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 1.45 + index * 0.18, type: "spring" }}
+                className="rounded-xl border border-emerald-100 bg-white px-1.5 py-2 text-center shadow-[0_8px_20px_rgba(22,163,74,0.08)]"
+              >
+                <motion.span
+                  animate={
+                    active && !reduceMotion
+                      ? {
+                          y: [0, -3, 0],
+                        }
+                      : undefined
+                  }
+                  transition={{
+                    duration: 2.1,
+                    delay: index * 0.25,
+                    repeat: Infinity,
+                  }}
+                  className="mx-auto flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600"
+                >
+                  <Icon size={13} />
+                </motion.span>
+
+                <p className="mt-1 text-[6px] font-black text-emerald-800">
+                  {route.label}
+                </p>
+
+                <p className="mt-0.5 text-[5.5px] font-bold leading-[8px] text-slate-400">
+                  {route.detail}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+      </div>
+    </motion.div>
+  );
+}
 
 function WhatsAppDeployVisual({
   active,
@@ -4123,7 +3681,7 @@ function WhatsAppDeployVisual({
           duration: 3.5,
           repeat: Infinity,
         }}
-        className="absolute h-[275px] w-[275px] rounded-full border border-emerald-200 bg-white/45"
+        className="absolute h-[190px] w-[190px] rounded-full border border-emerald-200 bg-white/45"
       />
 
       <motion.div
@@ -4139,7 +3697,7 @@ function WhatsAppDeployVisual({
           repeat: Infinity,
           ease: "linear",
         }}
-        className="absolute h-[315px] w-[315px] rounded-full border border-dashed border-emerald-300"
+        className="absolute h-[230px] w-[230px] rounded-full border border-dashed border-emerald-300"
       />
 
       {/* Floating WhatsApp icons */}
@@ -4157,9 +3715,9 @@ function WhatsAppDeployVisual({
           duration: 4,
           repeat: Infinity,
         }}
-        className="absolute right-4 top-[31%] flex h-12 w-12 items-center justify-center rounded-full border-[4px] border-white bg-[#25D366] text-white shadow-[0_15px_35px_rgba(37,211,102,0.35)]"
+        className="absolute right-3 top-[31%] flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-white bg-[#25D366] text-white shadow-[0_15px_35px_rgba(37,211,102,0.35)]"
       >
-        <MessageCircle size={24} fill="currentColor" />
+        <MessageCircle size={22} fill="currentColor" />
       </motion.span>
 
       <motion.span
@@ -4174,7 +3732,7 @@ function WhatsAppDeployVisual({
           duration: 3.4,
           repeat: Infinity,
         }}
-        className="absolute left-5 top-[23%] flex h-8 w-8 items-center justify-center rounded-full border border-emerald-100 bg-white text-emerald-500 shadow-lg"
+        className="absolute left-4 top-[23%] flex h-8 w-8 items-center justify-center rounded-full border border-emerald-100 bg-white text-emerald-500 shadow-lg"
       >
         <Send size={14} />
       </motion.span>
@@ -4193,7 +3751,7 @@ function WhatsAppDeployVisual({
           duration: 1.6,
           repeat: Infinity,
         }}
-        className="absolute right-4 top-5 z-20 flex items-center gap-1.5 rounded-full bg-emerald-500 px-3 py-1.5 text-[7px] font-black text-white shadow-lg"
+        className="absolute right-3 top-4 z-20 flex items-center gap-1.5 rounded-full bg-emerald-500 px-2.5 py-1 text-[6px] font-black text-white shadow-lg"
       >
         <motion.span
           animate={{
@@ -4206,7 +3764,7 @@ function WhatsAppDeployVisual({
           className="h-1.5 w-1.5 rounded-full bg-white"
         />
 
-        LIVE
+        PUBLISHED
       </motion.div>
 
       {/* Phone */}
@@ -4239,18 +3797,18 @@ function WhatsAppDeployVisual({
             repeat: Infinity,
           },
         }}
-        className="relative z-10 h-[365px] w-[205px] rounded-[34px] border-[7px] border-[#071B2C] bg-white p-2 shadow-[0_30px_65px_rgba(7,27,44,0.25)]"
+        className="relative z-10 h-[285px] w-[165px] rounded-[28px] border-[6px] border-[#071B2C] bg-white p-1.5 shadow-[0_24px_50px_rgba(7,27,44,0.22)]"
       >
         {/* Speaker */}
 
-        <div className="absolute left-1/2 top-1.5 z-20 h-4 w-[65px] -translate-x-1/2 rounded-full bg-[#071B2C]" />
+        <div className="absolute left-1/2 top-1 z-20 h-3 w-[52px] -translate-x-1/2 rounded-full bg-[#071B2C]" />
 
-        <div className="flex h-full flex-col overflow-hidden rounded-[23px] bg-[#E9F7ED]">
+        <div className="flex h-full flex-col overflow-hidden rounded-[16px] bg-[#E9F7ED]">
           {/* WhatsApp header */}
 
-          <div className="flex h-12 shrink-0 items-center gap-2 bg-[#075E54] px-3 pt-2 text-white">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
-              <Bot size={14} />
+          <div className="flex h-10 shrink-0 items-center gap-1.5 bg-[#075E54] px-2 pt-1 text-white">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
+              <Bot size={12} />
             </span>
 
             <div>
@@ -4266,7 +3824,7 @@ function WhatsAppDeployVisual({
 
           {/* Messages */}
 
-          <div className="relative min-h-0 flex-1 space-y-2 overflow-hidden p-3">
+          <div className="relative min-h-0 flex-1 space-y-2 overflow-hidden p-2.5">
             <motion.div
               initial={{
                 opacity: 0,
@@ -4281,7 +3839,7 @@ function WhatsAppDeployVisual({
               transition={{
                 delay: 0.5,
               }}
-              className="ml-auto max-w-[125px] rounded-xl rounded-br-sm bg-[#DCF8C6] px-2.5 py-2 text-[7px] font-bold leading-[11px] text-[#173527] shadow-sm"
+              className="ml-auto max-w-[102px] rounded-lg rounded-br-sm bg-[#DCF8C6] px-2 py-1.5 text-[7px] font-bold leading-[10px] text-[#173527] shadow-sm"
             >
               Hi, I want to know more about your services.
             </motion.div>
@@ -4300,7 +3858,7 @@ function WhatsAppDeployVisual({
               transition={{
                 delay: 1.2,
               }}
-              className="max-w-[135px] rounded-xl rounded-bl-sm bg-white px-2.5 py-2 text-[7px] font-bold leading-[11px] text-[#173527] shadow-sm"
+              className="max-w-[106px] rounded-lg rounded-bl-sm bg-white px-2 py-1.5 text-[7px] font-bold leading-[10px] text-[#173527] shadow-sm"
             >
               Sure! How can I help you today?
             </motion.div>
@@ -4329,9 +3887,9 @@ function WhatsAppDeployVisual({
                 whileHover={{
                   scale: 1.03,
                 }}
-                className="mx-auto flex max-w-[132px] items-center justify-center gap-1.5 rounded-lg border border-emerald-200 bg-white px-2 py-1.5 text-[6.5px] font-black text-emerald-700"
+                className="mx-auto flex max-w-[110px] items-center justify-center gap-1 rounded-md border border-emerald-200 bg-white px-1.5 py-1.5 text-[7px] font-black text-emerald-700"
               >
-                <CheckCircle2 size={9} />
+                <CheckCircle2 size={8} />
                 {button}
               </motion.div>
             ))}
@@ -4361,14 +3919,14 @@ function WhatsAppDeployVisual({
                 className="h-1.5 w-1.5 rounded-full bg-emerald-500"
               />
 
-              Chatbot is ready to assist 24/7
+              Preview and integration tests passed
             </motion.div>
           </div>
 
           {/* Input */}
 
-          <div className="flex h-10 shrink-0 items-center gap-1.5 bg-white px-2">
-            <div className="flex-1 rounded-full bg-slate-100 px-3 py-1.5 text-[6px] text-slate-400">
+          <div className="flex h-9 shrink-0 items-center gap-1 bg-white px-1.5">
+            <div className="flex-1 rounded-full bg-slate-100 px-2 py-1 text-[6px] text-slate-400">
               Type a message
             </div>
 
@@ -4384,9 +3942,9 @@ function WhatsAppDeployVisual({
                 duration: 1.7,
                 repeat: Infinity,
               }}
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-[#25D366] text-white"
+              className="flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366] text-white"
             >
-              <Send size={11} />
+              <Send size={9} />
             </motion.span>
           </div>
         </div>
@@ -4406,14 +3964,14 @@ function WhatsAppDeployVisual({
         transition={{
           delay: 2.7,
         }}
-        className="absolute bottom-6 right-3 rounded-xl border border-emerald-100 bg-white/90 px-3 py-2 shadow-lg backdrop-blur-md"
+        className="absolute bottom-3 right-2 rounded-xl border border-emerald-100 bg-white/90 px-2 py-1.5 shadow-lg backdrop-blur-md"
       >
         <p className="text-[6px] font-bold text-slate-400">
-          Powered by
+          Performance
         </p>
 
         <p className="mt-0.5 text-[7px] font-black text-emerald-700">
-          Meta WhatsApp Cloud API
+          View Analytics
         </p>
       </motion.div>
     </motion.div>
@@ -4427,7 +3985,7 @@ function WhatsAppDeployVisual({
 function WhatsAppLaunchStepsSection() {
   const reduceMotion = useReducedMotion();
 
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(1);
   const [animationCycle, setAnimationCycle] =
     React.useState(0);
 
@@ -4452,7 +4010,7 @@ function WhatsAppLaunchStepsSection() {
   }, []);
 
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-white px-5 py-16 sm:px-8 lg:px-10 lg:py-20 xl:px-16">
+    <section className="wa-chatbot-launch-section relative isolate overflow-hidden bg-white px-5 py-14 sm:px-8 lg:px-10 lg:py-16 xl:px-8 2xl:px-10">
       {/* Background */}
 
       <div className="absolute inset-0 -z-30 bg-[linear-gradient(180deg,#FFFFFF_0%,#F7FFF9_50%,#FFFFFF_100%)]" />
@@ -4504,102 +4062,43 @@ function WhatsAppLaunchStepsSection() {
         className="absolute -right-20 top-8 -z-10 h-64 w-64 rounded-full border border-dashed border-emerald-100"
       />
 
-      <div className="mx-auto max-w-[1480px]">
+      <div className="mx-auto max-w-[1720px]">
         {/* Heading */}
 
-        <div className="mx-auto max-w-[880px] text-center">
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 15,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-            }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-[11px] font-black text-emerald-700 shadow-sm"
-          >
-            <Sparkles size={14} />
-            No-Code WhatsApp Chatbot Deployment
-          </motion.div>
-
+        <div className="mx-auto max-w-[1260px] text-center">
           <motion.h2
             {...businessApiHeadingProps}
-            className="mx-auto max-w-none whitespace-nowrap text-center text-[clamp(1.65rem,4.4vw,4.2rem)] font-extrabold leading-[1.1] tracking-tight text-[#111827]"
+            className="wa-section-heading mx-auto max-w-none whitespace-nowrap text-center text-[clamp(1.65rem,4.4vw,4.2rem)] font-extrabold leading-[1.1] tracking-normal text-[#111827] max-md:whitespace-normal"
           >
-            Launch your WhatsApp chatbot{" "}
-            <span className="text-[#16A34A]">in three simple steps.</span>
+            Build and Launch Your{" "}
+            WhatsApp{" "}
+            <span className="!text-[#10b957]" style={{ color: "#10b957" }}>
+              Chatbot
+            </span>{" "}
+            <span className="text-[#111827]">in Four Steps</span>
           </motion.h2>
 
-          <p className="mx-auto mt-6 max-w-[1120px] text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem]">
-            From setup to automation—everything happens inside one
-            intelligent platform.
+          <p className="wa-section-sub mx-auto mt-6 max-w-none whitespace-nowrap text-center !text-[1.12rem] leading-[1.7] text-[#5B667A] xl:!text-[1.2rem] max-md:whitespace-normal max-md:!text-[1rem]">
+            Connect your WhatsApp Business setup, design chatflows visually,
+            configure conversation logic, and publish through Vertex Suite.
           </p>
         </div>
 
-        {/* Manual step controls */}
+        {/* Four cards */}
 
-        <div className="mx-auto mt-7 flex max-w-[610px] items-center justify-center gap-2 rounded-full border border-emerald-100 bg-white p-1.5 shadow-[0_12px_35px_rgba(22,163,74,0.08)]">
-          {whatsappLaunchSteps.map((step, index) => {
-            const isActive = activeStep === index;
-
-            return (
-              <button
-                key={step.number}
-                type="button"
-                onClick={() => activateStep(index)}
-                className="relative flex flex-1 items-center justify-center gap-2 rounded-full px-3 py-2 text-[9px] font-black transition-colors"
-                style={{
-                  color: isActive
-                    ? step.color
-                    : "#64748B",
-                  backgroundColor: isActive
-                    ? step.softColor
-                    : "transparent",
-                }}
-              >
-                <span
-                  className="flex h-5 w-5 items-center justify-center rounded-full text-[8px] text-white"
-                  style={{
-                    backgroundColor: isActive
-                      ? step.color
-                      : "#CBD5E1",
-                  }}
-                >
-                  {step.number}
-                </span>
-
-                <span className="hidden sm:block">
-                  {step.eyebrow}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Three cards */}
-
-        <div className="mt-10 flex flex-col items-stretch lg:flex-row lg:items-center lg:gap-0">
+        <div className="wa-launch-grid mt-20 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 xl:grid-cols-4 xl:gap-7">
           <WhatsAppLaunchCard
             step={whatsappLaunchSteps[0]}
             index={0}
             activeStep={activeStep}
             onActivate={activateStep}
           >
-            <TrainChatbotVisual
+            <WhatsAppSetupVisual
               active={activeStep === 0}
               animationCycle={animationCycle}
               reduceMotion={reduceMotion}
             />
           </WhatsAppLaunchCard>
-
-          <WhatsAppLaunchArrow
-            color="#16A34A"
-            active={activeStep === 0}
-          />
 
           <WhatsAppLaunchCard
             step={whatsappLaunchSteps[1]}
@@ -4614,19 +4113,27 @@ function WhatsAppLaunchStepsSection() {
             />
           </WhatsAppLaunchCard>
 
-          <WhatsAppLaunchArrow
-            color="#22C55E"
-            active={activeStep === 1}
-          />
-
           <WhatsAppLaunchCard
             step={whatsappLaunchSteps[2]}
             index={2}
             activeStep={activeStep}
             onActivate={activateStep}
           >
-            <WhatsAppDeployVisual
+            <RoutingLogicVisual
               active={activeStep === 2}
+              animationCycle={animationCycle}
+              reduceMotion={reduceMotion}
+            />
+          </WhatsAppLaunchCard>
+
+          <WhatsAppLaunchCard
+            step={whatsappLaunchSteps[3]}
+            index={3}
+            activeStep={activeStep}
+            onActivate={activateStep}
+          >
+            <WhatsAppDeployVisual
+              active={activeStep === 3}
               animationCycle={animationCycle}
               reduceMotion={reduceMotion}
             />
@@ -4670,131 +4177,128 @@ function WhatsAppLaunchStepsSection() {
           ))}
         </div>
 
-        {/* Trust strip */}
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            y: 20,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-          }}
-          transition={{
-            duration: 0.7,
-          }}
-          className="mt-9 grid grid-cols-2 gap-3 rounded-[26px] border border-emerald-100 bg-white px-4 py-4 shadow-[0_16px_45px_rgba(22,163,74,0.07)] sm:grid-cols-3 lg:grid-cols-5"
-        >
-          {whatsappLaunchTrustItems.map((item, index) => {
-            const Icon = item.icon;
-
-            return (
-              <motion.div
-                key={item.title}
-                whileHover={{
-                  y: -4,
-                  scale: 1.02,
-                }}
-                className="flex items-center justify-center gap-2.5 rounded-xl px-2 py-2"
-              >
-                <motion.span
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          scale: [1, 1.08, 1],
-                        }
-                  }
-                  transition={{
-                    duration: 2.5,
-                    delay: index * 0.25,
-                    repeat: Infinity,
-                  }}
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"
-                >
-                  <Icon size={15} />
-                </motion.span>
-
-                <div>
-                  <p className="text-[8px] font-black text-[#14532D]">
-                    {item.title}
-                  </p>
-
-                  <p className="mt-0.5 text-[6.5px] font-medium text-slate-400">
-                    {item.subtitle}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
       </div>
     </section>
   );
 }
+const chatbotHeroFeatures = [
+  {
+    icon: MessageSquareText,
+    label: "Instant Answers",
+    side: "left",
+    top: "6%",
+    delay: 0.65,
+  },
+  {
+    icon: ClipboardList,
+    label: "Task Automation",
+    side: "right",
+    top: "6%",
+    delay: 1.1,
+  },
+  {
+    icon: Users,
+    label: "Smart Routing",
+    side: "left",
+    top: "42%",
+    delay: 1.55,
+  },
+  {
+    icon: Clock3,
+    label: "24/7 Availability",
+    side: "right",
+    top: "42%",
+    delay: 2,
+  },
+  {
+    icon: UserRoundCheck,
+    label: "Lead Qualification",
+    side: "left",
+    top: "78%",
+    delay: 2.45,
+  },
+  {
+    icon: Database,
+    label: "Clean Data Capture",
+    side: "right",
+    top: "78%",
+    delay: 2.9,
+  },
+];
+
+const chatbotHeroConnectors = [
+  // Top-left: short horizontal start, soft downward bend, then into the bot.
+  {
+    d: "M188 72 H210 C234 72 248 89 248 112 V130 C248 152 264 166 288 166 H350",
+    start: [188, 72],
+    end: [350, 166],
+    delay: 0.83,
+  },
+  // Top-right: exact mirrored curve.
+  {
+    d: "M792 72 H770 C746 72 732 89 732 112 V130 C732 152 716 166 692 166 H630",
+    start: [792, 72],
+    end: [630, 166],
+    delay: 1.28,
+  },
+  // Middle-left: horizontal line followed by a rounded drop and inward finish.
+  {
+    d: "M188 304 H220 C244 304 258 318 258 342 V352 C258 374 274 388 298 388 H358",
+    start: [188, 304],
+    end: [358, 388],
+    delay: 1.73,
+  },
+  // Middle-right: exact mirrored curve.
+  {
+    d: "M792 304 H760 C736 304 722 318 722 342 V352 C722 374 706 388 682 388 H622",
+    start: [792, 304],
+    end: [622, 388],
+    delay: 2.18,
+  },
+  // Bottom-left: horizontal start, smooth upward bend and inward finish.
+  {
+    d: "M188 538 H220 C244 538 258 522 258 500 V486 C258 464 274 450 298 450 H366",
+    start: [188, 538],
+    end: [366, 450],
+    delay: 2.63,
+  },
+  // Bottom-right: exact mirrored curve.
+  {
+    d: "M792 538 H760 C736 538 722 522 722 500 V486 C722 464 706 450 682 450 H614",
+    start: [792, 538],
+    end: [614, 450],
+    delay: 3.08,
+  },
+];
+
 export default function WhatsAppChatbot() {
   const reduceMotion = useReducedMotion();
+  const [showStickyCta, setShowStickyCta] = React.useState(true);
+
+  /* Phone: the hero CTAs live in a fixed bar at the bottom of the screen. It
+     slides away near the end of the page so it never sits over the footer. */
+  React.useEffect(() => {
+    const update = () => {
+      const scrolledToEnd =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 260;
+      setShowStickyCta(!scrolledToEnd);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-white">
-      <section className="relative isolate flex min-h-[720px] items-center overflow-hidden px-5 py-20 sm:px-8 lg:min-h-screen lg:px-12 xl:px-20">
-        {/* Main background gradient */}
-        <div className="absolute inset-0 -z-30 bg-[linear-gradient(110deg,#ffffff_0%,#ffffff_42%,#f4fff8_73%,#eafff1_100%)]" />
-
-        {/* Grid background */}
-        <div
-          className="absolute inset-0 -z-20 opacity-[0.32]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(34,197,94,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(34,197,94,0.08) 1px, transparent 1px)",
-            backgroundSize: "42px 42px",
-            maskImage:
-              "linear-gradient(to right, transparent, black 45%, black)",
-            WebkitMaskImage:
-              "linear-gradient(to right, transparent, black 45%, black)",
-          }}
-        />
-
-        {/* Decorative glow */}
-        <motion.div
-          className="absolute -right-32 top-1/2 -z-10 h-[650px] w-[650px] -translate-y-1/2 rounded-full bg-emerald-200/40 blur-[110px]"
-          animate={
-            reduceMotion
-              ? undefined
-              : {
-                  scale: [1, 1.12, 1],
-                  opacity: [0.35, 0.58, 0.35],
-                }
-          }
-          transition={{
-            duration: 7,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-
-        <motion.div
-          className="absolute right-[7%] top-[8%] -z-10 h-40 w-40 rounded-full bg-green-300/30 blur-3xl"
-          animate={
-            reduceMotion
-              ? undefined
-              : {
-                  x: [0, 30, 0],
-                  y: [0, -25, 0],
-                }
-          }
-          transition={{
-            duration: 9,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-
-        <div className="mx-auto grid w-full max-w-[1440px] items-center gap-16 lg:grid-cols-[0.86fr_1.14fr] lg:gap-8">
+    <>
+    <main className="whatsapp-chatbot-page min-h-screen overflow-hidden bg-white">
+      <section className="chatbot-mobile-hero relative isolate flex min-h-screen items-center overflow-hidden bg-[#f7faf7] px-5 pb-[110px] pt-[60px] sm:px-8 lg:pl-1 lg:pr-12 xl:pl-2 xl:pr-20 max-lg:pb-[70px] max-lg:pt-[10px] max-md:min-h-0 max-md:pb-[90px] max-md:pt-[110px]">
+        <div className="chatbot-mobile-hero-grid mx-auto grid w-full max-w-[1480px] items-center gap-10 lg:grid-cols-[1fr_1fr] lg:gap-12 max-lg:text-center">
           {/* Left content */}
           <motion.div
             initial="hidden"
@@ -4802,49 +4306,89 @@ export default function WhatsAppChatbot() {
             transition={{
               staggerChildren: 0.12,
             }}
-            className="relative z-20 mx-0 max-w-[720px] text-left"
+            className="chatbot-mobile-hero-content relative z-20 mx-auto flex w-full max-w-[720px] flex-col gap-7 text-left lg:mx-0 lg:-mt-16 lg:-translate-x-10 xl:-mt-14 xl:-translate-x-16 2xl:-translate-x-20 max-md:gap-5 max-lg:items-center max-lg:text-center"
           >
             {/* Top pill */}
             <motion.div
-              variants={fadeUp}
-              transition={{ duration: 0.55 }}
-              className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-xs font-bold text-emerald-700 shadow-sm sm:text-sm"
+              initial={{ opacity: 0, y: -18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="chatbot-mobile-hero-pill mb-0 -mt-6 inline-flex w-fit max-w-full items-center gap-2 rounded-[10px] border border-white/50 bg-white/25 px-3 py-2 text-[0.95rem] font-semibold text-green-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.75),0_10px_28px_rgba(15,23,42,0.10)] ring-1 ring-white/30 backdrop-blur-lg max-lg:-mt-0"
             >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366] text-white">
-                <MessagesSquare size={13} />
-              </span>
-              WhatsApp Chatbot Automation Platform
+              <img
+                src="/assets/images/whatsapp-icon.png"
+                alt="WhatsApp"
+                className="h-5 w-5 shrink-0 object-contain"
+              />
+              <span>WhatsApp Chatbot</span>
             </motion.div>
 
             {/* Heading */}
-            <motion.h1
-              variants={fadeUp}
-              transition={{ duration: 0.6 }}
-              className="max-w-[720px] text-left text-[clamp(1.18rem,5.9vw,4.5rem)] font-extrabold leading-[1.05] tracking-tight text-[#292929]"
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="chatbot-mobile-hero-heading mt-14 flex w-full flex-col gap-1 max-md:mt-10"
             >
-              <span className="block whitespace-nowrap leading-[1.03]">
+              <h1 className="mb-0 w-full whitespace-nowrap text-left text-[clamp(2.05rem,5.2vw,3rem)] font-extrabold leading-[1.05] tracking-normal text-[#292929] max-md:whitespace-normal max-lg:text-center">
                 Scale customer conversations
-              </span>
-              <span className="block whitespace-nowrap leading-[1.03]">
-                with&nbsp;<AnimatedTypingText text="WhatsApp chatbot" />
-              </span>
-            </motion.h1>
+              </h1>
+              <h1 className="mb-0 flex w-full flex-nowrap items-center gap-x-[0.28em] whitespace-nowrap text-left text-[clamp(2.05rem,5.2vw,3rem)] font-extrabold leading-[1.05] tracking-normal text-[#292929] max-md:flex-wrap max-md:whitespace-normal max-lg:justify-center max-lg:text-center">
+                with a smart <AnimatedTypingText text="WhatsApp chatbot" />
+              </h1>
+            </motion.div>
 
             {/* Description */}
             <motion.p
-              variants={fadeUp}
-              transition={{ duration: 0.6 }}
-              className="mt-7 max-w-[690px] text-left !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6]"
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="chatbot-mobile-hero-description m-0 block max-w-[690px] text-left !text-[1.12rem] font-normal leading-[1.65] text-[#5B667A] xl:!text-[1.2rem] max-md:!text-[1rem] max-md:leading-[1.6] max-lg:text-center"
             >
-              Automate replies, qualify leads, route support and keep every
-              customer conversation moving inside WhatsApp.
+              <span className="block">
+                Automate responses, qualify leads, direct support queries, and
+                keep customer journeys moving smoothly on WhatsApp.
+              </span>
             </motion.p>
+
+            {/* Hero stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-2 grid w-full max-w-[640px] grid-cols-2 gap-3.5 max-md:gap-2.5"
+            >
+              {[
+                { value: "24/7", label: "Always Available", color: "#059669" },
+                { value: "3X", label: "Faster Response", color: "#059669" },
+                { value: "80%", label: "Query Automation", color: "#059669" },
+                { value: "1:1", label: "Smart Routing", color: "#059669" },
+              ].map((s) => (
+                <div
+                  key={s.label}
+                  className="flex min-h-[96px] w-full flex-col items-start justify-center gap-1.5 rounded-[8px] border border-white/15 bg-transparent pl-7 pr-2 max-md:min-h-0 max-md:items-start max-md:justify-center max-md:gap-0.5 max-md:rounded-[14px] max-md:border-[#E4E9EE] max-md:bg-white max-md:px-4 max-md:py-4 max-md:text-left max-md:shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+                >
+                  <div className="flex translate-y-2 flex-col gap-1.5 max-md:translate-y-0 max-md:items-start max-md:gap-0.5 max-md:text-left">
+                      <span
+                      className="mt-1 text-[2.15rem] font-extrabold leading-none max-md:mt-0 max-md:text-[1.55rem]"
+                      style={{ color: s.color }}
+                    >
+                      {s.value}
+                    </span>
+                    <span className="min-h-[2.1em] !text-[1.06rem] font-medium leading-tight text-[#5B667A] xl:!text-[1.14rem] max-md:min-h-0 max-md:!text-[0.86rem] max-md:leading-snug">
+                      {s.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
 
             {/* CTA buttons */}
             <motion.div
-              variants={fadeUp}
-              transition={{ duration: 0.6 }}
-              className="mt-6 flex items-center gap-3 max-sm:flex-col"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="chatbot-mobile-hero-actions mt-6 flex items-center gap-3 max-lg:justify-center max-md:hidden"
             >
               <Link
                 to="/signup"
@@ -4880,53 +4424,208 @@ export default function WhatsAppChatbot() {
                 </span>
               </Link>
             </motion.div>
-
-            {/* Bottom feature chips */}
-            <motion.div
-              variants={fadeUp}
-              transition={{ duration: 0.6 }}
-              className="mt-10 flex flex-wrap justify-start gap-3"
-            >
-              {bottomFeatures.map((feature, index) => {
-                const Icon = feature.icon;
-
-                return (
-                  <motion.div
-                    key={feature.title}
-                    whileHover={{
-                      y: -4,
-                      scale: 1.03,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 320,
-                      damping: 20,
-                    }}
-                    className="flex items-center gap-2 rounded-full border border-emerald-100 bg-white/90 px-4 py-2.5 text-xs font-bold text-slate-700 shadow-[0_8px_24px_rgba(15,23,42,0.07)] backdrop-blur-md sm:text-sm"
-                  >
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-[#19B75A]">
-                      <Icon size={14} />
-                    </span>
-
-                    {feature.title}
-                  </motion.div>
-                );
-              })}
-            </motion.div>
           </motion.div>
 
           {/* Right chatbot visual */}
-          <div className="relative mx-auto flex min-h-[560px] w-full max-w-[720px] items-center justify-center lg:min-h-[650px] lg:translate-x-10 xl:translate-x-16">
+          <div className="chatbot-mobile-hero-visual relative mx-auto flex min-h-[560px] w-full max-w-[980px] items-center justify-center lg:min-h-[650px] lg:translate-x-6 xl:translate-x-10">
+            {/* Reference-style connectors: thin green lines, rounded bends and soft endpoint dots */}
+            <svg
+              viewBox="0 0 980 650"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[5] hidden h-full w-full overflow-visible lg:block"
+            >
+              <defs>
+                <filter
+                  id="chatbotConnectorDotGlow"
+                  x="-80%"
+                  y="-80%"
+                  width="260%"
+                  height="260%"
+                >
+                  <feGaussianBlur stdDeviation="3.2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {chatbotHeroConnectors.map((connector) => (
+                <React.Fragment key={connector.d}>
+                  <motion.path
+                    d={connector.d}
+                    fill="none"
+                    stroke="#27C866"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    vectorEffect="non-scaling-stroke"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{
+                      duration: 0.78,
+                      delay: connector.delay,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  />
+
+                  {/* Pale halo behind the card-side dot */}
+                  <motion.circle
+                    cx={connector.start[0]}
+                    cy={connector.start[1]}
+                    r="8"
+                    fill="rgba(39,200,102,0.14)"
+                    initial={{ opacity: 0, scale: 0.45 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      delay: connector.delay,
+                      duration: 0.35,
+                    }}
+                  />
+
+                  {/* Bright card-side dot */}
+                  <motion.circle
+                    cx={connector.start[0]}
+                    cy={connector.start[1]}
+                    r="4.2"
+                    fill="#20C763"
+                    filter="url(#chatbotConnectorDotGlow)"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      delay: connector.delay + 0.05,
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 16,
+                    }}
+                  />
+
+                  {/* Small bot-side connection point */}
+                  <motion.circle
+                    cx={connector.end[0]}
+                    cy={connector.end[1]}
+                    r="3.7"
+                    fill="#20C763"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{
+                      delay: connector.delay + 0.58,
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 16,
+                    }}
+                  />
+                </React.Fragment>
+              ))}
+            </svg>
+
+            {/* Feature cards — revealed one by one */}
+            {chatbotHeroFeatures.map((card, i) => {
+              const Icon = card.icon;
+
+              return (
+                <motion.div
+                  key={card.label}
+                  initial={{
+                    opacity: 0,
+                    y: 24,
+                    x: card.side === "left" ? -44 : 44,
+                    scale: 0.76,
+                    filter: "blur(10px)",
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    y: [0, -6, 0],
+                    scale: 1,
+                    filter: "blur(0px)",
+                  }}
+                  transition={{
+                    opacity: {
+                      duration: 0.72,
+                      delay: card.delay,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                    x: {
+                      duration: 0.72,
+                      delay: card.delay,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                    scale: {
+                      duration: 0.72,
+                      delay: card.delay,
+                      type: "spring",
+                      stiffness: 125,
+                      damping: 17,
+                      mass: 0.8,
+                    },
+                    filter: {
+                      duration: 0.6,
+                      delay: card.delay,
+                    },
+                    y: {
+                      duration: 3.4,
+                      delay: card.delay + 0.15,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    },
+                  }}
+                  whileHover={{
+                    y: -10,
+                    scale: 1.035,
+                    boxShadow: "0 20px 44px rgba(15,23,42,0.14)",
+                  }}
+                  className={`chatbot-feature-card absolute z-30 hidden min-w-[188px] items-center gap-3 rounded-[20px] border border-emerald-100/80 bg-white/95 px-4 py-3.5 shadow-[0_14px_34px_rgba(15,23,42,0.10)] backdrop-blur-md lg:flex ${
+                    card.side === "left"
+                      ? "left-0 xl:-left-4"
+                      : "right-0 xl:-right-4"
+                  }`}
+                  style={{ top: card.top }}
+                >
+                  {card.side === "left" && (
+                    <motion.span
+                      initial={{ scale: 0, rotate: -25 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{
+                        delay: card.delay + 0.22,
+                        type: "spring",
+                        stiffness: 220,
+                        damping: 14,
+                      }}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#22C55E] to-[#0EA55A] text-white shadow-[0_7px_18px_rgba(16,185,110,0.34)]"
+                    >
+                      <Icon size={21} strokeWidth={2.15} />
+                    </motion.span>
+                  )}
+
+                  <span className="max-w-[108px] whitespace-normal text-[0.92rem] font-semibold leading-[1.25] text-[#1F2937] xl:text-[0.98rem]">
+                    {card.label}
+                  </span>
+
+                  {card.side === "right" && (
+                    <motion.span
+                      initial={{ scale: 0, rotate: 25 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{
+                        delay: card.delay + 0.22,
+                        type: "spring",
+                        stiffness: 220,
+                        damping: 14,
+                      }}
+                      className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#22C55E] to-[#0EA55A] text-white shadow-[0_7px_18px_rgba(16,185,110,0.34)]"
+                    >
+                      <Icon size={21} strokeWidth={2.15} />
+                    </motion.span>
+                  )}
+                </motion.div>
+              );
+            })}
+
             {/* Animated orbit rings */}
             <motion.div
-              className="absolute h-[440px] w-[440px] rounded-full border border-dashed border-emerald-300/60 sm:h-[520px] sm:w-[520px]"
-              animate={
-                reduceMotion
-                  ? undefined
-                  : {
-                      rotate: 360,
-                    }
-              }
+              className="chatbot-orbit-spin-slow chatbot-orbit-arc absolute h-[440px] w-[440px] rounded-full border border-dashed border-emerald-300/25 sm:h-[520px] sm:w-[520px]"
+              animate={reduceMotion ? undefined : { rotate: 360 }}
               transition={{
                 duration: 35,
                 repeat: Infinity,
@@ -4935,76 +4634,41 @@ export default function WhatsAppChatbot() {
             />
 
             <motion.div
-              className="absolute h-[350px] w-[350px] rounded-full border border-emerald-200/70 sm:h-[415px] sm:w-[415px]"
-              animate={
-                reduceMotion
-                  ? undefined
-                  : {
-                      rotate: -360,
-                    }
-              }
+              className="chatbot-orbit-spin-reverse chatbot-orbit-arc chatbot-orbit-arc-inner absolute h-[350px] w-[350px] rounded-full border border-emerald-200/25 sm:h-[415px] sm:w-[415px]"
+              animate={reduceMotion ? undefined : { rotate: -360 }}
               transition={{
                 duration: 25,
                 repeat: Infinity,
                 ease: "linear",
               }}
             >
-              <span className="absolute left-8 top-7 h-3 w-3 rounded-full bg-[#25D366] shadow-[0_0_20px_5px_rgba(37,211,102,0.45)]" />
-
-              <span className="absolute bottom-14 right-3 h-2.5 w-2.5 rounded-full bg-emerald-400" />
             </motion.div>
 
-            {/* Connecting SVG lines */}
-            <svg
-              viewBox="0 0 700 650"
-              className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
-              fill="none"
-              aria-hidden="true"
-            >
-              {[
-                "M125 120 C220 115, 225 250, 300 270",
-                "M575 115 C480 110, 480 240, 405 270",
-                "M85 320 C180 320, 220 325, 285 325",
-                "M615 315 C520 315, 470 325, 415 325",
-                "M130 530 C220 500, 235 420, 305 390",
-                "M580 525 C490 495, 470 420, 405 390",
-              ].map((path, index) => (
-                <motion.path
-                  key={path}
-                  d={path}
-                  stroke="rgba(34,197,94,0.35)"
-                  strokeWidth="1.5"
-                  strokeDasharray="6 8"
-                  initial={{
-                    pathLength: 0,
-                    opacity: 0,
-                  }}
-                  animate={{
-                    pathLength: 1,
-                    opacity: 1,
-                    strokeDashoffset: [0, -30],
-                  }}
-                  transition={{
-                    pathLength: {
-                      delay: 0.7 + index * 0.12,
-                      duration: 1,
-                    },
-                    opacity: {
-                      delay: 0.7 + index * 0.12,
-                      duration: 0.6,
-                    },
-                    strokeDashoffset: {
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                    },
-                  }}
-                />
-              ))}
-            </svg>
-
-            {/* Central visual group */}
             <motion.div
+              className="chatbot-orbit-spin-fast absolute h-[440px] w-[440px] rounded-full sm:h-[520px] sm:w-[520px]"
+              animate={reduceMotion ? undefined : { rotate: 360 }}
+              transition={{
+                duration: 9,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+            </motion.div>
+
+            <motion.div
+              className="chatbot-orbit-spin-reverse-fast absolute h-[350px] w-[350px] rounded-full sm:h-[415px] sm:w-[415px]"
+              animate={reduceMotion ? undefined : { rotate: -360 }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            >
+            </motion.div>
+
+            <motion.img
+              src="/assets/images/Payment bot.webp"
+              alt="WhatsApp chatbot assistant"
               initial={{
                 opacity: 0,
                 scale: 0.78,
@@ -5012,8 +4676,9 @@ export default function WhatsAppChatbot() {
               }}
               animate={{
                 opacity: 1,
-                scale: 1,
-                y: 0,
+                scale: 1.18,
+                x: -6,
+                y: 44,
               }}
               transition={{
                 duration: 0.9,
@@ -5022,346 +4687,9 @@ export default function WhatsAppChatbot() {
                 stiffness: 100,
                 damping: 17,
               }}
-              className="relative z-10"
-            >
-              {/* Main glow */}
-              <motion.div
-                className="absolute left-1/2 top-1/2 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#58E88A]/35 blur-[55px] sm:h-[400px] sm:w-[400px]"
-                animate={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        scale: [0.95, 1.12, 0.95],
-                        opacity: [0.35, 0.65, 0.35],
-                      }
-                }
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
+              className="chatbot-mobile-hero-image relative z-10 h-auto w-[620px] max-w-none object-contain drop-shadow-[0_36px_82px_rgba(15,118,63,0.22)] sm:w-[735px] lg:w-[900px] xl:w-[995px]"
+            />
 
-              {/* Floating chatbot body */}
-              <motion.div
-                animate={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        y: [0, -13, 0],
-                        rotate: [0, 0.7, 0, -0.7, 0],
-                      }
-                }
-                transition={{
-                  y: {
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  },
-                  rotate: {
-                    duration: 7,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  },
-                }}
-                className="relative"
-              >
-                {/* Head */}
-                <div className="relative mx-auto h-[190px] w-[230px] rounded-[46%_46%_42%_42%/52%_52%_40%_40%] border-[9px] border-white bg-gradient-to-b from-white to-emerald-50 shadow-[0_30px_70px_rgba(15,118,63,0.24)] sm:h-[225px] sm:w-[275px]">
-                  {/* Ears */}
-                  <div className="absolute -left-7 top-[72px] h-14 w-10 rounded-l-full border-4 border-white bg-emerald-100 shadow-md" />
-
-                  <div className="absolute -right-7 top-[72px] h-14 w-10 rounded-r-full border-4 border-white bg-emerald-100 shadow-md" />
-
-                  {/* Unsplash image screen */}
-                  <div className="absolute inset-x-6 top-7 h-[118px] overflow-hidden rounded-[38px] border border-emerald-400/30 bg-[#04130C] shadow-inner sm:inset-x-7 sm:h-[142px]">
-                    <img
-                      src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=85"
-                      alt="AI-powered WhatsApp chatbot assistant"
-                      className="h-full w-full object-cover opacity-60 mix-blend-screen"
-                    />
-
-                    <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-[#02150D]/40 to-[#02150D]/90" />
-
-                    {/* Animated face */}
-                    <div className="absolute inset-0 flex items-center justify-center gap-12">
-                      <motion.span
-                        className="h-3.5 w-8 rounded-full bg-[#40FA85] shadow-[0_0_18px_5px_rgba(64,250,133,0.55)]"
-                        animate={
-                          reduceMotion
-                            ? undefined
-                            : {
-                                scaleY: [1, 0.15, 1],
-                              }
-                        }
-                        transition={{
-                          duration: 4,
-                          repeat: Infinity,
-                          times: [0, 0.04, 0.08],
-                          repeatDelay: 1.7,
-                        }}
-                      />
-
-                      <motion.span
-                        className="h-3.5 w-8 rounded-full bg-[#40FA85] shadow-[0_0_18px_5px_rgba(64,250,133,0.55)]"
-                        animate={
-                          reduceMotion
-                            ? undefined
-                            : {
-                                scaleY: [1, 0.15, 1],
-                              }
-                        }
-                        transition={{
-                          duration: 4,
-                          delay: 0.05,
-                          repeat: Infinity,
-                          times: [0, 0.04, 0.08],
-                          repeatDelay: 1.7,
-                        }}
-                      />
-                    </div>
-
-                    <motion.div
-                      className="absolute bottom-5 left-1/2 h-2 w-10 -translate-x-1/2 rounded-full border-b-2 border-[#40FA85]"
-                      animate={
-                        reduceMotion
-                          ? undefined
-                          : {
-                              width: [40, 52, 40],
-                            }
-                      }
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </div>
-
-                  {/* Head light */}
-                  <motion.div
-                    className="absolute left-1/2 top-2 h-2.5 w-10 -translate-x-1/2 rounded-full bg-[#25D366]"
-                    animate={
-                      reduceMotion
-                        ? undefined
-                        : {
-                            opacity: [0.45, 1, 0.45],
-                          }
-                    }
-                    transition={{
-                      duration: 1.8,
-                      repeat: Infinity,
-                    }}
-                  />
-                </div>
-
-                {/* Neck */}
-                <div className="mx-auto -mt-3 h-14 w-20 rounded-b-3xl bg-gradient-to-b from-white to-emerald-100 shadow-md" />
-
-                {/* Body */}
-                <div className="relative mx-auto -mt-2 h-[150px] w-[185px] rounded-[48%_48%_35%_35%/35%_35%_55%_55%] border-[8px] border-white bg-gradient-to-b from-white to-emerald-100 shadow-[0_30px_55px_rgba(25,183,90,0.25)] sm:h-[175px] sm:w-[215px]">
-                  {/* Arms */}
-                  <motion.div
-                    className="absolute -left-20 top-8 h-20 w-24 origin-right rounded-full border-[8px] border-white bg-emerald-50 shadow-md"
-                    animate={
-                      reduceMotion
-                        ? undefined
-                        : {
-                            rotate: [-10, -20, -10],
-                          }
-                    }
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-
-                  <motion.div
-                    className="absolute -right-20 top-8 h-20 w-24 origin-left rounded-full border-[8px] border-white bg-emerald-50 shadow-md"
-                    animate={
-                      reduceMotion
-                        ? undefined
-                        : {
-                            rotate: [10, 20, 10],
-                          }
-                    }
-                    transition={{
-                      duration: 3,
-                      delay: 0.4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  />
-
-                  {/* WhatsApp badge */}
-                  <motion.div
-                    whileHover={{
-                      scale: 1.1,
-                      rotate: 8,
-                    }}
-                    className="absolute left-1/2 top-10 flex h-[72px] w-[72px] -translate-x-1/2 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_12px_28px_rgba(37,211,102,0.38)]"
-                  >
-                    <MessageCircle
-                      size={38}
-                      fill="currentColor"
-                      strokeWidth={1.8}
-                    />
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Platform base */}
-              <div className="relative mx-auto mt-2 h-[75px] w-[330px] sm:w-[400px]">
-                <motion.div
-                  className="absolute inset-x-3 top-0 h-12 rounded-[50%] border border-emerald-300 bg-emerald-100/70 shadow-[0_10px_40px_rgba(34,197,94,0.25)] backdrop-blur-lg"
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          scaleX: [1, 1.06, 1],
-                          opacity: [0.72, 1, 0.72],
-                        }
-                  }
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-
-                <div className="absolute inset-x-12 top-3 h-8 rounded-[50%] border border-emerald-400/70 bg-white/60" />
-
-                <motion.div
-                  className="absolute inset-x-24 top-4 h-6 rounded-[50%] bg-emerald-400/45 blur-md"
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          opacity: [0.35, 0.9, 0.35],
-                        }
-                  }
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                  }}
-                />
-              </div>
-            </motion.div>
-
-            {/* Floating feature cards */}
-            {floatingFeatures.map((feature, index) => {
-              const Icon = feature.icon;
-
-              return (
-                <motion.div
-                  key={feature.title}
-                  initial={{
-                    opacity: 0,
-                    scale: 0.7,
-                    y: 25,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    y: reduceMotion ? 0 : [0, -8, 0],
-                  }}
-                  transition={{
-                    opacity: {
-                      delay: 0.8 + index * 0.12,
-                      duration: 0.5,
-                    },
-                    scale: {
-                      delay: 0.8 + index * 0.12,
-                      duration: 0.5,
-                    },
-                    y: {
-                      delay: feature.delay,
-                      duration: 3.4 + index * 0.2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
-                  }}
-                  whileHover={{
-                    scale: 1.06,
-                    y: -8,
-                  }}
-                  className={`absolute z-30 ${feature.position}`}
-                >
-                  <div className="flex min-w-[150px] items-center gap-3 rounded-2xl border border-emerald-100/90 bg-white/90 px-4 py-3 shadow-[0_15px_40px_rgba(15,118,63,0.12)] backdrop-blur-xl sm:min-w-[170px]">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-[#16B95F]">
-                      <Icon size={20} strokeWidth={2.2} />
-                    </span>
-
-                    <span className="text-xs font-extrabold leading-tight text-[#173527] sm:text-sm">
-                      {feature.title}
-                    </span>
-
-                    <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-[#25D366] text-white">
-                      <Check size={12} strokeWidth={3} />
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
-
-            {/* Small status card */}
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: 40,
-              }}
-              animate={{
-                opacity: 1,
-                x: 0,
-              }}
-              transition={{
-                delay: 1.5,
-                duration: 0.7,
-              }}
-              whileHover={{
-                scale: 1.04,
-                rotate: -1,
-              }}
-              className="absolute bottom-[20%] right-[7%] z-30 hidden rounded-2xl border border-emerald-100 bg-white/90 p-4 shadow-[0_18px_45px_rgba(15,118,63,0.13)] backdrop-blur-xl xl:block"
-            >
-              <div className="flex items-center gap-3">
-                <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-emerald-100 text-[#19B75A]">
-                  <Bot size={22} />
-
-                  <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-[#25D366]" />
-                </span>
-
-                <div>
-                  <p className="text-xs font-medium text-slate-500">
-                    Chatbot status
-                  </p>
-
-                  <p className="text-sm font-extrabold text-[#173527]">
-                    Active and responding
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Security icon */}
-            <motion.div
-              animate={
-                reduceMotion
-                  ? undefined
-                  : {
-                      y: [0, -6, 0],
-                    }
-              }
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute right-[18%] top-[3%] hidden h-12 w-12 items-center justify-center rounded-2xl border border-emerald-100 bg-white text-[#19B75A] shadow-lg sm:flex"
-            >
-              <ShieldCheck size={23} />
-            </motion.div>
           </div>
         </div>
       </section>
@@ -5369,6 +4697,586 @@ export default function WhatsAppChatbot() {
       <ComparisonSection />
       <ChatbotBookSection />
       <WhatsAppLaunchStepsSection />
+
+      <style jsx global>{`
+        @keyframes chatbotOrbitSpin {
+          from {
+            transform: rotate(0deg);
+          }
+
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes chatbotOrbitSpinReverse {
+          from {
+            transform: rotate(360deg);
+          }
+
+          to {
+            transform: rotate(0deg);
+          }
+        }
+
+        .chatbot-orbit-spin-slow {
+          animation: chatbotOrbitSpin 8s linear infinite !important;
+          transform-origin: center;
+          will-change: transform;
+        }
+
+        .chatbot-orbit-spin-fast {
+          animation: chatbotOrbitSpin 5.5s linear infinite !important;
+          transform-origin: center;
+          will-change: transform;
+        }
+
+        .chatbot-orbit-spin-reverse {
+          animation: chatbotOrbitSpinReverse 7s linear infinite !important;
+          transform-origin: center;
+          will-change: transform;
+        }
+
+        .chatbot-orbit-spin-reverse-fast {
+          animation: chatbotOrbitSpinReverse 4.8s linear infinite !important;
+          transform-origin: center;
+          will-change: transform;
+        }
+
+        .chatbot-orbit-arc::after {
+          content: "";
+          position: absolute;
+          inset: -1px;
+          border-radius: inherit;
+          background: conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            transparent 244deg,
+            rgba(37, 211, 102, 0.08) 254deg,
+            rgba(37, 211, 102, 0.62) 270deg,
+            rgba(110, 231, 183, 0.98) 286deg,
+            rgba(186, 230, 253, 0.95) 296deg,
+            rgba(255, 255, 255, 0.98) 302deg,
+            rgba(56, 189, 248, 0.42) 312deg,
+            rgba(37, 211, 102, 0.08) 326deg,
+            transparent 340deg,
+            transparent 360deg
+          );
+          mask: radial-gradient(
+            farthest-side,
+            transparent calc(100% - 2.4px),
+            #000 calc(100% - 1.1px)
+          );
+          -webkit-mask: radial-gradient(
+            farthest-side,
+            transparent calc(100% - 2.4px),
+            #000 calc(100% - 1.1px)
+          );
+          filter:
+            drop-shadow(0 0 2px rgba(255, 255, 255, 0.95))
+            drop-shadow(0 0 5px rgba(37, 211, 102, 0.55))
+            drop-shadow(0 0 10px rgba(56, 189, 248, 0.2));
+          opacity: 0.94;
+          pointer-events: none;
+        }
+
+        .chatbot-orbit-arc-inner::after {
+          inset: -1px;
+          background: conic-gradient(
+            from 180deg,
+            transparent 0deg,
+            transparent 230deg,
+            rgba(37, 211, 102, 0.06) 244deg,
+            rgba(37, 211, 102, 0.52) 260deg,
+            rgba(134, 239, 172, 0.95) 276deg,
+            rgba(224, 242, 254, 0.98) 287deg,
+            rgba(255, 255, 255, 1) 294deg,
+            rgba(125, 211, 252, 0.38) 305deg,
+            rgba(37, 211, 102, 0.06) 320deg,
+            transparent 336deg,
+            transparent 360deg
+          );
+          filter:
+            drop-shadow(0 0 2px rgba(255, 255, 255, 0.9))
+            drop-shadow(0 0 4px rgba(37, 211, 102, 0.42))
+            drop-shadow(0 0 8px rgba(125, 211, 252, 0.18));
+          opacity: 0.82;
+        }
+
+        .chatbot-hero-keyword,
+        .chatbot-hero-keyword * {
+          color: #10b957 !important;
+        }
+
+        @media (max-width: 639px) {
+          .whatsapp-chatbot-page .chatbot-mobile-hero {
+            min-height: auto;
+            padding: 35px 20px 50px;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-grid {
+            min-width: 0;
+            max-width: 100%;
+            gap: 6px;
+            text-align: left;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-content {
+            min-width: 0;
+            max-width: 100%;
+            align-items: flex-start;
+            gap: 20px;
+            text-align: left;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-pill {
+            padding: 8px 12px;
+            font-size: 0.95rem;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-heading {
+            margin-top: 12px;
+            gap: 4px;
+          }
+
+          /* "WhatsApp chatbot" is one unbreakable word (~9.1em in
+             Manrope ExtraBold) and the keyword span uses
+             contain: paint, so anything wider than the column gets
+             clipped instead of wrapping. 8.2vw keeps it inside the
+             column on every phone width down to ~300px. */
+          .whatsapp-chatbot-page .chatbot-mobile-hero-heading h1 {
+            font-size: clamp(1.5rem, 8.2vw, 2.25rem) !important;
+            line-height: 1.08 !important;
+            text-align: left !important;
+            justify-content: flex-start !important;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-heading h1:last-child {
+            display: block;
+            text-align: left !important;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-keyword {
+            display: inline-block;
+            margin-left: 0.08em;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-description {
+            max-width: 690px;
+            font-size: 1rem !important;
+            line-height: 1.6 !important;
+            text-align: left !important;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-actions {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            margin-top: 24px;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-actions > a {
+            width: 100%;
+            padding: 10px 28px;
+            font-size: 1rem;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual {
+            min-height: 330px;
+            max-width: 100%;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual .chatbot-orbit-arc,
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual .chatbot-orbit-spin-fast {
+            width: min(290px, 76vw);
+            height: min(290px, 76vw);
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual .chatbot-orbit-arc-inner,
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual .chatbot-orbit-spin-reverse-fast {
+            width: min(230px, 60vw);
+            height: min(230px, 60vw);
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-image {
+            width: min(400px, 86vw);
+          }
+        }
+        .wa-chatbot-launch-section .wa-launch-card {
+          height: 575px !important;
+          border-radius: 22px !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-card:hover {
+          border-color: rgba(62, 139, 124, 0.48) !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-card p {
+          margin: 0 !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-card-title {
+          font-size: 20px !important;
+          font-weight: 800 !important;
+          line-height: 1.24 !important;
+          color: #071b2c !important;
+          text-align: left !important;
+          white-space: normal !important;
+          overflow: visible !important;
+          text-overflow: clip !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-card-desc {
+          margin-top: 14px !important;
+          font-size: 15px !important;
+          font-weight: 500 !important;
+          line-height: 1.58 !important;
+          color: #526178 !important;
+          text-align: left !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-number {
+          width: 42px !important;
+          height: 42px !important;
+          border-radius: 9999px !important;
+          font-size: 15px !important;
+          line-height: 1 !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-icon {
+          width: 42px !important;
+          height: 42px !important;
+          border-radius: 12px !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-visual p {
+          margin: 0 !important;
+          font-size: 9.5px !important;
+          line-height: 1.34 !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-visual p,
+        .wa-chatbot-launch-section .wa-launch-visual span,
+        .wa-chatbot-launch-section .wa-launch-visual div,
+        .wa-chatbot-launch-section .wa-launch-visual button {
+          font-size: 9.5px !important;
+          line-height: 1.34 !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-visual {
+          min-height: 0 !important;
+          margin-top: 22px !important;
+        }
+
+        .wa-chatbot-launch-section .wa-launch-visual > * {
+          height: 100%;
+        }
+
+        @media (min-width: 1280px) {
+          .wa-chatbot-launch-section .wa-launch-card {
+            height: 595px !important;
+          }
+        }
+
+        /* =====================================================
+           MOBILE RESPONSIVE — phones only (max-width: 767px)
+           Desktop / tablet layouts are untouched.
+        ===================================================== */
+
+        @media (min-width: 640px) and (max-width: 767px) {
+          .whatsapp-chatbot-page .chatbot-mobile-hero {
+            min-height: auto;
+            padding: 40px 24px 60px;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual {
+            min-height: 400px;
+            max-width: 100%;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-image {
+            width: min(460px, 70vw);
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual .chatbot-orbit-arc,
+          .whatsapp-chatbot-page
+            .chatbot-mobile-hero-visual
+            .chatbot-orbit-spin-fast {
+            width: 400px;
+            height: 400px;
+          }
+
+          .whatsapp-chatbot-page
+            .chatbot-mobile-hero-visual
+            .chatbot-orbit-arc-inner,
+          .whatsapp-chatbot-page
+            .chatbot-mobile-hero-visual
+            .chatbot-orbit-spin-reverse-fast {
+            width: 320px;
+            height: 320px;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .whatsapp-chatbot-page {
+            overflow-x: hidden;
+          }
+
+          .whatsapp-chatbot-page section {
+            padding-left: 16px;
+            padding-right: 16px;
+          }
+
+          /* ---------- Hero: bot image sits above the heading ---------- */
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-visual {
+            order: -1;
+            margin-bottom: 4px;
+          }
+
+          .whatsapp-chatbot-page .chatbot-mobile-hero-content {
+            order: 0;
+          }
+
+          /* The entrance animation renders the image at 1.18x and
+             nudges it 44px down. Neutralised on phones so the bot
+             stays fully visible and does not overlap the heading. */
+          .whatsapp-chatbot-page .chatbot-mobile-hero-image {
+            max-width: none;
+            transform: none !important;
+            transform-origin: center;
+          }
+
+          /* ---------- Shared section headings ---------- */
+
+          .whatsapp-chatbot-page .wa-section-heading {
+            max-width: 100% !important;
+            white-space: normal !important;
+            font-size: clamp(1.45rem, 6.4vw, 2rem) !important;
+            line-height: 1.2 !important;
+            overflow-wrap: break-word;
+          }
+
+          .whatsapp-chatbot-page .wa-section-heading span {
+            white-space: normal !important;
+          }
+
+          .whatsapp-chatbot-page .wa-section-sub {
+            max-width: 100% !important;
+            margin-top: 14px !important;
+            white-space: normal !important;
+            font-size: 0.95rem !important;
+            line-height: 1.62 !important;
+          }
+
+          /* ---------- Before / After comparison ---------- */
+
+          .whatsapp-chatbot-page #chatbot-comparison {
+            padding-top: 40px !important;
+            padding-bottom: 40px !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-card-head {
+            align-items: flex-start !important;
+            gap: 10px;
+            padding: 12px 14px !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-card-title {
+            display: block !important;
+            white-space: normal !important;
+            font-size: 0.98rem !important;
+            line-height: 1.25 !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-card-badge {
+            flex-shrink: 0;
+            white-space: nowrap;
+            padding: 5px 9px !important;
+            font-size: 9px !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-media {
+            height: auto !important;
+            margin: -6px 14px 0 !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-media img {
+            width: 68% !important;
+            max-width: 68% !important;
+            height: auto !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-list {
+            padding: 10px 12px !important;
+          }
+
+          .whatsapp-chatbot-page .cmp-list p {
+            font-size: 12.5px !important;
+            line-height: 1.42 !important;
+          }
+
+          /* ---------- Chatbot book section ---------- */
+
+          /* Chapter tabs are hidden on phones — the arrows and the
+             dots below the book already cover navigation. */
+          .whatsapp-chatbot-page .book-tabs {
+            display: none !important;
+          }
+
+          .whatsapp-chatbot-page .book-stage {
+            margin-top: 26px !important;
+          }
+
+          .whatsapp-chatbot-page .book-page-grid {
+            min-height: 0 !important;
+          }
+
+          .whatsapp-chatbot-page .book-left-page {
+            padding: 30px 18px 24px !important;
+          }
+
+          .whatsapp-chatbot-page .book-chapter-badge {
+            height: 46px !important;
+            width: 46px !important;
+            border-radius: 16px !important;
+            font-size: 14px !important;
+          }
+
+          .whatsapp-chatbot-page .book-page-title {
+            margin-top: 20px !important;
+            font-size: 24px !important;
+            line-height: 1.16 !important;
+          }
+
+          .whatsapp-chatbot-page .book-page-desc {
+            margin-top: 14px !important;
+            font-size: 13.5px !important;
+            line-height: 1.6 !important;
+          }
+
+          .whatsapp-chatbot-page .book-points {
+            margin-top: 20px !important;
+          }
+
+          .whatsapp-chatbot-page .book-points p {
+            font-size: 12.8px !important;
+            line-height: 1.5 !important;
+          }
+
+          .whatsapp-chatbot-page .book-page-status {
+            margin-top: 22px !important;
+          }
+
+          .whatsapp-chatbot-page .book-right-page {
+            min-height: 0 !important;
+            padding: 0 14px 22px !important;
+          }
+
+          .whatsapp-chatbot-page .book-visual {
+            height: 440px !important;
+            padding: 12px !important;
+          }
+
+          .whatsapp-chatbot-page .book-bubble {
+            max-width: 190px !important;
+            padding: 10px 14px !important;
+          }
+
+          .whatsapp-chatbot-page .assist-card {
+            min-height: 0 !important;
+            padding: 16px !important;
+          }
+
+          .whatsapp-chatbot-page .assist-row {
+            padding: 8px 10px !important;
+          }
+
+          .whatsapp-chatbot-page .assist-row-icon {
+            height: 36px !important;
+            width: 36px !important;
+          }
+
+          /* Page arrows move to the card header so they never
+             sit on top of the heading or the animated visual. */
+
+          .whatsapp-chatbot-page .book-nav {
+            top: 16px !important;
+            bottom: auto !important;
+            height: 36px !important;
+            width: 36px !important;
+            transform: none !important;
+          }
+
+          .whatsapp-chatbot-page .book-nav svg {
+            height: 18px;
+            width: 18px;
+          }
+
+          .whatsapp-chatbot-page .book-nav-prev {
+            left: auto !important;
+            right: 56px !important;
+          }
+
+          .whatsapp-chatbot-page .book-nav-next {
+            right: 12px !important;
+          }
+
+          /* ---------- Four step launch section ---------- */
+
+          .whatsapp-chatbot-page .wa-launch-grid {
+            margin-top: 34px !important;
+            gap: 18px !important;
+          }
+
+          .wa-chatbot-launch-section .wa-launch-card {
+            height: 520px !important;
+            padding: 18px !important;
+          }
+
+          .wa-chatbot-launch-section .wa-launch-card-title {
+            font-size: 17px !important;
+            line-height: 1.28 !important;
+          }
+
+          .wa-chatbot-launch-section .wa-launch-card-desc {
+            margin-top: 10px !important;
+            font-size: 13.5px !important;
+            line-height: 1.55 !important;
+          }
+
+          .wa-chatbot-launch-section .wa-launch-visual {
+            margin-top: 16px !important;
+          }
+        }
+      `}</style>
     </main>
+
+    {/* Phone: sticky CTA bar. Sits outside <main> so the page's overflow
+        clipping can never trap it. */}
+    <div
+      className={`fixed inset-x-0 bottom-0 z-40 flex gap-2.5 border-t border-[#D7E8E1] bg-white/95 px-3 py-2.5 shadow-[0_-8px_24px_rgba(7,27,77,0.14)] backdrop-blur-md transition-transform duration-300 md:hidden ${
+        showStickyCta ? "translate-y-0" : "translate-y-full"
+      }`}
+    >
+      <Link
+        to="/signup"
+        className="inline-flex flex-1 items-center justify-center gap-2 rounded-[9px]! border-2 border-green-600 bg-green-600 px-3 py-2.5 text-[0.9rem] font-semibold !text-white no-underline!"
+      >
+        <span>Get Started</span>
+        <ArrowRight size={16} />
+      </Link>
+
+      <Link
+        to="/book-demo"
+        className="inline-flex flex-1 items-center justify-center gap-2 rounded-[9px]! border-2 border-green-600 bg-white px-3 py-2.5 text-[0.9rem] font-semibold !text-green-600 no-underline!"
+      >
+        <span>Request a Demo</span>
+        <CalendarDays size={18} strokeWidth={1.6} />
+      </Link>
+    </div>
+    </>
   );
 }

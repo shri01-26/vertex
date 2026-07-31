@@ -155,11 +155,12 @@ export const productFeaturesData = {
       ]
     },
     process: {
-      title: "Launch your WhatsApp chatbot in three simple steps.",
+      title: "Build and Launch Your WhatsApp Chatbot in Four Steps",
       items: [
-        { title: "1. Train Your Chatbot", desc: "Add your FAQs, product details, workflows and business rules." },
-        { title: "2. Build Journeys Visually", desc: "Use drag-and-drop blocks to create steps, conditions, menus, automations and responses." },
-        { title: "3. Deploy on WhatsApp", desc: "Connect it to your WhatsApp Business API and go live instantly." }
+        { title: "1. Connect Your WhatsApp Business Setup", desc: "Connect your WABA, phone number, webhooks, and templates." },
+        { title: "2. Build Chatflows with Drag and Drop", desc: "Build conversation journeys using drag-and-drop messages, buttons, lists, conditions, and APIs." },
+        { title: "3. Set Triggers, Rules and Routing", desc: "Route users based on intent, responses, and logic." },
+        { title: "4. Test, Publish and Improve", desc: "Test journeys, publish the chatbot, and monitor performance." }
       ]
     }
   },

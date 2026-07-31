@@ -1,0 +1,126 @@
+/* ============================================================
+   GLOBAL RESPONSIVE HARDENING
+   Site-wide safety net so every page behaves on tablet & mobile.
+   Imported LAST in index.css so it can correct earlier rules.
+   Most rules are scoped to `main` so Navbar/Footer keep their own
+   responsive behaviour untouched.
+   ============================================================ */
+
+/* ---------- 1. Never allow a horizontal scrollbar ---------- */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* ---------- 2. Media always stays inside its container ---------- */
+main img,
+main video,
+main iframe,
+main canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* SVGs that were given an explicit width/height keep it, but can never
+   push past the viewport. */
+main svg {
+  max-width: 100%;
+}
+
+/* ---------- 3. Long words / URLs don't force overflow ---------- */
+main p,
+main li,
+main a,
+main span,
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main td,
+main th,
+main label,
+main input,
+main textarea {
+  overflow-wrap: break-word;
+}
+
+/* ---------- 4. Wide tables & code scroll instead of breaking layout -- */
+main table {
+  max-width: 100%;
+}
+
+main pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Any explicit horizontal scroller hides its scrollbar chrome gracefully */
+main .overflow-x-auto,
+main .overflow-x-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================
+   PHONE  ( <= 767px )
+   Note: `max-width: 100%` only shrinks elements that actually exceed
+   their container, so these rules leave already-fitting illustrations
+   and small mockups untouched — they only rescue real overflow.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Comfortable page gutters */
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Fixed-width blocks that are wider than the phone become fluid so
+     they are not clipped by the body's overflow-x: clip. Decorative
+     absolute blobs keep their size (body clip stops them scrolling). */
+  main [class*="w-["]:not([class*="max-w-"]):not([class*="min-w-"]):not(.absolute) {
+    max-width: 100%;
+  }
+
+  /* A large fixed min-width can force a row/grid item past the viewport;
+     let it shrink to fit instead. */
+  main [class*="min-w-["] {
+    min-width: 0 !important;
+  }
+
+  /* Tame oversized fluid gaps that were tuned for desktop */
+  main .gap-16 {
+    gap: 2rem;
+  }
+  main .gap-12,
+  main .gap-14 {
+    gap: 1.5rem;
+  }
+
+  /* Explicit flex rows of cards wrap instead of overflowing, unless the
+     markup deliberately opts out via `flex-nowrap` / a horizontal scroller. */
+  main .flex.flex-row:not(.flex-nowrap):not([class*="overflow-x"]) {
+    flex-wrap: wrap;
+  }
+}
+
+/* ============================================================
+   SMALL PHONE  ( <= 575px )
+   ============================================================ */
+@media (max-width: 575px) {
+  /* Fluid, readable heading sizes as a final backstop (page-level rules
+     in responsive.css already handle main h1/h2/h3). */
+  main .text-6xl,
+  main .text-7xl {
+    font-size: clamp(2rem, 9vw, 2.6rem) !important;
+    line-height: 1.12 !important;
+  }
+  main .text-5xl {
+    font-size: clamp(1.8rem, 8vw, 2.25rem) !important;
+    line-height: 1.15 !important;
+  }
+  main .text-4xl {
+    font-size: clamp(1.6rem, 7vw, 2rem) !important;
+    line-height: 1.18 !important;
+  }
+}

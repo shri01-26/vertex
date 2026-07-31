@@ -59,8 +59,10 @@ body {
 
 .synthesia-pill {
   height: 76px;
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0;
   border-radius: 0;
   background: transparent;
@@ -122,6 +124,16 @@ body {
   transform: scale(1.02);
 }
 
+/* ================= Center nav area ================= */
+
+.synthesia-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
 /* ================= Nav links ================= */
 
 .synthesia-nav {
@@ -157,6 +169,15 @@ body {
     color 0.2s ease,
     font-size 0.35s ease,
     padding 0.35s ease;
+}
+
+/* Dropdown triggers are buttons, not links, so they need the native chrome cleared. */
+.synthesia-nav-trigger {
+  background: none;
+  border: 0;
+  font-family: inherit;
+  line-height: inherit;
+  cursor: pointer;
 }
 
 .synthesia-header.scrolled .synthesia-nav-link {
@@ -227,7 +248,7 @@ body {
   min-width: 170px;
   height: 42px;
   padding: 0 22px;
-  border-radius: 15px;
+  border-radius: 8px;
   border: 2px solid var(--blue);
   background: #ffffff;
   color: var(--blue) !important;
@@ -265,7 +286,7 @@ body {
   max-width: var(--page-max);
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 24px;
+  border-radius: 12px;
   box-shadow: 0 34px 90px rgba(15, 23, 42, 0.14);
   padding: 0;
   opacity: 0;
@@ -416,7 +437,7 @@ body {
   left: 50%;
   width: 250%;
   height: 250%;
-  background: conic-gradient(from 0deg, transparent 75%, #ef4444 100%);
+  background: conic-gradient(from 0deg, transparent 75%, #1e40af 100%);
   transform: translate(-50%, -50%) rotate(0deg);
   z-index: -2;
   opacity: 0;
@@ -1082,4 +1103,64 @@ body.mobile-menu-open {
   background: #f8fafc;
   color: var(--blue);
   font-weight: 800;
+}
+
+/* ================= Coming soon (visible but not clickable) ================= */
+
+.mega-card-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  background: #fbfcfe;
+  border-color: #eef2f7;
+  box-shadow: none;
+}
+
+.mega-card-disabled .mega-card-content strong {
+  color: #94a3b8;
+}
+
+.mega-card-disabled .mega-card-content p {
+  color: #a5b3c6;
+}
+
+.mega-card-disabled .mega-card-icon {
+  background: #f1f5f9;
+  border-color: #e6ecf3;
+  color: #94a3b8;
+}
+
+.coming-soon-tag {
+  flex-shrink: 0;
+  border-radius: 7px;
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+  padding: 4px 8px;
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mobile-submenu-disabled {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: not-allowed;
+  pointer-events: none;
+  color: #94a3b8;
+}
+
+.mega-feature-link-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626 !important;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }

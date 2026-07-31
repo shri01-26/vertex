@@ -1,6 +1,7 @@
 import React from "react";
-import BlankPage from "./BlankPage";
+import Contact from "./Contact";
 
+/* "Start Free Demo" points here, so this route shows the Contact Us page. */
 export default function Signup() {
-  return <BlankPage title="Signup" section="Vertex Suite" />;
+  return <Contact />;
 }

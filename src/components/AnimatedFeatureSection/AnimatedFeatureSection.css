@@ -222,3 +222,10 @@
     grid-column: 1 / -1;
   }
 }
+
+/* Phone: keep the hero visual clean and show only the main image. */
+@media (max-width: 767px) {
+  .feature-container > .feature-card:nth-of-type(n) {
+    display: none;
+  }
+}
